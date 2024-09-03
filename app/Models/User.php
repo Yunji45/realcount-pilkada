@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nik',
+        'date_of_birth',
+        'gender',
     ];
 
     /**
@@ -42,4 +45,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function vote()
+    {
+        return $this->hasMany(Vote::class, 'user_id');
+    }
 }

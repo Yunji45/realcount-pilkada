@@ -30,22 +30,23 @@ class UserController extends Controller
         return view('dashboard.admin.user-management.users.create', compact('roles'));
     }
 
-    public function store(Request $request, User $user)
+    public function store(Request $request)
     {
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string'],
-                'email' => ['required', 'email', 'unique:users,email,' . $user->id],
-                'no_hp' => ['required', 'numeric'],
-                'jk' => ['required', 'string'],
-                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-                'photo' => ['nullable', 'image', 'max:500', 'mimes:jpg,png,jpeg'],
+                'email' => ['required', 'email', 'unique:users,email'],
+                'nik' => ['required', 'numeric', 'unique:users,nik'],
+                'date_of_birth' => ['required', 'date'],
+                'gender' => ['required', 'string'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'photo' => ['nullable', 'image', 'max:2048', 'mimes:jpg,png,jpeg'],
             ], [
                 'password.confirmed' => 'The password confirmation does not match.',
                 'photo.image' => 'The photo must be an image.',
                 'photo.mimes' => 'Foto harus berupa file dengan tipe: jpg, png, jpeg.',
-                'photo.max' => 'Ukuran foto tidak boleh lebih besar dari 5120 kilobyte.',
+                'photo.max' => 'Ukuran foto tidak boleh lebih besar dari 2048 kilobyte.',
             ]);
 
             if ($validator->fails()) {
@@ -53,47 +54,35 @@ class UserController extends Controller
             }
 
             $file1 = $request->file('photo');
+            $pathPublic1 = null;
 
-            // Check if both files are empty
-            if (empty($file1)) {
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'no_hp' => $request->no_hp,
-                    'jk' => $request->jk,
-                    'company_id' => $request->company_id,
-                ]);
-            } else {
-                // Process the first file
+            if (!empty($file1)) {
                 $nama_file = time() . "_" . $file1->getClientOriginalName();
                 $nama_folder = 'file/photo_profiles';
                 $file1->move($nama_folder, $nama_file);
                 $pathPublic1 = $nama_folder . "/" . $nama_file;
-
-                // Create user with file paths
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'no_hp' => $request->no_hp,
-                    'jk' => $request->jk,
-                    'company_id' => $request->company_id,
-                    'photo' => $pathPublic1,
-                ]);
             }
 
-            // Assign roles
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'nik' => $request->nik,
+                'date_of_birth' => $request->date_of_birth,
+                'gender' => $request->gender,
+                'password' => Hash::make($request->password),
+                'photo' => $pathPublic1,
+            ]);
+
             $user->assignRole($request->input('roles'));
 
             DB::commit();
             return redirect('/user')->with('success', 'User created successfully');
         } catch (\Throwable $th) {
-
             DB::rollBack();
             return back()->with(['error' => 'User creation failed.']);
         }
     }
+
 
 
     public function edit($id)
@@ -112,14 +101,16 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string'],
                 'email' => ['required', 'email', 'unique:users,email,' . $user->id],
-                'no_hp' => ['required', 'numeric'],
-                'jk' => ['required', 'string'],
+                'nik' => ['required', 'numeric', 'unique:users,nik,' . $user->id],
+                'date_of_birth' => ['required', 'date'],
+                'gender' => ['required', 'string'],
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],
                 'photo' => ['nullable', 'image', 'max:2048', 'mimes:jpg,png,jpeg'],
-                // 'nama_perusahaan' => ['required', 'string', 'regex:/^[^0-9!@#$%^&*(),?":{}|<>]+$/'],
             ], [
-                // 'nama_perusahaan.required' => 'The Company name field is required.',
-                // 'nama_perusahaan.regex' => 'The Company name field format is invalid.',
+                'password.confirmed' => 'The password confirmation does not match.',
+                'photo.image' => 'The photo must be an image.',
+                'photo.mimes' => 'Foto harus berupa file dengan tipe: jpg, png, jpeg.',
+                'photo.max' => 'Ukuran foto tidak boleh lebih besar dari 2048 kilobyte.',
             ]);
 
             if ($validator->fails()) {
@@ -127,6 +118,7 @@ class UserController extends Controller
             }
 
             $file = $request->file('photo');
+            $path = $user->photo;
 
             if ($file && $file->isValid()) {
                 $nama_file = time() . "-" . $file->getClientOriginalName();
@@ -134,27 +126,20 @@ class UserController extends Controller
                 $file->move($folder, $nama_file);
                 $path = $folder . "/" . $nama_file;
 
-                // Hapus foto yang sudah ada jika ada
                 if ($user->photo && file_exists($user->photo)) {
                     File::delete($user->photo);
                 }
-            } else {
-                $path = $request->pathfoto ?? null;
             }
 
-            $input = $request->all();
+            $input = $request->except('password', 'photo');
             $input['photo'] = $path;
 
-            if (!empty($input['password'])) {
-                $input['password'] = Hash::make($input['password']);
-            } else {
-                unset($input['password']);
+            if (!empty($request->password)) {
+                $input['password'] = Hash::make($request->password);
             }
 
-            // Update informasi pengguna
             $user->update($input);
 
-            // Hapus peran yang sudah ada dan tambahkan peran baru
             DB::table('model_has_roles')
                 ->where('model_id', $user->id)
                 ->delete();
@@ -163,12 +148,11 @@ class UserController extends Controller
             DB::commit();
             return redirect('user')->with('success', 'User updated successfully');
         } catch (\Throwable $th) {
-
             DB::rollBack();
-            // dd($th->getMessage());
-            return back()->with(['error' => 'Data gagal disimpan.']);
+            return back()->with(['error' => 'User update failed.']);
         }
     }
+
 
     public function destroy($id)
     {
