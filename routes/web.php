@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/map', [App\Http\Controllers\Api\WilayahController::class, 'map'])->name('map');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

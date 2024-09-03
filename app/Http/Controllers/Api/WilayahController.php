@@ -172,6 +172,9 @@ class WilayahController extends Controller
         return response()->json(['data' => $kelurahan, 'message' => 'success']);
     }
 
-
-
+    public function map()
+    {
+        $title = 'msp';
+        return view('map',compact('title'));
+    }
 }
