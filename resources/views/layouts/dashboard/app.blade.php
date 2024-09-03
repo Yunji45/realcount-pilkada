@@ -42,13 +42,13 @@
     <div class="wrapper">
         <!-- Sidebar -->
         <div class="sidebar" data-background-color="dark">
-            @include('layouts.partials.sidebar')
+            @include('layouts.dashboard.partials.sidebar')
         </div>
         <!-- End Sidebar -->
 
         <div class="main-panel">
             <div class="main-header">
-                @include('layouts.partials.navbar')
+                @include('layouts.dashboard.partials.navbar')
             </div>
 
             <div class="container">
@@ -56,7 +56,7 @@
             </div>
 
             <footer class="footer">
-                @include('layouts.partials.footer')
+                @include('layouts.dashboard.partials.footer')
             </footer>
         </div>
     </div>
@@ -93,8 +93,6 @@
     <!-- Kaiadmin JS -->
     <script src="{{ asset('template/assets/js/kaiadmin.min.js') }}"></script>
 
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="{{ asset('template/assets/js/setting-demo.js') }}"></script>
     <script src="{{ asset('template/assets/js/demo.js') }}"></script>
     <script>
         $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
@@ -122,6 +120,64 @@
             lineWidth: "2",
             lineColor: "#ffa534",
             fillColor: "rgba(255, 165, 52, .14)",
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $("#basic-datatables").DataTable({});
+
+            $("#multi-filter-select").DataTable({
+                pageLength: 5,
+                initComplete: function() {
+                    this.api()
+                        .columns()
+                        .every(function() {
+                            var column = this;
+                            var select = $(
+                                    '<select class="form-select"><option value=""></option></select>'
+                                )
+                                .appendTo($(column.footer()).empty())
+                                .on("change", function() {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                                    column
+                                        .search(val ? "^" + val + "$" : "", true, false)
+                                        .draw();
+                                });
+
+                            column
+                                .data()
+                                .unique()
+                                .sort()
+                                .each(function(d, j) {
+                                    select.append(
+                                        '<option value="' + d + '">' + d + "</option>"
+                                    );
+                                });
+                        });
+                },
+            });
+
+            // Add Row
+            $("#add-row").DataTable({
+                pageLength: 5,
+            });
+
+            var action =
+                '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+            $("#addRowButton").click(function() {
+                $("#add-row")
+                    .dataTable()
+                    .fnAddData([
+                        $("#addName").val(),
+                        $("#addPosition").val(),
+                        $("#addOffice").val(),
+                        action,
+                    ]);
+                $("#addRowModal").modal("hide");
+            });
         });
     </script>
 </body>

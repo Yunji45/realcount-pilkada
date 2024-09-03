@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Validator;
+
+class PermissionController extends Controller
+{
+    public function index(Request $request)
+    {
+        $permissions = Permission::all();
+
+        return view('dashboard.admin.user-management.permissions.index', compact('permissions'));
+    }
+
+    public function create()
+    {
+        $permission = Permission::pluck('name', 'name')->all();
+        return view('dashboard.admin.user-management.permissions.create', compact('permission'));
+    }
+
+    public function store(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'regex:/^[^0-9!@#$%^&*(),.?":{}|<>]+$/'],
+            ], [
+                'name.required' => 'The name field is required. or do not use characters',
+            ]);
+
+            if ($validator->fails()) {
+                return back()->withErrors($validator)->withInput();
+            }
+
+            $input = $request->all();
+            Permission::create($input);
+
+            DB::commit();
+            return redirect('permission')->with('success', 'Permission created successfully');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return back()->with('error', 'Permission created failed');
+        }
+    }
+
+    public function edit($id)
+    {
+        $permission = Permission::find($id);
+
+        return view('dashboard.admin.user-management.permissions.edit', compact('permission'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'regex:/^[^0-9!@#$%^&*(),.?":{}|<>]+$/'],
+            ], [
+                'name.required' => 'The name field is required. or do not use characters',
+            ]);
+
+            if ($validator->fails()) {
+                return back()->withErrors($validator)->withInput();
+            }
+
+            $input = $request->all();
+
+            $permission = Permission::find($id);
+            $permission->update($input);
+
+            DB::commit();
+            return redirect('permission')->with('success', 'Permission updated successfully');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return back()->with('error', 'Permission updated failed');
+        }
+    }
+
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+            Permission::find($id)->delete();
+
+            DB::commit();
+            return redirect('permission')->with('success', 'Permission deleted successfully');
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollBack();
+            return back()->with('error', 'Permission deleted successfully');
+        }
+    }
+}

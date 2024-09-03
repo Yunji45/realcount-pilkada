@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +18,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Route::middleware(['verified', 'auth', 'role:Super Admin|Admin'])->group(function () {
+Route::middleware(['verified', 'auth'])->group(function () {
+    Route::resources([
+        '/role' => RoleController::class,
+        '/permission' => PermissionController::class,
+        '/user' => UserController::class,
+    ]);
 });
