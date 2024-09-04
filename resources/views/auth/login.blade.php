@@ -48,7 +48,8 @@
                 <div id="slideshow">
                     <div class="one">
                         <h2>
-                            <img src="{{ asset('template/assets/img/logo.png') }}" width="370px" height="130px">
+                            <img src="{{ asset('template/assets/img/logo.png') }}" width="500px" height="180px"
+                                style="margin-top: 40%">
                         </h2>
                     </div>
                 </div>
@@ -61,17 +62,30 @@
                     <div class="tabs-content">
                         <!-- TABS CONTENT LOGIN -->
                         <div id="login-tab-content" class="active">
-                            <h2 class="signup-tab" style="text-align: center;margin-bottom:30px"><a class="sign-up"><span>DPC Kota Bandung</span></a>
+                            <h2
+                                style="text-align: center; margin-bottom: 50px; margin-top: 18%; font-size: 40px; font-weight: bold; color: black;">
+                                <a style="color: black; text-decoration: none;">DPC Kota Bandung</a>
                             </h2>
+
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <input type="text" class="input" name="email" autocomplete="off"
                                     placeholder="Username">
                                 <input type="password" class="input"id="password" name="password" autocomplete="off"
                                     placeholder="Password">
-                                <input type="checkbox" class="checkbox" checked id="remember_me">
-                                <label for="remember_me" style="color: white">Remember me</label>
-                                <button type="submit" class="btn btn-primary custom-login-btn">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                <br><br>
+                                <button type="submit" class="btn btn-primary"
+                                    style="background-color: #877E56; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;font-weight:bold;border-radius:10px">
                                     {{ __('Login') }}
                                 </button>
 
@@ -82,25 +96,33 @@
                             </div> --}}
                             <div class="tabs">
                                 <br>
-                                <h3 class="signup-tab" style="white-space: nowrap;font-size:17px"> <a class="sign-up"
-                                        href="#signup-tab-content">Belum punya akun? daftar disini</a>
+                                <h3 class="signup-tab" style="white-space: nowrap; font-size: 22px; color: black;">
+                                    <a class="sign-up" href="#signup-tab-content"
+                                        style="color: black;font-weight:bold">Belum punya akun? Daftar disini</a>
                                 </h3>
                             </div>
                         </div>
 
                         <!-- TABS CONTENT SIGNUP -->
                         <div id="signup-tab-content">
-                            <h2 class="signup-tab" style="text-align: center;margin-bottom:25px"><a class="sign-up"><span>Pendaftaran</span></a>
+                            <h2 class="signup-tab" style="text-align: center;margin-bottom:50px;font-size:40px"><a
+                                    class="sign-up"><span>Pendaftaran</span></a>
                             </h2>
-                            <form class="signup-form" action="" method="post">
-                                <input type="text" class="input" id="user_email" autocomplete="off" placeholder="NIK">
-                                <input type="text" class="input" id="user_name" autocomplete="off"
-                                    placeholder="Nama Lengkap">
-                                <input type="text" class="input" autocomplete="off" placeholder="Alamat Lengkap">
-                                <input type="text" class="input" autocomplete="off" placeholder="Alamat Email">
-                                <input type="text" class="input" autocomplete="off" placeholder="Password">
-                                <textarea type="text" class="input" autocomplete="off" placeholder="Struktur Partai/ Pasukan Khusus/ Relawan/ Simpatisan/ Saksi/ lain-lain(Optional"></textarea>
-                                <input type="submit" class="button" value="Daftar">
+                            <form method="POST" action="{{ route('register') }}">
+                                @csrf
+                                <input type="text" class="input" autocomplete="off" placeholder="NIK" name="nik">
+                                <input type="text"  class="input @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Nama Lengkap">
+                                <input type="text" class="input" autocomplete="off" placeholder="Alamat Lengkap" name="address">
+                                <input type="text" class="input" autocomplete="off" placeholder="Alamat Email" name="email">
+                                <input id="password" type="password" class="input" name="password" required autocomplete="Password" placeholder="Password">
+                                <input id="password-confirm" type="password" class="input" name="password_confirmation" required autocomplete="Password Baru" placeholder="Password Baru">
+                                <textarea type="text" class="input" rows="5" autocomplete="off"
+                                    placeholder="Struktur Partai/ Pasukan Khusus/ Relawan/ Simpatisan/ Saksi/ lain-lain(Optional" name="description"></textarea>
+                                <br>
+                                <button type="submit" class="btn btn-primary"
+                                    style="background-color: #877E56; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;font-weight:bold;border-radius:10px">
+                                    {{ __('Daftar') }}
+                                </button>
                             </form>
                             {{-- <div class="help-action">
                                 <p>By signing up, you agree to our</p>
@@ -109,8 +131,9 @@
                             </div> --}}
                             <div class="tabs">
                                 <br>
-                                <h3 class="login-tab" style="white-space: nowrap;font-size:17px"><a class="log-in"
-                                        href="#login-tab-content">Sudah punya akun? Masuk disini</a>
+                                <h3 class="login-tab" style="white-space: nowrap; font-size: 22px; color: black;">
+                                    <a class="log-in" href="#login-tab-content" style="color: black;font-weight:bold">Sudah
+                                        punya akun? Masuk disini</a>
                                 </h3>
                             </div>
                         </div>
@@ -119,6 +142,28 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .alert {
+            padding: 15px;
+            background-color: #f44336;
+            /* Merah terang */
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .alert li {
+            margin-bottom: 5px;
+        }
+    </style>
 
     <script>
         /* LOGIN - MAIN.JS - dp 2017 */
