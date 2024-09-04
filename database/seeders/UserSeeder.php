@@ -3,19 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-<<<<<<<<< Temporary merge branch 1
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-=========
->>>>>>>>> Temporary merge branch 2
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
-<<<<<<<<< Temporary merge branch 1
 use Faker\Factory as FakerFactory;
 use Database\Factories\NikProvider;
-=========
->>>>>>>>> Temporary merge branch 2
 
 class UserSeeder extends Seeder
 {
@@ -27,10 +21,6 @@ class UserSeeder extends Seeder
         // reset cahced roles and permission
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-<<<<<<<<< Temporary merge branch 1
-=========
-        // create permissions
->>>>>>>>> Temporary merge branch 2
         Permission::create(['name' => 'View User Management']);
         Permission::create(['name' => 'Create User']);
         Permission::create(['name' => 'Edit User']);
@@ -48,7 +38,6 @@ class UserSeeder extends Seeder
         Permission::create(['name' => 'Show Permission']);
 
         //create roles and assign existing permissions
-<<<<<<<<< Temporary merge branch 1
         $superAdminRole = Role::create(['name' => 'Super Admin']);
         $superAdminRole->givePermissionTo('View User Management');
         $superAdminRole->givePermissionTo('Create User');
@@ -66,8 +55,6 @@ class UserSeeder extends Seeder
         $superAdminRole->givePermissionTo('Delete Permission');
         $superAdminRole->givePermissionTo('Show Permission');
 
-=========
->>>>>>>>> Temporary merge branch 2
         $adminRole = Role::create(['name' => 'Admin']);
 
         $adminRole->givePermissionTo('View User Management');
@@ -76,7 +63,6 @@ class UserSeeder extends Seeder
         $adminRole->givePermissionTo('Delete User');
         $adminRole->givePermissionTo('Show User');
 
-<<<<<<<<< Temporary merge branch 1
         $personalRole = Role::create(['name' => 'Personal']);
 
         $teamRole = Role::create(['name' => 'Team']);
@@ -90,32 +76,19 @@ class UserSeeder extends Seeder
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($superAdminRole);
         //END:Super Admin
-=========
-        $adminRole->givePermissionTo('Create Role');
-        $adminRole->givePermissionTo('Edit Role');
-        $adminRole->givePermissionTo('Delete Role');
-        $adminRole->givePermissionTo('Show Role');
-
-        $adminRole->givePermissionTo('Create Permission');
-        $adminRole->givePermissionTo('Edit Permission');
-        $adminRole->givePermissionTo('Delete Permission');
-        $adminRole->givePermissionTo('Show Permission');
-
-
-        $securityRole = Role::create(['name' => 'Security']);
->>>>>>>>> Temporary merge branch 2
 
         //START:Admin
         $user = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('qwerty12'),
-<<<<<<<<< Temporary merge branch 1
             'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($adminRole);
@@ -127,6 +100,7 @@ class UserSeeder extends Seeder
             'email' => 'personal@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($personalRole);
@@ -138,14 +112,10 @@ class UserSeeder extends Seeder
             'email' => 'team@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($teamRole);
         //END:Team
-=========
-        ]);
-        $user->assignRole($adminRole);
-        //END:Admin
->>>>>>>>> Temporary merge branch 2
     }
 }
