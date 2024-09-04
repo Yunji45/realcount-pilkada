@@ -16,17 +16,21 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         //menampilkan semua data role
+        $title = 'Role';
+        $type = 'User Management';
         $roles = Role::all();
 
         $permission = Permission::paginate(6);
-        return view('dashboard.admin.user-management.roles.index', compact('roles', 'permission'));
+        return view('dashboard.admin.user-management.roles.index', compact('roles', 'permission','title','type'));
     }
 
     public function create()
     {
+        $title = 'Create Role';
+        $type = 'User Management';
         $permission = Permission::get();
 
-        return view('dashboard.admin.user-management.roles.create', compact('permission'));
+        return view('dashboard.admin.user-management.roles.create', compact('permission','title','type'));
     }
 
     public function store(Request $request)
@@ -58,6 +62,8 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        $title = 'Edit Role';
+        $type = 'User Management';
         $role = Role::find($id);
         $permission = Permission::get();
         $rolePermissions = DB::table("role_has_permissions")
@@ -65,7 +71,7 @@ class RoleController extends Controller
             ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
             ->all();
 
-        return view('dashboard.admin.user-management.roles.edit', compact('role', 'permission', 'rolePermissions'));
+        return view('dashboard.admin.user-management.roles.edit', compact('role', 'permission', 'rolePermissions','title','type'));
     }
 
     public function update(Request $request, $id)
