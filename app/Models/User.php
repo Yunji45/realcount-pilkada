@@ -25,6 +25,9 @@ class User extends Authenticatable
         'nik',
         'date_of_birth',
         'gender',
+        'address',
+        'photo',
+        'status'
     ];
 
     /**
