@@ -76,6 +76,7 @@ class UserSeeder extends Seeder
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($superAdminRole);
@@ -87,6 +88,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($adminRole);
@@ -98,6 +100,7 @@ class UserSeeder extends Seeder
             'email' => 'personal@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($personalRole);
@@ -109,6 +112,7 @@ class UserSeeder extends Seeder
             'email' => 'team@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($teamRole);
