@@ -71,9 +71,10 @@
                                     placeholder="Password">
                                 <input type="checkbox" class="checkbox" checked id="remember_me">
                                 <label for="remember_me" style="color: white">Remember me</label>
-                                <button type="submit" class="button">
+                                <button type="submit" class="btn btn-primary custom-login-btn">
                                     {{ __('Login') }}
                                 </button>
+
                             </form>
                             {{-- <div class="help-action">
                                 <p><i class="fa fa-arrow-left" aria-hidden="true"></i><a class="forgot"
