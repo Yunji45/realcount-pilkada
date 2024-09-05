@@ -29,12 +29,22 @@ class CreateNewUser implements CreatesNewUsers
                 Rule::unique(User::class),
             ],
             'password' => $this->passwordRules(),
+            'role' => ['required', 'string', 'exists:roles,name'], // Validasi role dari Spatie
         ])->validate();
 
-        return User::create([
+        $user = User::create([
+            'nik' => $input['nik'],
             'name' => $input['name'],
+            'address' => $input['address'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'status' => "Pending",
+            'gender' => $input['gender'],
         ]);
+
+        // Assign role ke user
+        $user->assignRole($input['role']);
+
+        return $user;
     }
 }
