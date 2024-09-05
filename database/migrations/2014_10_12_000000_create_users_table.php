@@ -18,8 +18,14 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->text('description')->nullable();
             $table->string('email')->unique();
+            $table->string('nik')->unique();
+            $table->string('address')->nullable();
+            $table->string('photo')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->enum('gender', ['Pria', 'Wanita'])->default('Pria');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('status',['Aktif','Pending','Tidak Aktif'])->default('Aktif');
             $table->rememberToken();
             $table->timestamps();
         });

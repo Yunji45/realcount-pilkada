@@ -12,15 +12,19 @@ class PermissionController extends Controller
 {
     public function index(Request $request)
     {
+        $title = 'Permissions';
+        $type = 'User Management';
         $permissions = Permission::all();
 
-        return view('dashboard.admin.user-management.permissions.index', compact('permissions'));
+        return view('dashboard.admin.user-management.permissions.index', compact('permissions','title','type'));
     }
 
     public function create()
     {
+        $title = 'Create Permissions';
+        $type = 'User Management';
         $permission = Permission::pluck('name', 'name')->all();
-        return view('dashboard.admin.user-management.permissions.create', compact('permission'));
+        return view('dashboard.admin.user-management.permissions.create', compact('permission','title','type'));
     }
 
     public function store(Request $request)
@@ -51,9 +55,11 @@ class PermissionController extends Controller
 
     public function edit($id)
     {
+        $title = 'Edit Permissions';
+        $type = 'User Management';
         $permission = Permission::find($id);
 
-        return view('dashboard.admin.user-management.permissions.edit', compact('permission'));
+        return view('dashboard.admin.user-management.permissions.edit', compact('permission','title','type'));
     }
 
     public function update(Request $request, $id)

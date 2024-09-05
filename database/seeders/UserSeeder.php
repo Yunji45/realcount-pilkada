@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
+use Faker\Factory as FakerFactory;
+use Database\Factories\NikProvider;
 
 class UserSeeder extends Seeder
 {
@@ -18,7 +21,6 @@ class UserSeeder extends Seeder
         // reset cahced roles and permission
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
         Permission::create(['name' => 'View User Management']);
         Permission::create(['name' => 'Create User']);
         Permission::create(['name' => 'Edit User']);
@@ -36,6 +38,23 @@ class UserSeeder extends Seeder
         Permission::create(['name' => 'Show Permission']);
 
         //create roles and assign existing permissions
+        $superAdminRole = Role::create(['name' => 'Super Admin']);
+        $superAdminRole->givePermissionTo('View User Management');
+        $superAdminRole->givePermissionTo('Create User');
+        $superAdminRole->givePermissionTo('Edit User');
+        $superAdminRole->givePermissionTo('Delete User');
+        $superAdminRole->givePermissionTo('Show User');
+
+        $superAdminRole->givePermissionTo('Create Role');
+        $superAdminRole->givePermissionTo('Edit Role');
+        $superAdminRole->givePermissionTo('Delete Role');
+        $superAdminRole->givePermissionTo('Show Role');
+
+        $superAdminRole->givePermissionTo('Create Permission');
+        $superAdminRole->givePermissionTo('Edit Permission');
+        $superAdminRole->givePermissionTo('Delete Permission');
+        $superAdminRole->givePermissionTo('Show Permission');
+
         $adminRole = Role::create(['name' => 'Admin']);
 
         $adminRole->givePermissionTo('View User Management');
@@ -44,18 +63,24 @@ class UserSeeder extends Seeder
         $adminRole->givePermissionTo('Delete User');
         $adminRole->givePermissionTo('Show User');
 
-        $adminRole->givePermissionTo('Create Role');
-        $adminRole->givePermissionTo('Edit Role');
-        $adminRole->givePermissionTo('Delete Role');
-        $adminRole->givePermissionTo('Show Role');
+        $personalRole = Role::create(['name' => 'Personal']);
 
-        $adminRole->givePermissionTo('Create Permission');
-        $adminRole->givePermissionTo('Edit Permission');
-        $adminRole->givePermissionTo('Delete Permission');
-        $adminRole->givePermissionTo('Show Permission');
+        $teamRole = Role::create(['name' => 'Team']);
 
+        $faker = FakerFactory::create();
+        $faker->addProvider(new NikProvider($faker));
 
-        $securityRole = Role::create(['name' => 'Security']);
+        //START:Super Admin
+        $user = User::factory()->create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@gmail.com',
+            'password' => bcrypt('qwerty12'),
+            'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
+            'nik' => $faker->nik,
+        ]);
+        $user->assignRole($superAdminRole);
+        //END:Super Admin
 
         //START:Admin
         $user = User::factory()->create([
@@ -63,8 +88,35 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('qwerty12'),
+            'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
+            'nik' => $faker->nik,
         ]);
         $user->assignRole($adminRole);
         //END:Admin
+
+        //START:Personal
+        $user = User::factory()->create([
+            'name' => 'Personal',
+            'email' => 'personal@gmail.com',
+            'password' => bcrypt('qwerty12'),
+            'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
+            'nik' => $faker->nik,
+        ]);
+        $user->assignRole($personalRole);
+        //END:Personal
+
+        //START:Team
+        $user = User::factory()->create([
+            'name' => 'Team',
+            'email' => 'team@gmail.com',
+            'password' => bcrypt('qwerty12'),
+            'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
+            'nik' => $faker->nik,
+        ]);
+        $user->assignRole($teamRole);
+        //END:Team
     }
 }
