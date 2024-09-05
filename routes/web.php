@@ -3,8 +3,10 @@
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Api\WilayahController as DaerahController;
 use App\Http\Controllers\PollingPlaceController;
+use App\Models\Kegiatan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +34,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/permission' => PermissionController::class,
         '/user' => UserController::class,
         '/tps' => PollingPlaceController::class,
+        '/kegiatan' => KegiatanController::class,
     ]);
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
