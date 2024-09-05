@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Api\WilayahController as DaerahController;
+use App\Models\Kegiatan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,5 +32,6 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/role' => RoleController::class,
         '/permission' => PermissionController::class,
         '/user' => UserController::class,
+        '/kegiatan' => KegiatanController::class,
     ]);
 });
