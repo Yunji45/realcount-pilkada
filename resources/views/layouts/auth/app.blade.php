@@ -14,8 +14,9 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    <link href="{{ asset('template/assets/css/styles.css') }}" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Scripts -->
 </head>
 
 <body>
@@ -78,122 +79,103 @@
         </nav> --}}
 
         <main class="py-4">
-            @yield('content')
+            <!-- LOGIN MODULE -->
+            <div class="login">
+                <div class="wrap">
+                    <!-- TOGGLE -->
+                    <div id="toggle-wrap">
+                        <div id="toggle-terms">
+                            <div id="cross">
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDER -->
+                    <div class="content">
+                        <!-- SLIDESHOW -->
+                        <div id="slideshow">
+                            <div class="one">
+                                <h2>
+                                    <img src="{{ asset('template/assets/img/logo.png') }}" width="500px" height="180px"
+                                        style="margin-top: 40%">
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- LOGIN FORM -->
+                    <div class="user">
+                        <div class="form-wrap">
+
+                            <!-- TABS CONTENT -->
+                            <div class="tabs-content">
+                                @yield('content')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 </body>
 
 
-<script>
-    /* LOGIN - MAIN.JS - dp 2017 */
+<style>
+    .alert {
+        padding: 15px;
+        background-color: #f44336;
+        /* Merah terang */
+        color: white;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
 
-    // LOGIN TABS
-    $(function() {
-        var tab = $(".tabs h3 a");
-        tab.on("click", function(event) {
-            event.preventDefault();
-            tab.removeClass("active");
-            $(this).addClass("active");
-            tab_content = $(this).attr("href");
-            $('div[id$="tab-content"]').removeClass("active");
-            $(tab_content).addClass("active");
-        });
-    });
+    .alert ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
 
-    // SLIDESHOW
-    // $(function() {
-    //     $("#slideshow > div:gt(0)").hide();
-    //     setInterval(function() {
-    //         $("#slideshow > div:first")
-    //             .fadeOut(1000)
-    //             .next()
-    //             .fadeIn(1000)
-    //             .end()
-    //             .appendTo("#slideshow");
-    //     }, 3850);
-    // });
+    .alert li {
+        margin-bottom: 5px;
+    }
 
-    // CUSTOM JQUERY FUNCTION FOR SWAPPING CLASSES
-    (function($) {
-        "use strict";
-        $.fn.swapClass = function(remove, add) {
-            this.removeClass(remove).addClass(add);
-            return this;
-        };
-    })(jQuery);
+    button {
+    font: inherit;
+    background-color: #877E56; /* Base color */
+    border: 0;
+    color: #ffffff; /* White text for contrast */
+    border-radius: 0.5em;
+    font-size: 1.35rem;
+    padding: 0.375em 1em;
+    font-weight: 600;
+    text-shadow: 0 0.0625em 0 rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+    box-shadow: inset 0 0.0625em 0 0 #a3926b, /* Lighter shades for inner shadows */
+        0 0.0625em 0 0 #9f8c63,
+        0 0.125em 0 0 #99865b,
+        0 0.25em 0 0 #8e7a4e,
+        0 0.3125em 0 0 #8b764b,
+        0 0.375em 0 0 #8a7448,
+        0 0.425em 0 0 #7d6841,
+        0 0.425em 0.5em 0 #7f6b43; /* Slightly darker for outer shadows */
+    transition: 0.15s ease;
+    cursor: pointer;
+}
 
-    // SHOW/HIDE PANEL ROUTINE (needs better methods)
-    // I'll optimize when time permits.
-    $(function() {
-        $(".agree,.forgot, #toggle-terms, .log-in, .sign-up").on(
-            "click",
-            function(event) {
-                event.preventDefault();
-                var terms = $(".terms"),
-                    recovery = $(".recovery"),
-                    close = $("#toggle-terms"),
-                    arrow = $(".tabs-content .fa");
-                if (
-                    $(this).hasClass("agree") ||
-                    $(this).hasClass("log-in") ||
-                    ($(this).is("#toggle-terms") && terms.hasClass("open"))
-                ) {
-                    if (terms.hasClass("open")) {
-                        terms.swapClass("open", "closed");
-                        close.swapClass("open", "closed");
-                        arrow.swapClass("active", "inactive");
-                    } else {
-                        if ($(this).hasClass("log-in")) {
-                            return;
-                        }
-                        terms.swapClass("closed", "open").scrollTop(0);
-                        close.swapClass("closed", "open");
-                        arrow.swapClass("inactive", "active");
-                    }
-                } else if (
-                    $(this).hasClass("forgot") ||
-                    $(this).hasClass("sign-up") ||
-                    $(this).is("#toggle-terms")
-                ) {
-                    if (recovery.hasClass("open")) {
-                        recovery.swapClass("open", "closed");
-                        close.swapClass("open", "closed");
-                        arrow.swapClass("active", "inactive");
-                    } else {
-                        if ($(this).hasClass("sign-up")) {
-                            return;
-                        }
-                        recovery.swapClass("closed", "open");
-                        close.swapClass("closed", "open");
-                        arrow.swapClass("inactive", "active");
-                    }
-                }
-            }
-        );
-    });
+button:active {
+    translate: 0 0.225em;
+    box-shadow: inset 0 0.03em 0 0 #a3926b,
+        0 0.03em 0 0 #9f8c63,
+        0 0.0625em 0 0 #99865b,
+        0 0.125em 0 0 #8e7a4e,
+        0 0.125em 0 0 #8b764b,
+        0 0.2em 0 0 #8a7448,
+        0 0.225em 0 0 #7d6841,
+        0 0.225em 0.375em 0 #7f6b43; /* Adjusted shadow colors */
+}
 
-    // DISPLAY MSSG
-    $(function() {
-        $(".recovery .button").on("click", function(event) {
-            event.preventDefault();
-            $(".recovery .mssg").addClass("animate");
-            setTimeout(function() {
-                $(".recovery").swapClass("open", "closed");
-                $("#toggle-terms").swapClass("open", "closed");
-                $(".tabs-content .fa").swapClass("active", "inactive");
-                $(".recovery .mssg").removeClass("animate");
-            }, 2500);
-        });
-    });
-
-    // DISABLE SUBMIT FOR DEMO
-    $(function() {
-        $(".button").on("click", function(event) {
-            $(this).stop();
-            event.preventDefault();
-            return false;
-        });
-    });
-</script>
+</style>
 
 </html>

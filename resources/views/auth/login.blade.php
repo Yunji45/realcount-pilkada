@@ -1,279 +1,43 @@
 @extends('layouts.auth.app')
 
 @section('content')
-    <link href="{{ asset('template/assets/css/styles.css') }}" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <br><br><br><br>
+    <!-- TABS CONTENT LOGIN -->
+    <div id="login-tab-content" class="active">
+        <h1
+            style="margin-bottom: 60px; color: #555555; font-weight: bold; font-family: 'Arial Black', sans-serif; font-size: 2rem; text-align: center; text-transform: uppercase; letter-spacing: 2px; -webkit-text-stroke: 1px #877E56; text-stroke: 1px #877E56;">
+            DPC Kota Bandung
+        </h1>
 
-    <!-- LOGIN MODULE -->
-    <div class="login">
-        <div class="wrap">
-            <!-- TOGGLE -->
-            <div id="toggle-wrap">
-                <div id="toggle-terms">
-                    <div id="cross">
-                        <span></span>
-                        <span></span>
-                    </div>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <input type="text" class="input" name="email" autocomplete="off" placeholder="Username">
+            <input type="password" class="input"id="password" name="password" autocomplete="off" placeholder="Password">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-            </div>
-            <!-- TERMS -->
-            <div class="terms">
-                <h2>dp Terms of Service</h2>
-                <p class="small">Last modified: September 23, 2017</p>
-                <h3>Welcome to dp</h3>
-            </div>
+            @endif
 
-            <!-- RECOVERY -->
-            <div class="recovery">
-                <h2>Password Recovery</h2>
-                <p>Enter either the <strong>email address</strong> or <strong>username</strong> on the account and
-                    <strong>click Submit</strong>
-                </p>
-                <p>We'll email instructions on how to reset your password.</p>
-                <form class="recovery-form" action="" method="post">
-                    <input type="text" class="input" id="user_recover" placeholder="Enter Email or Username Here">
-                    <input type="submit" class="button" value="Submit">
-                </form>
-                <p class="mssg">An email has been sent to you with further instructions.</p>
-            </div>
+            <br><br>
+            <button type="submit" class="btn btn-primary"
+                style="background-color: #877E56; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;font-weight:bold;border-radius:10px">
+                {{ __('Login') }}
+            </button>
 
-            <!-- SLIDER -->
-            <div class="content">
-                <!-- LOGO -->
-                {{-- <div class="logo">
-                    <a href="#"><img src="http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/logo.png"
-                            alt=""></a>
-                </div> --}}
-                <!-- SLIDESHOW -->
-                <div id="slideshow">
-                    <div class="one">
-                        <h2>
-                            <img src="{{ asset('template/assets/img/logo.png') }}" width="500px" height="180px"
-                                style="margin-top: 40%">
-                        </h2>
-                    </div>
-                </div>
-            </div>
-            <!-- LOGIN FORM -->
-            <div class="user">
-                <div class="form-wrap">
+        </form>
+        <div class="tabs">
+            <br>
 
-                    <!-- TABS CONTENT -->
-                    <div class="tabs-content">
-                        <!-- TABS CONTENT LOGIN -->
-                        <div id="login-tab-content" class="active">
-                            <h2
-                                style="text-align: center; margin-bottom: 50px; margin-top: 18%; font-size: 40px; font-weight: bold; color: black;">
-                                <a style="color: black; text-decoration: none;">DPC Kota Bandung</a>
-                            </h2>
-
-                            <form method="POST" action="{{ route('login') }}">
-                                @csrf
-                                <input type="text" class="input" name="email" autocomplete="off"
-                                    placeholder="Username">
-                                <input type="password" class="input"id="password" name="password" autocomplete="off"
-                                    placeholder="Password">
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-
-                                <br><br>
-                                <button type="submit" class="btn btn-primary"
-                                    style="background-color: #877E56; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;font-weight:bold;border-radius:10px">
-                                    {{ __('Login') }}
-                                </button>
-
-                            </form>
-                            {{-- <div class="help-action">
-                                <p><i class="fa fa-arrow-left" aria-hidden="true"></i><a class="forgot"
-                                        href="#">Forgot your password?</a></p>
-                            </div> --}}
-                            <div class="tabs">
-                                <br>
-                                <h3 class="signup-tab" style="white-space: nowrap; font-size: 22px; color: black;">
-                                    <a class="sign-up" href="#signup-tab-content"
-                                        style="color: black;font-weight:bold">Belum punya akun? Daftar disini</a>
-                                </h3>
-                            </div>
-                        </div>
-
-                        <!-- TABS CONTENT SIGNUP -->
-                        <div id="signup-tab-content">
-                            <h2 class="signup-tab" style="text-align: center;margin-bottom:50px;font-size:40px"><a
-                                    class="sign-up"><span>Pendaftaran</span></a>
-                            </h2>
-                            <form method="POST" action="{{ route('register') }}">
-                                @csrf
-                                <input type="text" class="input" autocomplete="off" placeholder="NIK" name="nik">
-                                <input type="text"  class="input @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Nama Lengkap">
-                                <input type="text" class="input" autocomplete="off" placeholder="Alamat Lengkap" name="address">
-                                <input type="text" class="input" autocomplete="off" placeholder="Alamat Email" name="email">
-                                <input id="password" type="password" class="input" name="password" required autocomplete="Password" placeholder="Password">
-                                <input id="password-confirm" type="password" class="input" name="password_confirmation" required autocomplete="Password Baru" placeholder="Password Baru">
-                                <textarea type="text" class="input" rows="5" autocomplete="off"
-                                    placeholder="Struktur Partai/ Pasukan Khusus/ Relawan/ Simpatisan/ Saksi/ lain-lain(Optional" name="description"></textarea>
-                                <br>
-                                <button type="submit" class="btn btn-primary"
-                                    style="background-color: #877E56; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;font-weight:bold;border-radius:10px">
-                                    {{ __('Daftar') }}
-                                </button>
-                            </form>
-                            {{-- <div class="help-action">
-                                <p>By signing up, you agree to our</p>
-                                <p><i class="fa fa-arrow-left" aria-hidden="true"></i><a class="agree" href="#">Terms
-                                        of service</a></p>
-                            </div> --}}
-                            <div class="tabs">
-                                <br>
-                                <h3 class="login-tab" style="white-space: nowrap; font-size: 22px; color: black;">
-                                    <a class="log-in" href="#login-tab-content" style="color: black;font-weight:bold">Sudah
-                                        punya akun? Masuk disini</a>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <a href="#">
+                <p class="signin" style="text-align: center;font-size:18px">Belum punya akun ? <a
+                        href="{{ route('register') }}" style="color: #317ff3">Daftar Disini</a> </p>
+            </a>
         </div>
     </div>
 
-    <style>
-        .alert {
-            padding: 15px;
-            background-color: #f44336;
-            /* Merah terang */
-            color: white;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .alert ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .alert li {
-            margin-bottom: 5px;
-        }
-    </style>
-
-    <script>
-        /* LOGIN - MAIN.JS - dp 2017 */
-
-        // LOGIN TABS
-        $(function() {
-            var tab = $(".tabs h3 a");
-            tab.on("click", function(event) {
-                event.preventDefault();
-                tab.removeClass("active");
-                $(this).addClass("active");
-                tab_content = $(this).attr("href");
-                $('div[id$="tab-content"]').removeClass("active");
-                $(tab_content).addClass("active");
-            });
-        });
-
-        // SLIDESHOW
-        // $(function() {
-        //     $("#slideshow > div:gt(0)").hide();
-        //     setInterval(function() {
-        //         $("#slideshow > div:first")
-        //             .fadeOut(1000)
-        //             .next()
-        //             .fadeIn(1000)
-        //             .end()
-        //             .appendTo("#slideshow");
-        //     }, 3850);
-        // });
-
-        // CUSTOM JQUERY FUNCTION FOR SWAPPING CLASSES
-        (function($) {
-            "use strict";
-            $.fn.swapClass = function(remove, add) {
-                this.removeClass(remove).addClass(add);
-                return this;
-            };
-        })(jQuery);
-
-        // SHOW/HIDE PANEL ROUTINE (needs better methods)
-        // I'll optimize when time permits.
-        $(function() {
-            $(".agree,.forgot, #toggle-terms, .log-in, .sign-up").on(
-                "click",
-                function(event) {
-                    event.preventDefault();
-                    var terms = $(".terms"),
-                        recovery = $(".recovery"),
-                        close = $("#toggle-terms"),
-                        arrow = $(".tabs-content .fa");
-                    if (
-                        $(this).hasClass("agree") ||
-                        $(this).hasClass("log-in") ||
-                        ($(this).is("#toggle-terms") && terms.hasClass("open"))
-                    ) {
-                        if (terms.hasClass("open")) {
-                            terms.swapClass("open", "closed");
-                            close.swapClass("open", "closed");
-                            arrow.swapClass("active", "inactive");
-                        } else {
-                            if ($(this).hasClass("log-in")) {
-                                return;
-                            }
-                            terms.swapClass("closed", "open").scrollTop(0);
-                            close.swapClass("closed", "open");
-                            arrow.swapClass("inactive", "active");
-                        }
-                    } else if (
-                        $(this).hasClass("forgot") ||
-                        $(this).hasClass("sign-up") ||
-                        $(this).is("#toggle-terms")
-                    ) {
-                        if (recovery.hasClass("open")) {
-                            recovery.swapClass("open", "closed");
-                            close.swapClass("open", "closed");
-                            arrow.swapClass("active", "inactive");
-                        } else {
-                            if ($(this).hasClass("sign-up")) {
-                                return;
-                            }
-                            recovery.swapClass("closed", "open");
-                            close.swapClass("closed", "open");
-                            arrow.swapClass("inactive", "active");
-                        }
-                    }
-                }
-            );
-        });
-
-        // DISPLAY MSSG
-        $(function() {
-            $(".recovery .button").on("click", function(event) {
-                event.preventDefault();
-                $(".recovery .mssg").addClass("animate");
-                setTimeout(function() {
-                    $(".recovery").swapClass("open", "closed");
-                    $("#toggle-terms").swapClass("open", "closed");
-                    $(".tabs-content .fa").swapClass("active", "inactive");
-                    $(".recovery .mssg").removeClass("animate");
-                }, 2500);
-            });
-        });
-
-        // DISABLE SUBMIT FOR DEMO
-        $(function() {
-            $(".button").on("click", function(event) {
-                $(this).stop();
-                event.preventDefault();
-                return false;
-            });
-        });
-    </script>
 @endsection

@@ -74,7 +74,11 @@ class UserSeeder extends Seeder
 
         $koordinatorRole = Role::create(['name' => 'Koordinator']);
 
+        $pemilihRole = Role::create(['name' => 'Pemilih']);
         $saksiRole = Role::create(['name' => 'Saksi']);
+        $relawanRole = Role::create(['name' => 'Relawan']);
+        $simpatisanRole = Role::create(['name' => 'Simpatisan']);
+        $lainnyaRole = Role::create(['name' => 'Lain-lain']);
 
 
         $faker = FakerFactory::create();
@@ -86,7 +90,7 @@ class UserSeeder extends Seeder
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
-            'status'=>'Aktif',
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($superAdminRole);
@@ -98,7 +102,7 @@ class UserSeeder extends Seeder
             'email' => 'pimpinan@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
-            'status'=>'Aktif',
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($adminRole);
@@ -111,7 +115,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
-            'status'=>'Aktif',
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($adminRole);
@@ -123,7 +127,7 @@ class UserSeeder extends Seeder
             'email' => 'koordinator@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
-            'status'=>'Aktif',
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($koordinatorRole);
@@ -135,7 +139,7 @@ class UserSeeder extends Seeder
             'email' => 'saksi@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
-            'status'=>'Aktif',
+            'status' => 'Aktif',
             'nik' => $faker->nik,
         ]);
         $user->assignRole($saksiRole);

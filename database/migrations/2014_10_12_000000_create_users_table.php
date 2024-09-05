@@ -18,8 +18,6 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->text('description')->nullable();
             $table->string('email')->unique();
-            $table->string('nik')->unique();
-            $table->string('address')->nullable();
             $table->string('photo')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['Pria', 'Wanita'])->default('Pria');

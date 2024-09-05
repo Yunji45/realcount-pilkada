@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Spatie\Permission\Models\Role;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -45,8 +46,9 @@ class FortifyServiceProvider extends ServiceProvider
 
         //register
         Fortify::registerView(function () {
+            $roles = Role::pluck('name', 'name')->all();
 
-            return view('auth.register');
+            return view('auth.register', compact('roles'));
         });
 
         //login
@@ -69,5 +71,4 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.verify');
         });
     }
-
 }
