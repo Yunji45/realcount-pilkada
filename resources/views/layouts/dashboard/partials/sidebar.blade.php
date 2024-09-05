@@ -63,10 +63,10 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a href="widgets.html">
+            <li class="nav-item {{ Request::is('tps*') ? 'active' : '' }}">
+                <a href="{{ route('tps.index')  }}">
                     <i class="fas fa-desktop"></i>
-                    <p>Widgets</p>
+                    <p>TPS</p>
                 </a>
             </li>
         </ul>

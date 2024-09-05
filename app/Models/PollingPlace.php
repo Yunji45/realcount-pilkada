@@ -12,6 +12,8 @@ class PollingPlace extends Model
 
     protected $fillable = [
         'name',
+        'provinsi_id',
+        'kabupaten_id',
         'kecamatan_id',
         'kelurahan_id',
         'start_date',
@@ -21,6 +23,16 @@ class PollingPlace extends Model
         'status',
     ];
 
+    public function provinsi()
+    {
+        return $this->belongsTo(Provinsi::class, 'provinsi_id');
+    }
+
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class, 'kabupaten_id');
+    }
+
     public function kecamatan()
     {
         return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
@@ -28,6 +40,6 @@ class PollingPlace extends Model
 
     public function kelurahan()
     {
-        return $this->belongsTo(Kelurahan::class, 'kelurahan');
+        return $this->belongsTo(Kelurahan::class, 'kelurahan_id');
     }
 }

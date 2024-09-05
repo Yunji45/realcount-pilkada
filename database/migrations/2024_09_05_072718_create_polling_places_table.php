@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('polling_places', function (Blueprint $table) {
             $table->id();
             $table->string('name'); //Nama TPS
+            $table->foreignId('provinsi_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('kabupaten_id')->constrained()->cascadeOnDelete();
             $table->foreignId('kecamatan_id')->constrained()->cascadeOnDelete();
             $table->foreignId('kelurahan_id')->constrained()->cascadeOnDelete();
             $table->date('start_date');
