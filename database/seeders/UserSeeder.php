@@ -39,6 +39,7 @@ class UserSeeder extends Seeder
 
         //create roles and assign existing permissions
         $superAdminRole = Role::create(['name' => 'Super Admin']);
+
         $superAdminRole->givePermissionTo('View User Management');
         $superAdminRole->givePermissionTo('Create User');
         $superAdminRole->givePermissionTo('Edit User');
@@ -55,6 +56,14 @@ class UserSeeder extends Seeder
         $superAdminRole->givePermissionTo('Delete Permission');
         $superAdminRole->givePermissionTo('Show Permission');
 
+        $pimpinanRole = Role::create(['name' => 'Pimpinan']);
+
+        $pimpinanRole->givePermissionTo('View User Management');
+        $pimpinanRole->givePermissionTo('Create User');
+        $pimpinanRole->givePermissionTo('Edit User');
+        $pimpinanRole->givePermissionTo('Delete User');
+        $pimpinanRole->givePermissionTo('Show User');
+
         $adminRole = Role::create(['name' => 'Admin']);
 
         $adminRole->givePermissionTo('View User Management');
@@ -63,9 +72,10 @@ class UserSeeder extends Seeder
         $adminRole->givePermissionTo('Delete User');
         $adminRole->givePermissionTo('Show User');
 
-        $personalRole = Role::create(['name' => 'Personal']);
+        $koordinatorRole = Role::create(['name' => 'Koordinator']);
 
-        $teamRole = Role::create(['name' => 'Team']);
+        $saksiRole = Role::create(['name' => 'Saksi']);
+
 
         $faker = FakerFactory::create();
         $faker->addProvider(new NikProvider($faker));
@@ -82,6 +92,18 @@ class UserSeeder extends Seeder
         $user->assignRole($superAdminRole);
         //END:Super Admin
 
+        //START:Pimpinan
+        $user = User::factory()->create([
+            'name' => 'Pimpinan',
+            'email' => 'pimpinan@gmail.com',
+            'password' => bcrypt('qwerty12'),
+            'address' => "Jl. Swakarya",
+            'status'=>'Aktif',
+            'nik' => $faker->nik,
+        ]);
+        $user->assignRole($adminRole);
+        //END:Pimpinan
+
         //START:Admin
         $user = User::factory()->create([
             'nik' => '201904011',
@@ -95,28 +117,28 @@ class UserSeeder extends Seeder
         $user->assignRole($adminRole);
         //END:Admin
 
-        //START:Personal
+        //START:Koordinator
         $user = User::factory()->create([
-            'name' => 'Personal',
-            'email' => 'personal@gmail.com',
+            'name' => 'koordinator',
+            'email' => 'koordinator@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
             'status'=>'Aktif',
             'nik' => $faker->nik,
         ]);
-        $user->assignRole($personalRole);
-        //END:Personal
+        $user->assignRole($koordinatorRole);
+        //END:Koordinator
 
-        //START:Team
+        //START:Saksi
         $user = User::factory()->create([
-            'name' => 'Team',
-            'email' => 'team@gmail.com',
+            'name' => 'Saksi',
+            'email' => 'saksi@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
             'status'=>'Aktif',
             'nik' => $faker->nik,
         ]);
-        $user->assignRole($teamRole);
-        //END:Team
+        $user->assignRole($saksiRole);
+        //END:Saksi
     }
 }
