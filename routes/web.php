@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Api\WilayahController as DaerahController;
 use App\Http\Controllers\PollingPlaceController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,7 +39,11 @@ Route::middleware(['auth', 'role:Relawan'])->group(function () {
 });
 
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 // Route::get('/map', [DaerahController::class, 'map'])->name('map');
+Route::get('/',[ArticleController::class,'showLandingPage'])->name('landingpage');
 
 // Route::get('/home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
 
@@ -49,6 +55,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/user' => UserController::class,
         '/tps' => PollingPlaceController::class,
         '/kegiatan' => KegiatanController::class,
+        '/articles' => ArticleController::class,
     ]);
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
