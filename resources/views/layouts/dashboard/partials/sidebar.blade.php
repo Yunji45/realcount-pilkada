@@ -19,11 +19,11 @@
     </div>
     <!-- End Logo Header -->
 </div>
-<div class="sidebar-wrapper scrollbar scrollbar-inner">
+<div class="sidebar-wrapper scrollbar scrollbar-inner" >
     <div class="sidebar-content">
         <ul class="nav nav-secondary">
             <li class="nav-item {{ Request::is('home') ? 'active' : '' }}">
-                <a href="{{ route('home') }}">
+                <a href="">
                     <i class="fas fa-home"></i>
                     <p>Dashboard</p>
                 </a>
@@ -32,7 +32,7 @@
                 <span class="sidebar-mini-icon">
                     <i class="fa fa-ellipsis-h"></i>
                 </span>
-                <h4 class="text-section">Master Data</h4>
+                <h4 class="text-section" style="color: black;font-weight:bold">Master Data</h4>
             </li>
             <li class="nav-item {{ Request::is('user*', 'role*', 'permission*') ? 'active' : '' }}">
                 <a data-bs-toggle="collapse" href="#user_management"

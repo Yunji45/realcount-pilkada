@@ -70,7 +70,7 @@ class UserController extends Controller
             // }
             if ($file1 && $file1->isValid()) {
                 $pathPublic1 = $file1->store('file/photo_profiles', 'public');
-            }    
+            }
 
             $user = User::create([
                 'name' => $request->name,
@@ -91,7 +91,7 @@ class UserController extends Controller
             //     'success' => true,
             //     'message' => 'User created successfully',
             //     'data' => $user,
-            // ], 201);        
+            // ], 201);
 
             return redirect('/user')->with('success', 'User created successfully');
         } catch (\Throwable $th) {
@@ -174,7 +174,7 @@ class UserController extends Controller
     //             'success' => true,
     //             'message' => 'User created successfully',
     //             'data' => $user,
-    //         ], 201);        
+    //         ], 201);
 
     //         // return redirect('user')->with('success', 'User updated successfully');
     //     } catch (\Throwable $th) {
@@ -231,7 +231,7 @@ class UserController extends Controller
                     Storage::disk('public')->delete($user->photo);
                 }
             }
-            
+
             $input = $request->except(['password', 'photo']);
             $input['photo'] = $path;
 
@@ -270,7 +270,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $user = User::find($id);
-    
+
             if ($user) {
                 $user->delete();
                 DB::commit();

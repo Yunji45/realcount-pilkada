@@ -46,7 +46,9 @@ class FortifyServiceProvider extends ServiceProvider
 
         //register
         Fortify::registerView(function () {
-            $roles = Role::pluck('name', 'name')->all();
+            // Get all roles except the ones you want to exclude
+            $roles = Role::whereNotIn('name', ['Super Admin', 'Admin', 'Koordinator', 'Pimpinan'])
+                         ->pluck('name', 'name')->all();
 
             return view('auth.register', compact('roles'));
         });

@@ -178,4 +178,84 @@ button:active {
 
 </style>
 
+<style>
+    /* General styling for the form row */
+    .form-row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+        /* Adjust the spacing between Gender and Akses */
+        margin-bottom: 15px;
+    }
+
+    /* Adjusting the layout for Gender */
+    .gender-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Adjusting the layout for Akses select box */
+    .role-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .select-box {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 200px;
+        appearance: none;
+        background-color: #fff;
+        background-image: url('data:image/svg+xml;base64,...');
+        /* Adjust this if needed */
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    /* Styling for radio buttons */
+    input[type="radio"] {
+        appearance: none;
+        background-color: #fff;
+        border: 1px solid #007bff;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: inline-block;
+        margin-right: 5px;
+        position: relative;
+    }
+
+    input[type="radio"]::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #007bff;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    input[type="radio"]:checked::after {
+        opacity: 1;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
 </html>

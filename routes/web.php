@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\HomeAdminController;
+use App\Http\Controllers\Admin\HomeRelawanController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Api\WilayahController as DaerahController;
 use App\Http\Controllers\PollingPlaceController;
-use App\Models\Kegiatan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,11 +22,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
+
+Route::get('/home', function () {
+    return view('layouts/dashboard/dashboard');
+});
+
+Route::middleware(['auth', 'role:Admin'])->group(function () {
+    Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
+});
+Route::middleware(['auth', 'role:Relawan'])->group(function () {
+    Route::get('/relawan/dashboard', [HomeRelawanController::class, 'index'])->name('relawan.dashboard');
+});
+
+
 // Route::get('/map', [DaerahController::class, 'map'])->name('map');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
 
 // Route::middleware(['verified', 'auth', 'role:Super Admin|Admin'])->group(function () {
 Route::middleware(['verified', 'auth'])->group(function () {

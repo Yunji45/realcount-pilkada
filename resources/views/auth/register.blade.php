@@ -31,20 +31,28 @@
             <input id="password" type="password" class="input" name="password" required autocomplete="Password"
                 placeholder="Password">
             <input id="password-confirm" type="password" class="input" name="password_confirmation" required
-                autocomplete="Password Baru" placeholder="Password Baru">
+                autocomplete="Password Baru" placeholder="Konfirmasi Password">
 
-                <select name="gender" class="input" data-placeholder="Pilih Gender" required autofocus>
-                    <option selected disabled>Pilih Gender</option>
-                    <option value="Pria">Pria</option>
-                    <option value="Wanita">Wanita</option>
+            <div class="form-row">
+                <div class="form-group gender-group">
+                    <label>Gender:</label>
+                    <label>
+                        <input type="radio" name="gender" value="Pria" required> Pria
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="Wanita" required> Wanita
+                    </label>
+                </div>
 
-                </select>
-                <select name="role" class="input" data-placeholder="Pilih Akses" required autofocus>
-                    <option selected disabled>Pilih Akses Anda</option>
-                    @foreach($roles as $role)
-                        <option value="{{ $role }}">{{ $role }}</option>
-                    @endforeach
-                </select>
+                <div class="form-group role-group">
+                    <select name="role" class="input select-box" required autofocus>
+                        <option selected disabled>Pilih Akses Anda</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role }}">{{ $role }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
             <br><br>
             <button type="submit" class="btn btn-primary"
                 style="background-color: #877E56; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;font-weight:bold;border-radius:10px">

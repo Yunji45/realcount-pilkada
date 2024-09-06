@@ -32,7 +32,7 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('template/assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('template/assets/css/plugins.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('template/assets/css/kaiadmin.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('template/assets/css/kaiadmin.mins.css') }}" />
 </head>
 
 <body>
@@ -76,9 +76,6 @@
 
     <!-- Datatables -->
     <script src="{{ asset('template/assets/js/plugin/datatables/datatables.min.js') }}"></script>
-
-    <!-- Bootstrap Notify -->
-    <script src="{{ asset('template/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
     <!-- jQuery Vector Maps -->
     <script src="{{ asset('template/assets/js/plugin/jsvectormap/jsvectormap.min.js') }}"></script>
@@ -175,6 +172,144 @@
             });
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Doughnut Chart 1
+        var doughnutChart1 = document.getElementById("doughnutChart1").getContext("2d");
+
+        var myDoughnutChart1 = new Chart(doughnutChart1, {
+            type: "doughnut",
+            data: {
+                datasets: [{
+                    data: [10, 20, 30],
+                    backgroundColor: ["#f3545d", "#fdaf4b", "#1d7af3"],
+                }],
+                labels: ["Red", "Yellow", "Blue"],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: "bottom",
+                },
+                layout: {
+                    padding: {
+                        left: 20,
+                        right: 20,
+                        top: 20,
+                        bottom: 20,
+                    },
+                },
+            },
+        });
+
+        // Doughnut Chart 2
+        var doughnutChart2 = document.getElementById("doughnutChart2").getContext("2d");
+
+        var myDoughnutChart2 = new Chart(doughnutChart2, {
+            type: "doughnut",
+            data: {
+                datasets: [{
+                    data: [15, 25, 35],
+                    backgroundColor: ["#4bc0c0", "#565656", "#ffcd56"],
+                }],
+                labels: ["Cyan", "Gray", "Yellow"],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: "bottom",
+                },
+                layout: {
+                    padding: {
+                        left: 20,
+                        right: 20,
+                        top: 20,
+                        bottom: 20,
+                    },
+                },
+            },
+        });
+    </script>
+
+    <script>
+        var multipleBarChart = document
+            .getElementById("multipleBarChart")
+            .getContext("2d");
+
+        var myMultipleBarChart = new Chart(multipleBarChart, {
+            type: "bar",
+            data: {
+                labels: [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                ],
+                datasets: [{
+                        label: "First time visitors",
+                        backgroundColor: "#59d05d",
+                        borderColor: "#59d05d",
+                        data: [95, 100, 112, 101, 144, 159, 178, 156, 188, 190, 210, 245],
+                    },
+                    {
+                        label: "Visitors",
+                        backgroundColor: "#fdaf4b",
+                        borderColor: "#fdaf4b",
+                        data: [
+                            145, 256, 244, 233, 210, 279, 287, 253, 287, 299, 312, 356,
+                        ],
+                    },
+                    {
+                        label: "Pageview",
+                        backgroundColor: "#177dff",
+                        borderColor: "#177dff",
+                        data: [
+                            185, 279, 273, 287, 234, 312, 322, 286, 301, 320, 346, 399,
+                        ],
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: "bottom",
+                },
+                title: {
+                    display: true,
+                    text: "Traffic Stats",
+                },
+                tooltips: {
+                    mode: "index",
+                    intersect: false,
+                },
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }, ],
+                    yAxes: [{
+                        stacked: true,
+                    }, ],
+                },
+            },
+        });
+    </script>
+
+
+
+
 </body>
 
 </html>
