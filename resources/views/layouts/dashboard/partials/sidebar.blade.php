@@ -3,7 +3,7 @@
     <div class="logo-header" data-background-color="dark">
         <a href="index.html" class="logo">
             <img src="{{ asset('template/assets/img/logos.svg') }}" alt="navbar brand" class="navbar-brand"
-                height="50"  />
+                height="50" />
         </a>
         <div class="nav-toggle">
             <button class="btn btn-toggle toggle-sidebar">
@@ -19,7 +19,7 @@
     </div>
     <!-- End Logo Header -->
 </div>
-<div class="sidebar-wrapper scrollbar scrollbar-inner" >
+<div class="sidebar-wrapper scrollbar scrollbar-inner">
     <div class="sidebar-content">
         <ul class="nav nav-secondary">
             <li class="nav-item {{ Request::is('home') ? 'active' : '' }}">
@@ -64,9 +64,15 @@
                 </div>
             </li>
             <li class="nav-item {{ Request::is('tps*') ? 'active' : '' }}">
-                <a href="{{ route('tps.index')  }}">
+                <a href="{{ route('tps.index') }}">
                     <i class="fas fa-desktop"></i>
                     <p>TPS</p>
+                </a>
+            </li>
+            <li class="nav-item {{ Request::is('agenda*') ? 'active' : '' }}">
+                <a href="{{ route('agenda.index') }}">
+                    <i class="fas fa-desktop"></i>
+                    <p>Agenda</p>
                 </a>
             </li>
         </ul>

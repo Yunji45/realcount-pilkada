@@ -8,7 +8,7 @@
             <h3 class="fw-bold mb-3">{{ $tp->name }} - Detail TPS</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('home') }}">
+                    <a href="{{ route('admin.dashboard') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -57,8 +57,7 @@
                     </div>
                     <div class="card-action">
                         <a href="{{ route('tps.edit', $tp->id) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('tps.destroy', $tp->id) }}" method="POST"
-                            style="display: inline-block;">
+                        <form action="{{ route('tps.destroy', $tp->id) }}" method="POST" style="display: inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"

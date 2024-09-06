@@ -33,8 +33,8 @@
     <link rel="stylesheet" href="{{ asset('template/assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('template/assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('template/assets/css/kaiadmin.mins.css') }}" />
-</head>
 
+    @yield('styles')
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
@@ -306,9 +306,6 @@
             },
         });
     </script>
-
-
-
 
 </body>
 

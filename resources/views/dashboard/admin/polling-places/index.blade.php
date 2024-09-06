@@ -10,7 +10,7 @@
             <h3 class="fw-bold mb-3">DataTables {{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('home') }}">
+                    <a href="{{ route('admin.dashboard') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
