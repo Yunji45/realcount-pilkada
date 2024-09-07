@@ -7,6 +7,7 @@ use App\Models\PollingPlace;
 use App\Models\Vote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class VoteController extends Controller
@@ -36,7 +37,7 @@ class VoteController extends Controller
         $type = "Tambah Data";
 
         return view('dashboard.admin.vote.create', compact('candidates', 'pollingPlaces', 'title', 'type'));
-        // return $votes;
+        // return $candidates;
     }
 
     /**
@@ -63,10 +64,16 @@ class VoteController extends Controller
             ]);
 
             DB::commit();
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Polling place created successfully.',
+            //     'data' => $vote
+            // ], 201); // 201 = Created
 
             return redirect()->route('vote.index')->with('success', 'Vote cast successfully');
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             DB::rollBack();
+    
             return back()->with('error', 'Vote casting failed');
         }
     }

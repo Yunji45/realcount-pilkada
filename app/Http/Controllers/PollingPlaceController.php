@@ -73,10 +73,6 @@ class PollingPlaceController extends Controller
                 'kecamatan_id' => 'required|exists:kecamatans,id', // Validasi bahwa kecamatan_id ada di tabel kecamatan
                 'kelurahan_id' => 'required|exists:kelurahans,id', // Validasi bahwa kelurahan_id ada di tabel kelurahan
                 'rw' => 'required|string|max:255',
-                'start_date' => 'required|date|before_or_equal:end_date', // Pastikan tanggal mulai <= tanggal selesai
-                'end_date' => 'required|date|after_or_equal:start_date',
-                'start_time' => 'required|date_format:H:i',
-                'end_time' => 'required|date_format:H:i|after:start_time', // Jam tutup harus setelah jam buka
                 'status' => 'required|in:Aktif,Non-aktif',
             ]);
 
@@ -93,6 +89,8 @@ class PollingPlaceController extends Controller
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
                 'status' => $request->status,
+                'longitude' => $request->longitude,
+                'latitude' => $request->latitude,
             ]);
 
             // Commit transaksi jika berhasil
@@ -102,9 +100,15 @@ class PollingPlaceController extends Controller
             // Redirect ke halaman index dengan pesan sukses
             return redirect()->route('tps.index')
                 ->with('success', 'Polling place created successfully.');
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Polling place created successfully.',
+            //     'data' => $tps
+            // ], 201); // 201 = Created
+    
         } catch (\Exception $e) {
             DB::rollBack();
-
+    
             // Logging error untuk debugging (optional)
             Log::error('Error creating polling place: ' . $e->getMessage());
 

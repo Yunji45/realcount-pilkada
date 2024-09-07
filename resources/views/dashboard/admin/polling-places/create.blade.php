@@ -76,24 +76,13 @@
                                                 <option value="">Pilih Kelurahan</option>
                                             </select>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="kelurahan">RW</label>
+                                            <input type="text" name="rw" class="form-control" id="rw" />
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6">
-                                        <div class="form-group">
-                                            <label for="start_date">Tanggal Mulai</label>
-                                            <input type="date" name="start_date" class="form-control" id="start_date" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="end_date">Tanggal Berakhir</label>
-                                            <input type="date" name="end_date" class="form-control" id="end_date" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="start_time">Waktu Mulai</label>
-                                            <input type="time" name="start_time" class="form-control" id="start_time" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="end_time">Waktu Berakhir</label>
-                                            <input type="time" name="end_time" class="form-control" id="end_time" />
-                                        </div>
+
                                         <div class="form-group">
                                             <label for="status">Status</label>
                                             <select class="form-select" name="status" id="status">

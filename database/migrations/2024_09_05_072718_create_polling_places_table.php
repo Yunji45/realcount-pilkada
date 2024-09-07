@@ -21,10 +21,6 @@ return new class extends Migration
             $table->string('rw'); //RW
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->time('start_time');
-            $table->time('end_time');
             $table->enum('status', ['Aktif', 'Non-aktif'])->default('Aktif');
             $table->timestamps();
         });

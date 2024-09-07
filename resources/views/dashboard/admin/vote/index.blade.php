@@ -41,37 +41,43 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Nama Candidat</th>
+                                        <th>Nama TPS</th>
+                                        <th>Nama Partai</th>
                                         <th>Nama Pemilu</th>
-                                        <th>Tanggal Mulai</th>
-                                        <th>Tanggal Selesai</th>
+                                        <th>Vote</th>
                                         <th style="width: 10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
+                                        <th>Nama Candidat</th>
+                                        <th>Nama TPS</th>
+                                        <th>Nama Partai</th>
                                         <th>Nama Pemilu</th>
-                                        <th>Tanggal Mulai</th>
-                                        <th>Tanggal Selesai</th>
+                                        <th>Vote</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach ($elections as $election)
+                                    @foreach ($votes as $vote)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $election->name }}</td>
-                                            <td>{{ $election->start_date }}</td>
-                                            <td>{{ $election->end_date }}</td>
+                                            <td>{{ $vote->candidate->name }}</td>
+                                            <td>{{ $vote->polling_place->name }}</td>
+                                            <td>{{ $vote->candidate->partai->name }}</td>
+                                            <td>{{ $vote->candidate->election->name }}</td>
+                                            <td>{{ $vote->vote_count }}</td>
 
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('vote.edit', $election->id) }}"
+                                                    <a href="{{ route('vote.edit', $vote->id) }}"
                                                         class="btn btn-warning btn-sm">
                                                         Edit
                                                     </a>
 
-                                                    <form action="{{ route('vote.destroy', $election->id) }}"
+                                                    <form action="{{ route('vote.destroy', $vote->id) }}"
                                                         method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')

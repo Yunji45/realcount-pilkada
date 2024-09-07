@@ -17,11 +17,9 @@ class PollingPlace extends Model
         'kecamatan_id',
         'kelurahan_id',
         'rw',
-        'start_date',
-        'end_date',
-        'start_time',
-        'end_time',
         'status',
+        'longitude',
+        'latitude',
     ];
 
     public function provinsi()
