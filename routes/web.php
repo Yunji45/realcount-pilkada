@@ -9,6 +9,13 @@ use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Api\WilayahController as DaerahController;
 use App\Http\Controllers\PollingPlaceController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\HomeKoordinatorController;
+use App\Http\Controllers\Admin\HomeLainyaController;
+use App\Http\Controllers\Admin\HomePemilihController;
+use App\Http\Controllers\Admin\HomePimpinanController;
+use App\Http\Controllers\Admin\HomeSaksiController;
+use App\Http\Controllers\Admin\HomeSimpatisanController;
+use App\Http\Controllers\Admin\HomeSuperAdminController;
 use App\Http\Controllers\AgendaController;
 use App\Models\Agenda;
 use Illuminate\Support\Facades\Route;
@@ -32,12 +39,17 @@ Route::get('/home', function () {
     return view('layouts/dashboard/dashboard');
 });
 
-Route::middleware(['auth', 'role:Admin'])->group(function () {
-    Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
-});
-Route::middleware(['auth', 'role:Relawan'])->group(function () {
-    // Route::get('/relawan/dashboard', [HomeRelawanController::class, 'index'])->name('relawan.dashboard');
-});
+
+// Dashboard Home
+Route::get('/superadmin/dashboard', [HomeSuperAdminController::class, 'index'])->name('superadmin.dashboard');
+Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
+Route::get('/relawan/dashboard', [HomeRelawanController::class, 'index'])->name('relawan.dashboard');
+Route::get('/saksi/dashboard', [HomeSaksiController::class, 'index'])->name('saksi.dashboard');
+Route::get('/koordinator/dashboard', [HomeKoordinatorController::class, 'index'])->name('koordinator.dashboard');
+Route::get('/pimpinan/dashboard', [HomePimpinanController::class, 'index'])->name('pimpinan.dashboard');
+Route::get('/pemilih/dashboard', [HomePemilihController::class, 'index'])->name('pemilih.dashboard');
+Route::get('/simpatisan/dashboard', [HomeSimpatisanController::class, 'index'])->name('simpatisan.dashboard');
+Route::get('/lain-lain/dashboard', [HomeLainyaController::class, 'index'])->name('lain-lain.dashboard');
 
 
 // Route::get('/', function () {

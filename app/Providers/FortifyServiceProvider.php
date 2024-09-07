@@ -44,14 +44,18 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-        //register
+        // Register view
         Fortify::registerView(function () {
-            // Get all roles except the ones you want to exclude
-            $roles = Role::whereNotIn('name', ['Super Admin', 'Admin', 'Koordinator', 'Pimpinan'])
+            $roles = Role::whereNotIn('name', ['Super Admin', 'Admin'])
                          ->pluck('name', 'name')->all();
 
             return view('auth.register', compact('roles'));
         });
+
+        // Redirect after successful registration
+        // Fortify::registerView(function () {
+        //     return redirect()->route('login')->with('success', 'Pendaftaran berhasil, silakan login.');
+        // });
 
         //login
         Fortify::loginView(function () {

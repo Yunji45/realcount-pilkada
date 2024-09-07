@@ -122,6 +122,44 @@
 
 
 <style>
+    /* Styling yang lebih simpel untuk tombol dan nama file */
+    .upload-btn {
+        background-color: #877E56;
+        /* Warna dasar */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .upload-btn:hover {
+        background-color: #6e6946;
+    }
+
+    .file-name {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .img-preview {
+        width: 400px;
+        height: auto;
+        margin-top: 10px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        margin-top: 30px;
+    }
+
+    .custom-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+
     .alert {
         padding: 15px;
         background-color: #f44336;
@@ -143,39 +181,44 @@
     }
 
     button {
-    font: inherit;
-    background-color: #877E56; /* Base color */
-    border: 0;
-    color: #ffffff; /* White text for contrast */
-    border-radius: 0.5em;
-    font-size: 1.35rem;
-    padding: 0.375em 1em;
-    font-weight: 600;
-    text-shadow: 0 0.0625em 0 rgba(0, 0, 0, 0.1); /* Subtle text shadow */
-    box-shadow: inset 0 0.0625em 0 0 #a3926b, /* Lighter shades for inner shadows */
-        0 0.0625em 0 0 #9f8c63,
-        0 0.125em 0 0 #99865b,
-        0 0.25em 0 0 #8e7a4e,
-        0 0.3125em 0 0 #8b764b,
-        0 0.375em 0 0 #8a7448,
-        0 0.425em 0 0 #7d6841,
-        0 0.425em 0.5em 0 #7f6b43; /* Slightly darker for outer shadows */
-    transition: 0.15s ease;
-    cursor: pointer;
-}
+        font: inherit;
+        background-color: #877E56;
+        /* Base color */
+        border: 0;
+        color: #ffffff;
+        /* White text for contrast */
+        border-radius: 0.5em;
+        font-size: 1.35rem;
+        padding: 0.375em 1em;
+        font-weight: 600;
+        text-shadow: 0 0.0625em 0 rgba(0, 0, 0, 0.1);
+        /* Subtle text shadow */
+        box-shadow: inset 0 0.0625em 0 0 #a3926b,
+            /* Lighter shades for inner shadows */
+            0 0.0625em 0 0 #9f8c63,
+            0 0.125em 0 0 #99865b,
+            0 0.25em 0 0 #8e7a4e,
+            0 0.3125em 0 0 #8b764b,
+            0 0.375em 0 0 #8a7448,
+            0 0.425em 0 0 #7d6841,
+            0 0.425em 0.5em 0 #7f6b43;
+        /* Slightly darker for outer shadows */
+        transition: 0.15s ease;
+        cursor: pointer;
+    }
 
-button:active {
-    translate: 0 0.225em;
-    box-shadow: inset 0 0.03em 0 0 #a3926b,
-        0 0.03em 0 0 #9f8c63,
-        0 0.0625em 0 0 #99865b,
-        0 0.125em 0 0 #8e7a4e,
-        0 0.125em 0 0 #8b764b,
-        0 0.2em 0 0 #8a7448,
-        0 0.225em 0 0 #7d6841,
-        0 0.225em 0.375em 0 #7f6b43; /* Adjusted shadow colors */
-}
-
+    button:active {
+        translate: 0 0.225em;
+        box-shadow: inset 0 0.03em 0 0 #a3926b,
+            0 0.03em 0 0 #9f8c63,
+            0 0.0625em 0 0 #99865b,
+            0 0.125em 0 0 #8e7a4e,
+            0 0.125em 0 0 #8b764b,
+            0 0.2em 0 0 #8a7448,
+            0 0.225em 0 0 #7d6841,
+            0 0.225em 0.375em 0 #7f6b43;
+        /* Adjusted shadow colors */
+    }
 </style>
 
 <style>
@@ -257,5 +300,30 @@ button:active {
         }
     }
 </style>
+
+
+<script>
+    function previewFile() {
+        const file = document.getElementById('ktp').files[0];
+        const preview = document.getElementById('ktpPreview');
+        const fileNameSpan = document.getElementById('file-name');
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.style.display = 'block'; // Tampilkan preview KTP
+                fileNameSpan.textContent = file.name; // Tampilkan nama file
+            };
+
+            reader.readAsDataURL(file); // Ubah file menjadi URL untuk ditampilkan
+        } else {
+            preview.src = '#';
+            preview.style.display = 'none'; // Sembunyikan preview jika tidak ada gambar
+            fileNameSpan.textContent = 'Belum ada foto KTP'; // Reset nama file
+        }
+    }
+</script>
 
 </html>
