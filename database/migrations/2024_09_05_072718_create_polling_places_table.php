@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('kabupaten_id')->constrained()->cascadeOnDelete();
             $table->foreignId('kecamatan_id')->constrained()->cascadeOnDelete();
             $table->foreignId('kelurahan_id')->constrained()->cascadeOnDelete();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->date('start_date');
             $table->date('end_date');
             $table->time('start_time');

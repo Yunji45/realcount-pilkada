@@ -1,0 +1,129 @@
+[
+    {
+        "name": "Andir",
+        "longitude": "107.58724300146554",
+        "latitude": "-6.913237072166197"
+    },
+    {
+        "name": "Astana Anyar",
+        "longitude": "107.60344928014132",
+        "latitude": "-6.929293603178294"
+    },
+    {
+        "name": "Antapani",
+        "longitude": "107.65802224580523",
+        "latitude": "-6.923775897087353"
+    },
+    {
+        "name": "Ancamanik",
+        "longitude": "107.6795252624641",
+        "latitude": "-6.917773693899321"
+    },
+    {
+        "name": "Babakan Ciparay",
+        "longitude": "107.58002685922986",
+        "latitude": "-6.942551216624139"
+    },{
+        "name": "Bandung Kidul",
+        "longitude": "107.63320748592679",
+        "latitude": "-6.957756882569996"
+    },{
+        "name": "Bandung Kulon",
+        "longitude": "107.5769125166346",
+        "latitude": "-6.927116999915256"
+    },{
+        "name": "Bandung Wetan",
+        "longitude": "107.61264460973575",
+        "latitude": "-6.900037465079691"
+    },{
+        "name": "Batununggal",
+        "longitude": "107.63992142561688",
+        "latitude": "-6.937463340635588"
+    },{
+        "name": "Bojongloa Kaler",
+        "longitude": "107.5911365370942",
+        "latitude": "-6.922266746867962"
+    },{
+        "name": "Bojongloa Kidul",
+        "longitude": "107.5996123139069",
+        "latitude": "-6.9573109025871815"
+    },{
+        "name": "Buah Batu",
+        "longitude": "107.64696361027234",
+        "latitude": "-6.951916513566715"
+    },{
+        "name": "Cibeunying Kaler",
+        "longitude": "107.63603804576559",
+        "latitude": "-6.893235400624448"
+    },{
+        "name": "Cibeunying Kidul",
+        "longitude": "107.63984039006829",
+        "latitude": "-6.901740110302541"
+    },{
+        "name": "Cibiru",
+        "longitude": "107.71411917464093",
+        "latitude": "-6.92063377161432"
+    },{
+        "name": "Cicendo",
+        "longitude": "107.60410028111642",
+        "latitude": "-6.912512136557453"
+    },{
+        "name": "Cidadap",
+        "longitude": "107.60923801462036",
+        "latitude": "-6.872558917752244"
+    },{
+        "name": "Cinambo",
+        "longitude": "107.69207775162653",
+        "latitude": "-6.940008571019476"
+    },{
+        "name": "Coblong",
+        "longitude": "107.6152889590465",
+        "latitude": "-6.887216523535784"
+    },{
+        "name": "Gedebage",
+        "longitude": "107.68156012501163",
+        "latitude": "-6.939769326641041"
+    },{
+        "name": "Kiaracondong",
+        "longitude": "107.64258328437461",
+        "latitude": "-6.945090079596326"
+    },
+    {
+        "name": "Lengkong",
+        "longitude": "107.617530752135",
+        "latitude": "-6.9222481770485444"
+    },
+    {
+        "name": "Mandalajati",
+        "longitude": "107.66480362342742",
+        "latitude": "-6.903171330059138"
+    },
+    {
+        "name": "Panyileukan",
+        "longitude": "107.69664652851492",
+        "latitude": "-6.932083169291872"
+    },{
+        "name": "Regol",
+        "longitude": "107.61826064117332",
+        "latitude": "-6.943654466067358"
+    },{
+        "name": "Sukajadi",
+        "longitude": "-6.943654466067358",
+        "latitude": "-6.899918238448279"
+    },{
+        "name": "Sukasari",
+        "longitude": "107.59307007967203",
+        "latitude": "-6.870075322073546"
+    },
+    {
+        "name": "Sumur Bandung",
+        "longitude": "107.62125393247874",
+        "latitude": "-6.9155160351682525"
+    },
+    {
+        "name": "Ujung Berung",
+        "longitude": "107.70216974474619",
+        "latitude": "-6.912906416894316"
+    }
+    
+]

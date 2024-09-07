@@ -1,5 +1,6 @@
         // const map = L.map('map').setView([-7.314931134411498, 108.43086308707107], 8);
-        const map = L.map('map').setView([-6.9854865,109.3917492], 8);
+        // const map = L.map('map').setView([-6.9854865,109.3917492], 8);
+        const map = L.map('map').setView([-6.9320011,107.5733367], 12)
 
         const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
