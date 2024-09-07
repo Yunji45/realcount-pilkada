@@ -16,6 +16,7 @@ class PollingPlace extends Model
         'kabupaten_id',
         'kecamatan_id',
         'kelurahan_id',
+        'rw',
         'start_date',
         'end_date',
         'start_time',
@@ -41,5 +42,10 @@ class PollingPlace extends Model
     public function kelurahan()
     {
         return $this->belongsTo(Kelurahan::class, 'kelurahan_id');
+    }
+
+    public function vote()
+    {
+        return $this->hasMany(Vote::class, 'polling_place_id');
     }
 }

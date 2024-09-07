@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('elections', function (Blueprint $table) {
             $table->id();
-            $table->string('name_pilkada');
+            $table->string('name');
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

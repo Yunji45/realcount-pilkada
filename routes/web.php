@@ -9,7 +9,11 @@ use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Api\WilayahController as DaerahController;
 use App\Http\Controllers\PollingPlaceController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\ElectionController;
+use App\Http\Controllers\PartaiController;
+use App\Http\Controllers\VoteController;
 use App\Models\Agenda;
 use Illuminate\Support\Facades\Route;
 
@@ -54,7 +58,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/role' => RoleController::class,
         '/permission' => PermissionController::class,
         '/user' => UserController::class,
+        '/partai' => PartaiController::class,
+        '/election' => ElectionController::class,
+        '/candidate' => CandidateController::class,
         '/tps' => PollingPlaceController::class,
+        '/vote' => VoteController::class,
         '/kegiatan' => KegiatanController::class,
         '/articles' => ArticleController::class,
         '/agenda' => AgendaController::class,

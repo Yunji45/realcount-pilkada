@@ -12,11 +12,22 @@ class Candidate extends Model
 
     protected $fillable = [
         'name',
-        'supporting_parties',
+        'partai_id',
+        'election_id',
         'vision',
         'mision',
         'photo',
     ];
+
+    public function partai()
+    {
+        return $this->belongsTo(Partai::class, 'partai_id');
+    }
+
+    public function election()
+    {
+        return $this->belongsTo(Election::class, 'election_id');
+    }
 
     public function vote()
     {

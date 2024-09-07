@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Candidate;
+use App\Models\Election;
+use App\Models\Partai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -15,10 +18,13 @@ class CandidateController extends Controller
      */
     public function index()
     {
-        $candidate = Candidate::all();
+        $candidates = Candidate::with('partai', 'election')
+            ->get();
 
-        // return view('');
-        return $candidate;
+        $title = 'Kandidat';
+
+        return view('dashboard.admin.candidate.index', compact('candidates', 'title'));
+        // return $candidate;
     }
 
     /**
@@ -26,10 +32,13 @@ class CandidateController extends Controller
      */
     public function create()
     {
-        $candidate = Candidate::all();
+        $partais = Partai::all();
+        $elections = Election::all();
+        $title = 'Kandidat';
+        $type = 'Tambah Data';
 
-        // return view('');
-        return $candidate;
+        return view('dashboard.admin.candidate.create', compact('partais', 'elections', 'title', 'type'));
+        // return $candidate;
     }
 
     /**
@@ -39,43 +48,51 @@ class CandidateController extends Controller
     {
         DB::beginTransaction();
         try {
+            // Validasi data input
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:255'],
-                'supporting_parties' => ['required', 'string'],
+                'partai_id' => ['required', 'exists:partais,id'], // Validasi partai_id harus ada di tabel partai
+                'election_id' => ['required', 'exists:elections,id'], // Validasi election_id harus ada di tabel election
                 'vision' => ['required', 'string'],
                 'mision' => ['required', 'string'],
                 'photo' => ['nullable', 'image', 'max:2048', 'mimes:jpg,png,jpeg'],
             ]);
 
+            // Jika validasi gagal, kembali dengan pesan kesalahan
             if ($validator->fails()) {
                 return back()->withErrors($validator)->withInput();
             }
 
+            // Simpan foto jika diunggah
             $photoPath = null;
-
             if ($request->hasFile('photo')) {
                 $file = $request->file('photo');
                 $photoName = time() . "_" . $file->getClientOriginalName();
                 $photoPath = $file->storeAs('photos/candidates', $photoName, 'public');
             }
 
+            // Simpan data kandidat ke dalam database
             $candidate = Candidate::create([
                 'name' => $request->name,
-                'supporting_parties' => $request->supporting_parties,
+                'partai_id' => $request->partai_id, // Relasi dengan partai
+                'election_id' => $request->election_id, // Relasi dengan election
                 'vision' => $request->vision,
                 'mision' => $request->mision,
                 'photo' => $photoPath,
             ]);
 
+            // Commit transaksi
             DB::commit();
 
-            return redirect()->route('candidates.index')->with('success', 'Candidate created successfully');
+            // Redirect ke halaman index kandidat dengan pesan sukses
+            return redirect()->route('candidate.index')->with('success', 'Candidate created successfully');
         } catch (\Throwable $th) {
-            //throw $th;
+            // Rollback jika ada kesalahan
             DB::rollBack();
-            return back()->with('error', 'Candidate created failed');
+            return back()->with('error', 'Candidate creation failed');
         }
     }
+
 
 
     /**
@@ -83,8 +100,8 @@ class CandidateController extends Controller
      */
     public function show(Candidate $candidate)
     {
-        // return view('');
-        return $candidate;
+        return view('dashboard.admin.candidate.show');
+        // return $candidate;
     }
 
     /**
@@ -92,8 +109,13 @@ class CandidateController extends Controller
      */
     public function edit(Candidate $candidate)
     {
-        // return view('');
-        return $candidate;
+        $partais = Partai::all();
+        $elections = Election::all();
+        $title = 'Kandidat';
+        $type = 'Edit Data';
+
+        return view('dashboard.admin.candidate.edit', compact('candidate', 'partais', 'elections', 'title', 'type'));
+        // return $candidate;
     }
 
     /**
@@ -105,7 +127,8 @@ class CandidateController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:255'],
-                'supporting_parties' => ['required', 'string'],
+                'partai_id' => ['required', 'exists:partais,id'], // Validasi partai_id harus ada di tabel partai
+                'election_id' => ['required', 'exists:elections,id'], // Validasi election_id harus ada di tabel election
                 'vision' => ['required', 'string'],
                 'mision' => ['required', 'string'],
                 'photo' => ['nullable', 'image', 'max:2048', 'mimes:jpg,png,jpeg'],
@@ -130,7 +153,8 @@ class CandidateController extends Controller
 
             $candidate->update([
                 'name' => $request->name,
-                'supporting_parties' => $request->supporting_parties,
+                'partai_id' => $request->partai_id,
+                'election_id' => $request->election_id,
                 'vision' => $request->vision,
                 'mision' => $request->mision,
                 'photo' => $photoPath,
@@ -138,7 +162,7 @@ class CandidateController extends Controller
 
             DB::commit();
 
-            return redirect()->route('candidates.index')->with('success', 'Candidate updated successfully');
+            return redirect()->route('candidate.index')->with('success', 'Candidate updated successfully');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
@@ -161,7 +185,7 @@ class CandidateController extends Controller
 
             DB::commit();
 
-            return redirect()->route('candidates.index')->with('success', 'Candidate deleted successfully');
+            return redirect()->route('candidate.index')->with('success', 'Candidate deleted successfully');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();

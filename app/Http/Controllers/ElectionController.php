@@ -15,9 +15,10 @@ class ElectionController extends Controller
     public function index()
     {
         $elections = Election::all();
+        $title = "Pemilu";
 
-        // return view('');
-        return $elections;
+        return view('dashboard.admin.election.index',  compact('elections', 'title'));
+        // return $elections;
     }
 
     /**
@@ -25,10 +26,11 @@ class ElectionController extends Controller
      */
     public function create()
     {
-        $elections = Election::all();
+        $title = "Pemilu";
+        $type = "Tambah Data";
 
-        // return view('');
-        return $elections;
+        return view('dashboard.admin.election.create', compact('title', 'type'));
+        // return $elections;
     }
 
     /**
@@ -39,7 +41,7 @@ class ElectionController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'name_pilkada' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255'],
                 'start_date' => ['required', 'date'],
                 'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             ]);
@@ -49,14 +51,14 @@ class ElectionController extends Controller
             }
 
             $election = Election::create([
-                'name_pilkada' => $request->name_pilkada,
+                'name' => $request->name,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
             ]);
 
             DB::commit();
 
-            return redirect()->route('elections.index')->with('success', 'Election created successfully');
+            return redirect()->route('election.index')->with('success', 'Election created successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Election creation failed');
@@ -68,8 +70,11 @@ class ElectionController extends Controller
      */
     public function show(Election $election)
     {
-        // return view('');
-        return $election;
+        $title = "Pemilu";
+        $type = "Lihat Data";
+
+        return view('dashboard.admin.election.show', compact('election', 'title', 'type'));
+        // return $election;
     }
 
     /**
@@ -77,8 +82,11 @@ class ElectionController extends Controller
      */
     public function edit(Election $election)
     {
-        // return view('');
-        return $election;
+        $title = "Pemilu";
+        $type = "Edit Data";
+
+        return view('dashboard.admin.election.edit', compact('election', 'title', 'type'));
+        // return $election;
     }
 
     /**
@@ -89,7 +97,7 @@ class ElectionController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'name_pilkada' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255'],
                 'start_date' => ['required', 'date'],
                 'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             ]);
@@ -99,14 +107,14 @@ class ElectionController extends Controller
             }
 
             $election->update([
-                'name_pilkada' => $request->name_pilkada,
+                'name' => $request->name,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
             ]);
 
             DB::commit();
 
-            return redirect()->route('elections.index')->with('success', 'Election updated successfully');
+            return redirect()->route('election.index')->with('success', 'Election updated successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Election update failed');
@@ -124,7 +132,7 @@ class ElectionController extends Controller
 
             DB::commit();
 
-            return redirect()->route('elections.index')->with('success', 'Election deleted successfully');
+            return redirect()->route('election.index')->with('success', 'Election deleted successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Election deletion failed');

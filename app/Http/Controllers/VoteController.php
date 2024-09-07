@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Candidate;
+use App\Models\PollingPlace;
 use App\Models\Vote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,10 +16,12 @@ class VoteController extends Controller
      */
     public function index()
     {
-        $votes = Vote::all();
+        $votes = Vote::with('candidate.partai', 'polling_place')
+            ->get();
+        $title = "Suara";
 
-        // return view('');
-        return $votes;
+        return view('dashboard.admin.vote.index', compact('votes', 'title'));
+        // return $votes;
     }
 
     /**
@@ -25,10 +29,14 @@ class VoteController extends Controller
      */
     public function create()
     {
-        $votes = Vote::all();
+        $candidates = Candidate::with('partai', 'election')
+            ->get();
+        $pollingPlaces = PollingPlace::all();
+        $title = "Suara";
+        $type = "Tambah Data";
 
-        // return view('');
-        return $votes;
+        return view('dashboard.admin.vote.create', compact('candidates', 'pollingPlaces', 'title', 'type'));
+        // return $votes;
     }
 
     /**
@@ -39,9 +47,9 @@ class VoteController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'user_id' => ['required', 'exists:users,id'],
                 'candidate_id' => ['required', 'exists:candidates,id'],
-                'election_id' => ['required', 'exists:elections,id'],
+                'polling_place_id' => ['required', 'exists:polling_places,id'],
+                'vote_count' => ['required', 'string', 'max:255'],
             ]);
 
             if ($validator->fails()) {
@@ -49,14 +57,14 @@ class VoteController extends Controller
             }
 
             $vote = Vote::create([
-                'user_id' => $request->user_id,
                 'candidate_id' => $request->candidate_id,
-                'election_id' => $request->election_id,
+                'polling_place_id' => $request->polling_place_id,
+                'vote_count' => $request->vote_count,
             ]);
 
             DB::commit();
 
-            return redirect()->route('votes.index')->with('success', 'Vote cast successfully');
+            return redirect()->route('vote.index')->with('success', 'Vote cast successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Vote casting failed');
@@ -68,8 +76,14 @@ class VoteController extends Controller
      */
     public function show(Vote $vote)
     {
-        // return view('');
-        return $vote;
+        $candidates = Candidate::with('partai', 'election')
+            ->get();
+        $pollingPlaces = PollingPlace::all();
+        $title = "Suara";
+        $type = "Detail Data";
+
+        return view('dashboard.admin.vote.show', compact('candidates', 'pollingPlaces', 'title', 'type'));
+        // return $vote;
     }
 
     /**
@@ -77,8 +91,14 @@ class VoteController extends Controller
      */
     public function edit(Vote $vote)
     {
-        // return view('');
-        return $vote;
+        $candidates = Candidate::with('partai', 'election')
+            ->get();
+        $pollingPlaces = PollingPlace::all();
+        $title = "Suara";
+        $type = "Edit Data";
+
+        return view('dashboard.admin.vote.edit', compact('candidates', 'pollingPlaces', 'title', 'type'));
+        // return $vote;
     }
 
     /**
@@ -89,9 +109,9 @@ class VoteController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'user_id' => ['required', 'exists:users,id'],
                 'candidate_id' => ['required', 'exists:candidates,id'],
-                'election_id' => ['required', 'exists:elections,id'],
+                'polling_place_id' => ['required', 'exists:polling_places,id'],
+                'vote_count' => ['required', 'string', 'max:255'],
             ]);
 
             if ($validator->fails()) {
@@ -99,14 +119,14 @@ class VoteController extends Controller
             }
 
             $vote->update([
-                'user_id' => $request->user_id,
                 'candidate_id' => $request->candidate_id,
-                'election_id' => $request->election_id,
+                'polling_place_id' => $request->polling_place_id,
+                'vote_count' => $request->vote_count,
             ]);
 
             DB::commit();
 
-            return redirect()->route('votes.index')->with('success', 'Vote updated successfully');
+            return redirect()->route('vote.index')->with('success', 'Vote updated successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Vote update failed');
@@ -124,7 +144,7 @@ class VoteController extends Controller
 
             DB::commit();
 
-            return redirect()->route('votes.index')->with('success', 'Vote deleted successfully');
+            return redirect()->route('vote.index')->with('success', 'Vote deleted successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Vote deletion failed');

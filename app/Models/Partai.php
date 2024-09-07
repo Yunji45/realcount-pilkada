@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 
-class Election extends Model
+class Partai extends Model
 {
     use HasFactory, HasRoles;
 
     protected $fillable = [
         'name',
-        'start_date',
-        'end_date',
+        'color',
+        'leader',
+        'logo',
     ];
 
     public function candidate()

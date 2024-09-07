@@ -63,10 +63,34 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item {{ Request::is('partai*') ? 'active' : '' }}">
+                <a href="{{ route('partai.index') }}">
+                    <i class="fas fa-desktop"></i>
+                    <p>Partai</p>
+                </a>
+            </li>
+            <li class="nav-item {{ Request::is('election*') ? 'active' : '' }}">
+                <a href="{{ route('election.index') }}">
+                    <i class="fas fa-desktop"></i>
+                    <p>Pemilu</p>
+                </a>
+            </li>
+            <li class="nav-item {{ Request::is('candidate*') ? 'active' : '' }}">
+                <a href="{{ route('candidate.index') }}">
+                    <i class="fas fa-desktop"></i>
+                    <p>Kandidat</p>
+                </a>
+            </li>
             <li class="nav-item {{ Request::is('tps*') ? 'active' : '' }}">
                 <a href="{{ route('tps.index') }}">
                     <i class="fas fa-desktop"></i>
                     <p>TPS</p>
+                </a>
+            </li>
+            <li class="nav-item {{ Request::is('vote*') ? 'active' : '' }}">
+                <a href="{{ route('vote.index') }}">
+                    <i class="fas fa-desktop"></i>
+                    <p>Suara</p>
                 </a>
             </li>
             <li class="nav-item {{ Request::is('agenda*') ? 'active' : '' }}">

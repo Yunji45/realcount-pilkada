@@ -28,7 +28,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Add {{ $title }}</h4>
-                            <a href="{{ route('tps.create') }}" class="btn btn-primary btn-round ms-auto">
+                            <a href="{{ route('election.create') }}" class="btn btn-primary btn-round ms-auto">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
                             </a>
@@ -41,44 +41,42 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama TPS</th>
-                                        <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>Status</th>
+                                        <th>Nama Pemilu</th>
+                                        <th>Tanggal Mulai</th>
+                                        <th>Tanggal Selesai</th>
                                         <th style="width: 10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama TPS</th>
-                                        <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>Status</th>
+                                        <th>Nama Pemilu</th>
+                                        <th>Tanggal Mulai</th>
+                                        <th>Tanggal Selesai</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach ($tps as $tp)
+                                    @foreach ($elections as $election)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $tp->name }}</td>
-                                            <td>{{ $tp->kecamatan->name }}</td>
-                                            <td>{{ $tp->kelurahan->name }}</td>
-                                            <td>{{ $tp->status }}</td>
+                                            <td>{{ $election->name }}</td>
+                                            <td>{{ $election->start_date }}</td>
+                                            <td>{{ $election->end_date }}</td>
+
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('tps.edit', $tp->id) }}"
+                                                    <a href="{{ route('election.edit', $election->id) }}"
                                                         class="btn btn-warning btn-sm">
                                                         Edit
                                                     </a>
 
-                                                    <form action="{{ route('tps.destroy', $tp->id) }}" method="POST"
-                                                        style="display:inline-block;">
+                                                    <form action="{{ route('election.destroy', $election->id) }}"
+                                                        method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this TPS?')">Delete</button>
+                                                            onclick="return confirm('Are you sure you want to delete this Election?')">Delete</button>
                                                     </form>
                                                 </div>
                                             </td>

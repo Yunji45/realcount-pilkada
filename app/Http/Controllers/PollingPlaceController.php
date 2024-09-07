@@ -72,6 +72,7 @@ class PollingPlaceController extends Controller
                 'kabupaten_id' => 'required|exists:kabupatens,id', // Validasi bahwa kabupaten_id ada di tabel kabupaten
                 'kecamatan_id' => 'required|exists:kecamatans,id', // Validasi bahwa kecamatan_id ada di tabel kecamatan
                 'kelurahan_id' => 'required|exists:kelurahans,id', // Validasi bahwa kelurahan_id ada di tabel kelurahan
+                'rw' => 'required|string|max:255',
                 'start_date' => 'required|date|before_or_equal:end_date', // Pastikan tanggal mulai <= tanggal selesai
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'start_time' => 'required|date_format:H:i',
@@ -86,6 +87,7 @@ class PollingPlaceController extends Controller
                 'kabupaten_id' => $request->kabupaten_id,
                 'kecamatan_id' => $request->kecamatan_id,
                 'kelurahan_id' => $request->kelurahan_id,
+                'rw' => $request->rw,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'start_time' => $request->start_time,
@@ -152,6 +154,7 @@ class PollingPlaceController extends Controller
                 'kabupaten_id' => 'sometimes|required|exists:kabupatens,id', // Validasi bahwa kabupaten_id ada di tabel kabupaten
                 'kecamatan_id' => 'sometimes|required|exists:kecamatans,id', // Validasi bahwa kecamatan_id ada di tabel kecamatan
                 'kelurahan_id' => 'sometimes|required|exists:kelurahans,id', // Validasi bahwa kelurahan_id ada di tabel kelurahan
+                'rw' => 'sometimes|required|string|max:255',
                 'start_date' => 'sometimes|required|date|before_or_equal:end_date', // Pastikan tanggal mulai <= tanggal selesai
                 'end_date' => 'sometimes|nullable|date|after_or_equal:start_date',
                 'start_time' => 'sometimes|nullable|date_format:H:i',
@@ -166,6 +169,7 @@ class PollingPlaceController extends Controller
                 'kabupaten_id',
                 'kecamatan_id',
                 'kelurahan_id',
+                'rw',
                 'start_date',
                 'end_date',
                 'start_time',

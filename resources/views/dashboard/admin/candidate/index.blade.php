@@ -28,7 +28,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Add {{ $title }}</h4>
-                            <a href="{{ route('tps.create') }}" class="btn btn-primary btn-round ms-auto">
+                            <a href="{{ route('candidate.create') }}" class="btn btn-primary btn-round ms-auto">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
                             </a>
@@ -41,44 +41,53 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama TPS</th>
-                                        <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>Status</th>
+                                        <th>Foto</th>
+                                        <th>Nama Kandidat</th>
+                                        <th>Nama Partai</th>
+                                        <th>Nama Pemilu</th>
+                                        <th>Visi</th>
+                                        <th>Misi</th>
                                         <th style="width: 10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama TPS</th>
-                                        <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>Status</th>
+                                        <th>Foto</th>
+                                        <th>Nama Kandidat</th>
+                                        <th>Nama Partai</th>
+                                        <th>Nama Pemilu</th>
+                                        <th>Visi</th>
+                                        <th>Misi</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach ($tps as $tp)
+                                    @foreach ($candidates as $candidate)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $tp->name }}</td>
-                                            <td>{{ $tp->kecamatan->name }}</td>
-                                            <td>{{ $tp->kelurahan->name }}</td>
-                                            <td>{{ $tp->status }}</td>
+                                            <td>
+                                                <img src="storage/{{ $candidate->photo }}" alt="Candidate" height="100px">
+                                            </td>
+                                            <td>{{ $candidate->name }}</td>
+                                            <td>{{ $candidate->partai->name }}</td>
+                                            <td>{{ $candidate->election->name }}</td>
+                                            <td>{{ $candidate->vision }}</td>
+                                            <td>{{ $candidate->mision }}</td>
+
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('tps.edit', $tp->id) }}"
+                                                    <a href="{{ route('candidate.edit', $candidate->id) }}"
                                                         class="btn btn-warning btn-sm">
                                                         Edit
                                                     </a>
 
-                                                    <form action="{{ route('tps.destroy', $tp->id) }}" method="POST"
-                                                        style="display:inline-block;">
+                                                    <form action="{{ route('candidate.destroy', $candidate->id) }}"
+                                                        method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this TPS?')">Delete</button>
+                                                            onclick="return confirm('Are you sure you want to delete this Candidate?')">Delete</button>
                                                     </form>
                                                 </div>
                                             </td>
