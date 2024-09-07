@@ -1,4 +1,14 @@
-<div class="page-inner">
+@extends('layouts.dashboard.app')
+
+@section('title', 'Pilkada | Dash Superadmin')
+
+@section('content')
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-search/dist/leaflet-search.min.css" />
+
+  <div class="page-inner">
     <div
       class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
     >
@@ -41,8 +51,8 @@
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <div>
-                <h6><b>Total Revenue</b></h6>
-                <p class="text-muted">All Customs Value</p>
+                <h6><b>Saksi</b></h6>
+                <p class="text-muted">All Saksi Value</p>
               </div>
               <h4 class="text-success fw-bold">$120</h4>
             </div>
@@ -67,7 +77,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <div>
-                <h6><b>New Orders</b></h6>
+                <h6><b>Relawan</b></h6>
                 <p class="text-muted">Fresh Order Amount</p>
               </div>
               <h4 class="text-danger fw-bold">15</h4>
@@ -93,7 +103,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <div>
-                <h6><b>New Users</b></h6>
+                <h6><b>User Aktif</b></h6>
                 <p class="text-muted">Joined New User</p>
               </div>
               <h4 class="text-secondary fw-bold">12</h4>
@@ -155,6 +165,23 @@
             </div>
         </div>
     </div>
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header">
+              <div class="card-title">Peta Persebaran</div>
+          </div>
+          <div class="card-body">
+              <div class="chart-container">
+                <div id="map" style="width: 100%; height: 400px;"></div>
+              </div>
+          </div>
+      </div>
+  </div>
 
 
   </div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
+  <script src="{{ asset('json_wilayah/map.js') }}"></script>
+  
+@endsection

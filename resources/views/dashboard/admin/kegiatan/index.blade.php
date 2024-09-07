@@ -80,7 +80,9 @@
                             <td>{{ $kegiatan->deskripsi }}</td>
                             <td>
                                 @if($kegiatan->photo)
-                                    <img src="{{ asset('storage/public/' . $kegiatan->photo) }}" alt="Photo" width="100">
+                                  <img src="{{ asset('storage/' . $kegiatan->photo) }}" alt="{{ $kegiatan->nama_kegiatan }}" width="100">
+                                @else
+                                  No image
                                 @endif
                             </td>
                             <td>{{ $kegiatan->longitude }}</td>

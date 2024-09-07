@@ -75,6 +75,18 @@
                     <p>Agenda</p>
                 </a>
             </li>
+            <li class="nav-item {{ Request::is('kegiatan*') ? 'active' : '' }}">
+                <a href="{{ route('kegiatan.index') }}">
+                    <i class="fas fa-desktop"></i>
+                    <p>Kegiatan</p>
+                </a>
+            </li>
+            <li class="nav-item {{ Request::is('articles*') ? 'active' : '' }}">
+                <a href="{{ route('articles.index') }}">
+                    <i class="fas fa-desktop"></i>
+                    <p>Berita</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

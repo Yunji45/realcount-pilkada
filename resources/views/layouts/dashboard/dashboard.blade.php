@@ -7,6 +7,6 @@
     @elseif (auth()->user()->hasRole('Relawan'))
         @include('dashboard.relawan.dashboard.index')
     @else
-        <p>You do not have access to any dashboard</p>
+        @include('dashboard.superadmin.dashboard.index')
     @endif
 @endsection

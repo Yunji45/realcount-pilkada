@@ -74,8 +74,8 @@ class PollingPlaceController extends Controller
                 'kelurahan_id' => 'required|exists:kelurahans,id', // Validasi bahwa kelurahan_id ada di tabel kelurahan
                 'start_date' => 'required|date|before_or_equal:end_date', // Pastikan tanggal mulai <= tanggal selesai
                 'end_date' => 'required|date|after_or_equal:start_date',
-                'start_time' => 'required|date_format:H:i:s',
-                'end_time' => 'required|date_format:H:i:s|after:start_time', // Jam tutup harus setelah jam buka
+                'start_time' => 'required|date_format:H:i',
+                'end_time' => 'required|date_format:H:i|after:start_time', // Jam tutup harus setelah jam buka
                 'status' => 'required|in:Aktif,Non-aktif',
             ]);
 
@@ -104,13 +104,12 @@ class PollingPlaceController extends Controller
             DB::rollBack();
 
             // Logging error untuk debugging (optional)
-            Log('Error creating polling place: ' . $e->getMessage());
+            Log::error('Error creating polling place: ' . $e->getMessage());
 
             // Menangani kesalahan dan mengarahkan kembali dengan pesan error
             return redirect()->back()->with('error', 'Failed to create polling place. Error: ' . $e->getMessage());
         }
     }
-
 
     /**
      * Display the specified resource.
@@ -155,8 +154,8 @@ class PollingPlaceController extends Controller
                 'kelurahan_id' => 'sometimes|required|exists:kelurahans,id', // Validasi bahwa kelurahan_id ada di tabel kelurahan
                 'start_date' => 'sometimes|required|date|before_or_equal:end_date', // Pastikan tanggal mulai <= tanggal selesai
                 'end_date' => 'sometimes|nullable|date|after_or_equal:start_date',
-                'start_time' => 'sometimes|nullable|date_format:H:i:s',
-                'end_time' => 'sometimes|required|date_format:H:i:s|after:start_time', // Jam tutup harus setelah jam buka
+                'start_time' => 'sometimes|nullable|date_format:H:i',
+                'end_time' => 'sometimes|required|date_format:H:i|after:start_time', // Jam tutup harus setelah jam buka
                 'status' => 'sometimes|required|in:Aktif,Non-aktif',
             ]);
 

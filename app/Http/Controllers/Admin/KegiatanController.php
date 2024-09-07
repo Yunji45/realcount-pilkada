@@ -84,47 +84,43 @@ class KegiatanController extends Controller
 
     // Update Kegiatan
     public function update(Request $request, Kegiatan $kegiatan)
-    {
-        $validated = $request->validate([
-            'nama_kegiatan' => 'required|string|max:255',
-            'waktu' => 'required|date',
-            'deskripsi' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'longitude' => 'nullable|numeric',
-            'latitude' => 'nullable|numeric',
-        ]);
-    
+    {    
         DB::beginTransaction();
         try {
-            $photoPath = $kegiatan->photo; // Inisialisasi dengan photo lama
-    
+            // Validasi data input
+            $validated = $request->validate([
+                'nama_kegiatan' => 'sometimes|required|string|max:255',
+                'waktu' => 'sometimes|required|date',
+                'deskripsi' => 'sometimes|nullable|string',
+                'photo' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'longitude' => 'sometimes|nullable|numeric',
+                'latitude' => 'sometimes|nullable|numeric',
+            ]);
+
+            $data = $request->only([
+                'nama_kegiatan',
+                'waktu',
+                'deskripsi',
+                'longitude',
+                'latitude',
+            ]);
+            $photoPath = $kegiatan->photo;
             if ($request->hasFile('photo')) {
-                // Hapus photo lama jika ada
                 if ($kegiatan->photo) {
                     Storage::disk('public')->delete($kegiatan->photo);
                 }
-                // Simpan photo baru
                 $photoPath = $request->file('photo')->store('kegiatan', 'public');
+                $data['photo'] = $photoPath;
             }
-    
-            $kegiatan->update([
-                'user_id' => Auth::user()->id,
-                'nama_kegiatan' => $validated['nama_kegiatan'],
-                'waktu' => $validated['waktu'],
-                'deskripsi' => $validated['deskripsi'] ?? null,
-                'photo' => $photoPath,
-                'longitude' => $validated['longitude'] ?? null,
-                'latitude' => $validated['latitude'] ?? null,
-            ]);
-    
+            $kegiatan->update(array_filter($data));
             DB::commit();
-            return redirect('/kegiatan')->with('success', 'Kegiatan updated successfully');
+            return redirect('/kegiatan')->with('success', 'Kegiatan berhasil diperbarui.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->with('error', 'Kegiatan update failed. ' . $th->getMessage());
+            return back()->with('error', 'Gagal memperbarui kegiatan. Pesan error: ' . $th->getMessage());
         }
     }
-    
+
     // Delete Kegiatan
     public function destroy($id)
     {
