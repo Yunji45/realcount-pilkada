@@ -7,7 +7,7 @@
             style="margin-bottom: 60px; color: #555555; font-weight: bold; font-family: 'Arial Black', sans-serif; font-size: 2rem; text-align: center; text-transform: uppercase; letter-spacing: 2px; -webkit-text-stroke: 1px #877E56; text-stroke: 1px #877E56;">
             Pendaftaran
         </h1>
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
 
             @if ($errors->any())
@@ -19,6 +19,19 @@
                     </ul>
                 </div>
             @endif
+
+            @if (session('success'))
+                <script>
+                    toastr.success('{{ session('success') }}');
+                </script>
+            @endif
+
+            @if (session('error'))
+                <script>
+                    toastr.error('{{ session('error') }}');
+                </script>
+            @endif
+
 
             <input type="text" class="input" autocomplete="off" placeholder="NIK" name="nik"
                 value="{{ old('nik') }}">
@@ -45,7 +58,7 @@
                 </div>
 
                 <div class="form-group role-group">
-                    <select name="role" class="input select-box" required autofocus>
+                    <select name="role" class="input select-box" required autofocus required>
                         <option selected disabled>Pilih Akses Anda</option>
                         @foreach ($roles as $role)
                             <option value="{{ $role }}">{{ $role }}</option>
@@ -53,7 +66,17 @@
                     </select>
                 </div>
             </div>
-            <br><br>
+            <div class="form-group">
+                <input type="file" id="ktp" name="ktp" accept="image/*" onchange="previewFile()" hidden required>
+                <button type="button" class="upload-btn" onclick="document.getElementById('ktp').click();">
+                    Upload KTP
+                </button>
+                <span id="file-name" class="file-name" style="font-weight: bold">Belum ada foto KTP</span>
+                <img id="ktpPreview" class="img-preview" src="#" alt="Preview KTP" style="display: none;">
+            </div>
+
+            <br>
+
             <button type="submit" class="btn btn-primary"
                 style="background-color: #877E56; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; transition: background-color 0.3s ease;font-weight:bold;border-radius:10px">
                 {{ __('Daftar') }}

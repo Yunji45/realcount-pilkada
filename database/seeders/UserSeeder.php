@@ -76,7 +76,7 @@ class UserSeeder extends Seeder
 
         $pemilihRole = Role::create(['name' => 'Pemilih']);
         $saksiRole = Role::create(['name' => 'Saksi']);
-        $relawanRole = Role::create(['name' => 'Relawan']);
+        $relawanRole = Role::create(['name' => 'Relawan RDW']);
         $simpatisanRole = Role::create(['name' => 'Simpatisan']);
         $lainnyaRole = Role::create(['name' => 'Lain-lain']);
 

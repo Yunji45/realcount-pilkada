@@ -31,6 +31,7 @@ class User extends Authenticatable
         'gender',
         'address',
         'photo',
+        'ktp',
         'status'
     ];
 

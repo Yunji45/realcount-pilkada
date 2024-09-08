@@ -18,7 +18,8 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->text('description')->nullable();
             $table->string('email')->unique();
-            $table->string('photo')->nullable();
+            $table->text('ktp')->nullable();
+            $table->text('photo')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['Pria', 'Wanita'])->default('Pria');
             $table->timestamp('email_verified_at')->nullable();

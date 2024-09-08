@@ -20,6 +20,7 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
+            'nik' => ['required', 'string', 'max:255', Rule::unique(User::class, 'nik')], // Validasi NIK unik
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -30,21 +31,44 @@ class CreateNewUser implements CreatesNewUsers
             ],
             'password' => $this->passwordRules(),
             'role' => ['required', 'string', 'exists:roles,name'], // Validasi role dari Spatie
+            'ktp' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file KTP
         ])->validate();
 
-        $user = User::create([
-            'nik' => $input['nik'],
-            'name' => $input['name'],
-            'address' => $input['address'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-            'status' => "Pending",
-            'gender' => $input['gender'],
-        ]);
+        try {
+            // Handle KTP upload
+            $ktpPath = null;
 
-        // Assign role ke user
-        $user->assignRole($input['role']);
+            // Check if KTP file exists in the request (use request() to fetch the file)
+            if (request()->hasFile('ktp')) {
+                $ktpPath = request()->file('ktp')->store('ktp', 'public'); // Store the file in the 'ktp' folder
+            }
 
-        return $user;
+            $user = User::create([
+                'nik' => $input['nik'],
+                'name' => $input['name'],
+                'address' => $input['address'],
+                'email' => $input['email'],
+                'password' => Hash::make($input['password']),
+                'status' => "Pending",
+                'gender' => $input['gender'],
+                'ktp' => $ktpPath, // Store the path of the uploaded KTP
+            ]);
+
+            // Assign role to the user
+            $user->assignRole($input['role']);
+
+            // Show success toast
+            session()->flash('success', 'User berhasil dibuat.');
+
+            return $user;
+
+        } catch (\Exception $e) {
+            // Show error toast in case of failure
+            session()->flash('error', 'Gagal membuat user. ' . $e->getMessage());
+
+            return redirect()->back();
+        }
     }
+
+
 }
