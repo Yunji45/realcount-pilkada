@@ -18,6 +18,7 @@ class MapController extends Controller
             'candidates.name as candidate_name', 
             'elections.name as election_name', 
             'partais.name as partai_name', 
+            'partais.color as partai_color',
             'polling_places.name as polling_place_name', 
             'polling_places.latitude', 
             'polling_places.longitude',

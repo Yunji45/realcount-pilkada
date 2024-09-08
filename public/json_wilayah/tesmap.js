@@ -90,7 +90,8 @@ axios.get('/api/map').then(response => {
                 "name": vote.polling_place_name,
                 "candidate": vote.candidate_name,
                 "partai": vote.partai_name,
-                "vote_count": vote.vote_count
+                "vote_count": vote.vote_count,
+                "partai_color": vote.partai_color
             },
             "geometry": {
                 "type": "Point",
