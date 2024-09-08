@@ -4,15 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Map;
 use Illuminate\Http\Request;
+use App\Models\Vote;
 
 class MapController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $votes = Vote::select(
+            'votes.vote_count', 
+            'candidates.name as candidate_name', 
+            'elections.name as election_name', 
+            'partais.name as partai_name', 
+            'polling_places.name as polling_place_name', 
+            'polling_places.latitude', 
+            'polling_places.longitude',
+            'provinsis.name as provinsi_name',
+            'kabupatens.name as kabupaten_name',
+            'kecamatans.name as kecamatan_name',
+            'kelurahans.name as kelurahan_name'
+        )
+        ->join('candidates', 'votes.candidate_id', '=', 'candidates.id')
+        ->join('partais', 'candidates.partai_id', '=', 'partais.id')
+        ->join('elections', 'candidates.election_id', '=', 'elections.id')
+        ->join('polling_places', 'votes.polling_place_id', '=', 'polling_places.id')
+        ->join('provinsis', 'polling_places.provinsi_id', '=', 'provinsis.id')
+        ->join('kabupatens', 'polling_places.kabupaten_id', '=', 'kabupatens.id')
+        ->join('kecamatans', 'polling_places.kecamatan_id', '=', 'kecamatans.id')
+        ->join('kelurahans', 'polling_places.kelurahan_id', '=', 'kelurahans.id')
+        ->get();
+    
+        return response()->json($votes);
+    
     }
 
     /**

@@ -20,6 +20,8 @@ class PollingPlace extends Model
         'status',
         'longitude',
         'latitude',
+        'DPT',
+        'periode'
     ];
 
     public function provinsi()

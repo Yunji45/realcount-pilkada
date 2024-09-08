@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('kecamatan_id')->constrained()->cascadeOnDelete();
             $table->foreignId('kelurahan_id')->constrained()->cascadeOnDelete();
             $table->string('rw'); //RW
+            $table->string('DPT');
+            $table->date('periode')->nullable();
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
             $table->enum('status', ['Aktif', 'Non-aktif'])->default('Aktif');

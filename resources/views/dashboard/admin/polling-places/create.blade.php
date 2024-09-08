@@ -80,6 +80,11 @@
                                             <label for="kelurahan">RW</label>
                                             <input type="text" name="rw" class="form-control" id="rw" />
                                         </div>
+                                        <div class="form-group">
+                                            <label for="kelurahan">DPT</label>
+                                            <input type="text" name="DPT" class="form-control" id="DPT" />
+                                        </div>
+
                                     </div>
                                     <div class="col-md-6 col-lg-6">
 
@@ -90,6 +95,11 @@
                                                 <option value="Non-aktif">Nonaktif</option>
                                             </select>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="kelurahan">Periode</label>
+                                            <input type="date" name="periode" class="form-control" id="periode" />
+                                        </div>
+
                                         <div class="form-group">
                                             <label for="location-search">Cari Daerah:</label>
                                             <div id="map" style="height: 400px;"></div>
@@ -207,6 +217,14 @@
             updateMarker(latlng.lat, latlng.lng);
         })
         .addTo(map);
+    </script>
+    <script>
+        document.getElementById('periode').addEventListener('change', function() {
+            const dateValue = this.value; // Get the date value (format: yyyy-mm-dd)
+            const year = new Date(dateValue).getFullYear(); // Extract the year
+            console.log('Tahun yang dipilih:', year); // Output the year
+            // Anda bisa menggunakan variabel `year` sesuai kebutuhan
+        });
     </script>
     
     

@@ -74,6 +74,8 @@ class PollingPlaceController extends Controller
                 'kelurahan_id' => 'required|exists:kelurahans,id', // Validasi bahwa kelurahan_id ada di tabel kelurahan
                 'rw' => 'required|string|max:255',
                 'status' => 'required|in:Aktif,Non-aktif',
+                'DPT' => 'required',
+                'periode' => 'required'
             ]);
 
             // Menyimpan TPS baru ke database
@@ -91,6 +93,8 @@ class PollingPlaceController extends Controller
                 'status' => $request->status,
                 'longitude' => $request->longitude,
                 'latitude' => $request->latitude,
+                'DPT' => $request->DPT,
+                'periode' => $request->periode
             ]);
 
             // Commit transaksi jika berhasil

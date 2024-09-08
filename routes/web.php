@@ -14,7 +14,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
-use App\Models\Agenda;
+use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -73,4 +73,5 @@ Route::middleware(['verified', 'auth'])->group(function () {
 
     // Route untuk mengembalikan data event dalam bentuk JSON
     Route::get('/getAgenda', [AgendaController::class, 'getAgendas'])->name('getAgenda');
+    // Route::get('/map',[MapController::class,'index'])->name('map');
 });

@@ -44,6 +44,8 @@
                                         <th>Nama TPS</th>
                                         <th>Kecamatan</th>
                                         <th>Kelurahan</th>
+                                        <th>DPT</th>
+                                        <th>Periode</th>
                                         <th>Status</th>
                                         <th style="width: 10%">Action</th>
                                     </tr>
@@ -54,6 +56,8 @@
                                         <th>Nama TPS</th>
                                         <th>Kecamatan</th>
                                         <th>Kelurahan</th>
+                                        <th>DPT</th>
+                                        <th>Periode</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -65,6 +69,8 @@
                                             <td>{{ $tp->name }}</td>
                                             <td>{{ $tp->kecamatan->name }}</td>
                                             <td>{{ $tp->kelurahan->name }}</td>
+                                            <td>{{ $tp->DPT }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($tp->periode)->format('Y') }}</td>
                                             <td>{{ $tp->status }}</td>
                                             <td>
                                                 <div class="form-button-action">

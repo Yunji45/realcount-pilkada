@@ -182,6 +182,8 @@
   </div>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
-  <script src="{{ asset('json_wilayah/map.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  {{-- <script src="{{ asset('json_wilayah/map.js') }}"></script> --}}
+  <script src="{{ asset('json_wilayah/tesmap.js') }}"></script>
   
 @endsection
