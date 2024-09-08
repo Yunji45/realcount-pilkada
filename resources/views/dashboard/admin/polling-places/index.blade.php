@@ -74,20 +74,22 @@
                                             <td>{{ $tp->status }}</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('tps.edit', $tp->id) }}"
-                                                        class="btn btn-warning btn-sm">
-                                                        Edit
+                                                    <!-- Tombol Edit dengan ikon pensil -->
+                                                    <a href="{{ route('tps.edit', $tp->id) }}" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                        <i class="fas fa-edit"></i> <!-- Ikon Edit -->
                                                     </a>
 
-                                                    <form action="{{ route('tps.destroy', $tp->id) }}" method="POST"
-                                                        style="display:inline-block;">
+                                                    <!-- Tombol Delete dengan ikon tong sampah -->
+                                                    <form action="{{ route('tps.destroy', $tp->id) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this TPS?')">Delete</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this TPS?')">
+                                                            <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>

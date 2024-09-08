@@ -12,7 +12,8 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::all();
-        return view('dashboard.admin.article.index', compact('articles'));
+        $title = 'Artikel';
+        return view('dashboard.admin.article.index', compact('articles','title'));
     }
 
     // Menampilkan form untuk membuat artikel baru

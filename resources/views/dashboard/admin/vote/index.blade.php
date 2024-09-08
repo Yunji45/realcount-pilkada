@@ -72,20 +72,22 @@
 
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('vote.edit', $vote->id) }}"
-                                                        class="btn btn-warning btn-sm">
-                                                        Edit
+                                                    <!-- Tombol Edit dengan ikon pensil -->
+                                                    <a href="{{ route('vote.edit', $vote->id) }}" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                        <i class="fas fa-edit"></i> <!-- Ikon Edit -->
                                                     </a>
 
-                                                    <form action="{{ route('vote.destroy', $vote->id) }}"
-                                                        method="POST" style="display:inline-block;">
+                                                    <!-- Tombol Delete dengan ikon tong sampah -->
+                                                    <form action="{{ route('vote.destroy', $vote->id) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this Election?')">Delete</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Vote?')">
+                                                            <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>

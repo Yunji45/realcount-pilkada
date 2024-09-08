@@ -67,7 +67,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>
-                                                <img src="storage/{{ $candidate->photo }}" alt="Candidate" height="100px">
+                                                <img src="storage/{{ $candidate->photo }}" alt="Candidate" height="100px" >
                                             </td>
                                             <td>{{ $candidate->name }}</td>
                                             <td>{{ $candidate->partai->name }}</td>
@@ -77,20 +77,22 @@
 
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('candidate.edit', $candidate->id) }}"
-                                                        class="btn btn-warning btn-sm">
-                                                        Edit
+                                                    <!-- Tombol Edit dengan ikon pensil -->
+                                                    <a href="{{ route('candidate.edit', $candidate->id) }}" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                        <i class="fas fa-edit"></i> <!-- Ikon Edit -->
                                                     </a>
 
-                                                    <form action="{{ route('candidate.destroy', $candidate->id) }}"
-                                                        method="POST" style="display:inline-block;">
+                                                    <!-- Tombol Delete dengan ikon tong sampah -->
+                                                    <form action="{{ route('candidate.destroy', $candidate->id) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this Candidate?')">Delete</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Candidate?')">
+                                                            <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>

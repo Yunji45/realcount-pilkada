@@ -40,7 +40,7 @@
                 </a>
               </div>
             </div>
-            <div class="card-body">                
+            <div class="card-body">
 
               <div class="table-responsive">
                 <table
@@ -88,16 +88,23 @@
                             <td>{{ $kegiatan->longitude }}</td>
                             <td>{{ $kegiatan->latitude }}</td>
                             <td>
-                                <a href="{{ route('kegiatan.edit', $kegiatan->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('kegiatan.destroy', $kegiatan->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                                </form>
+                                <div class="form-button-action">
+                                    <a href="{{ route('kegiatan.edit', $kegiatan->id) }}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('kegiatan.destroy', $kegiatan->id) }}" method="POST" style="display:inline;margin-left:5px">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
+
                         </tr>
                     @endforeach
-        
+
                   </tbody>
                 </table>
               </div>

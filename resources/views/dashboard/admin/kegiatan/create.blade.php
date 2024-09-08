@@ -124,9 +124,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="card-action">
-                        <button type="submit" class="btn btn-success">ds</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
                         <a href="{{ route('kegiatan.index') }}" class="btn btn-danger">Cancel</a>
                     </div>
                 </form>

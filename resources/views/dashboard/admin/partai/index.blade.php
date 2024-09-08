@@ -63,7 +63,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>
-                                                <img src="storage/{{ $partai->logo }}" alt="Partai" height="100px">
+                                                <img src="{{ Storage::url($partai->logo) }}" alt="Partai" height="100px" style="border-radius: 10px;widht:100px;height:100px">
                                             </td>
                                             <td>{{ $partai->name }}</td>
                                             <td>{{ $partai->leader }}</td>
@@ -75,20 +75,22 @@
                                             </td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a href="{{ route('partai.edit', $partai->id) }}"
-                                                        class="btn btn-warning btn-sm">
-                                                        Edit
+                                                    <!-- Tombol Edit dengan ikon pensil berwarna putih -->
+                                                    <a href="{{ route('partai.edit', $partai->id) }}" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                        <i class="fas fa-edit"></i> <!-- Ikon Edit berwarna putih -->
                                                     </a>
 
-                                                    <form action="{{ route('partai.destroy', $partai->id) }}"
-                                                        method="POST" style="display:inline-block;">
+                                                    <!-- Tombol Delete dengan ikon tong sampah -->
+                                                    <form action="{{ route('partai.destroy', $partai->id) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this Partai?')">Delete</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Partai?')">
+                                                            <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>
