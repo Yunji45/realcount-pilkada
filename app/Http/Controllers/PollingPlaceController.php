@@ -212,16 +212,15 @@ class PollingPlaceController extends Controller
     {
         DB::beginTransaction();
         try {
-            // Menghapus TPS dari database
+            $isUsed = DB::table('votes')->where('polling_place_id', $tp->id)->exists();
+            if ($isUsed) {
+                return redirect()->back()->with('error', 'Cannot delete this TPS because it is being used in other records.');
+            }
             $tp->delete();
-
-            // Redirect ke halaman index dengan pesan sukses
-
             DB::commit();
             return redirect()->route('polling_places.index')
                 ->with('success', 'Polling place deleted successfully.');
         } catch (\Exception $e) {
-            // Menangani kesalahan dan mengarahkan kembali dengan pesan error
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to delete polling place. Please try again.');
         }
