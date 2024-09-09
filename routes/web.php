@@ -24,6 +24,8 @@ use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
+use App\Mail\PostMail;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,4 +102,5 @@ Route::middleware(['verified', 'auth'])->group(function () {
     // Route untuk mengembalikan data event dalam bentuk JSON
     Route::get('/getAgenda', [AgendaController::class, 'getAgendas'])->name('getAgenda');
     // Route::get('/map',[MapController::class,'index'])->name('map');
+    Route::get('/user-pending',[UserController::class,'pending'])->name('user.pending');
 });

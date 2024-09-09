@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\WilayahController;
+use App\Http\Controllers\Api\ChartController;
 use App\Http\Controllers\MapController;
 
 /*
@@ -32,5 +33,10 @@ Route::get('kecamatan/{id}', [WilayahController::class, 'show_kecamatan'])->name
 Route::get('kelurahan', [WilayahController::class, 'index_kelurahan'])->name('kelurahan.index');
 Route::get('kelurahan/{id}', [WilayahController::class, 'show_kelurahan'])->name('kelurahan.show');
 Route::get('map',[MapController::class,'index'])->name('map');
+
+//chart
+route::get('chart-vote',[ChartController::class, 'getVotesPerPartaiElection'])->name('chart');
+Route::get('/votes-per-election', [ChartController::class, 'getVotesByElection']);
+Route::get('/elections', [ChartController::class, 'getElections']);
 
 

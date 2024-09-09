@@ -47,7 +47,12 @@
                     <ul class="nav nav-collapse">
                         <li class="{{ Request::is('user*') ? 'active' : '' }}">
                             <a href="{{ route('user.index') }}">
-                                <span class="sub-item">Users</span>
+                                <span class="sub-item">All Users</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('user*') ? 'active' : '' }}">
+                            <a href="{{ route('user.pending') }}">
+                                <span class="sub-item">Users Pending</span>
                             </a>
                         </li>
                         <li class="{{ Request::is('role*') ? 'active' : '' }}">

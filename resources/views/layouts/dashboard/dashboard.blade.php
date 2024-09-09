@@ -6,22 +6,21 @@
         @include('dashboard.admin.dashboard.index')
     @elseif (auth()->user()->hasRole('Super Admin'))
         @include('dashboard.superadmin.dashboard.index')
-    @elseif (auth()->user()->hasRole('Relawan RDW'))
-        @include('dashboard.relawan.dashboard.index')
+    {{-- @elseif (auth()->user()->hasRole('Relawan RDW'))
+        @include('landingpage.index')
     @elseif (auth()->user()->hasRole('Saksi'))
-        @include('dashboard.saksi.dashboard.index')
+        @include('landingpage.index') --}}
     @elseif (auth()->user()->hasRole('Koordinator'))
         @include('dashboard.koordinator.dashboard.index')
     @elseif (auth()->user()->hasRole('Pimpinan'))
         @include('dashboard.pimpinan.dashboard.index')
-    @elseif (auth()->user()->hasRole('Pemilih'))
-        @include('dashboard.pemilih.dashboard.index')
+    {{-- @elseif (auth()->user()->hasRole('Pemilih'))
+        @include('landingpage.index')
     @elseif (auth()->user()->hasRole('Simpatisan'))
-        @include('dashboard.simpatisan.dashboard.index')
+        @include('landingpage.index')
     @elseif (auth()->user()->hasRole('Lain-lain'))
-        @include('dashboard.lain-lain.dashboard.index')
-
+        @include('landingpage.index') --}}
     @else
-        {{-- @include('dashboard.superadmin.dashboard.index') --}}
+        @include('landingpage.app')
     @endif
 @endsection

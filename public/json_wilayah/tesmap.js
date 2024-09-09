@@ -91,12 +91,15 @@ axios.get('/api/map').then(response => {
                 "candidate": vote.candidate_name,
                 "partai": vote.partai_name,
                 "vote_count": vote.vote_count,
-                "partai_color": vote.partai_color
+                "partai_color": vote.partai_color,
+                "marker-color": "#ed0707",
+                "marker-size": "medium",
+                "marker-symbol": "circle-stroked"
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [vote.longitude, vote.latitude]
-            }
+            },
         }))
     };
 
