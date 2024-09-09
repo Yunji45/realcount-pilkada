@@ -14,6 +14,7 @@ class Election extends Model
         'name',
         'start_date',
         'end_date',
+        'type',
     ];
 
     public function candidate()

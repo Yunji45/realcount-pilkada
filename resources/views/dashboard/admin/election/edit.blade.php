@@ -40,11 +40,26 @@
                         <div class="card-body">
                             <div class="row">
                                 <!-- Nama Partai -->
-                                <div class="col-md-6 col-lg-12">
+                                <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="name">Nama Partai</label>
                                         <input type="text" name="name" class="form-control" id="name"
                                             value="{{ $election->name }}" required />
+                                    </div>
+                                </div>
+
+                                <!-- Jenis Pemilu -->
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="name">Jenis Pemilu</label>
+                                        <select class="form-select" name="type" id="type" required>
+                                            <option value="" disabled {{ old('type', $election->type) === '' ? 'selected' : '' }}>
+                                                Pilih Jenis Pemilu</option>
+                                            <option value="Perorang"
+                                                {{ old('type', $election->type) === 'Perorang' ? 'selected' : '' }}>Perorang</option>
+                                            <option value="Partai" {{ old('type', $election->type) === 'Partai' ? 'selected' : '' }}>
+                                                Partai</option>
+                                        </select>
                                     </div>
                                 </div>
 

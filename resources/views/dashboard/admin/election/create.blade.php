@@ -37,10 +37,22 @@
                         <div class="card-body">
                             <div class="row">
                                 <!-- Nama Pemilu -->
-                                <div class="col-md-6 col-lg-12">
+                                <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="name">Nama Pemilu</label>
                                         <input type="text" name="name" class="form-control" id="name" required />
+                                    </div>
+                                </div>
+
+                                <!-- Jenis Pemilu -->
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="name">Jenis Pemilu</label>
+                                        <select class="form-select" name="type" id="type" required>
+                                            <option value="" selected disabled></option>
+                                            <option value="Perorang">Perorang</option>
+                                            <option value="Partai">Partai</option>
+                                        </select>
                                     </div>
                                 </div>
 

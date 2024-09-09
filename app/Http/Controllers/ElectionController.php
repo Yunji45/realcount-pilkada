@@ -44,6 +44,7 @@ class ElectionController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'start_date' => ['required', 'date'],
                 'end_date' => ['required', 'date', 'after_or_equal:start_date'],
+                'type' => ['required', 'string', 'max:255']
             ]);
 
             if ($validator->fails()) {
@@ -54,6 +55,7 @@ class ElectionController extends Controller
                 'name' => $request->name,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
+                'type' => $request->type,
             ]);
 
             DB::commit();
@@ -97,9 +99,10 @@ class ElectionController extends Controller
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'name' => ['required', 'string', 'max:255'],
-                'start_date' => ['required', 'date'],
-                'end_date' => ['required', 'date', 'after_or_equal:start_date'],
+                'name' => ['sometimes', 'required', 'string', 'max:255'],
+                'start_date' => ['sometimes', 'required', 'date'],
+                'end_date' => ['sometimes', 'required', 'date', 'after_or_equal:start_date'],
+                'type' => ['sometimes', 'required', 'string', 'max:255']
             ]);
 
             if ($validator->fails()) {
@@ -110,6 +113,7 @@ class ElectionController extends Controller
                 'name' => $request->name,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
+                'type' => $request->type,
             ]);
 
             DB::commit();

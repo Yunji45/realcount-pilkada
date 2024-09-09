@@ -45,9 +45,9 @@ Route::get('/send-email',function(){
         'name' => 'Syahrizal As',
         'body' => 'Testing Kirim Email di Santri Koding'
     ];
-   
+
     Mail::to('ihyanatikwibowo@gmail.com')->send(new PostMail($data));
-   
+
     dd("Email Berhasil dikirim.");
 });
 
@@ -96,6 +96,10 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
     Route::get('/get-kelurahan/{kecamatanId}', [PollingPlaceController::class, 'getKelurahan'])->name('get.kelurahan');
+
+    Route::get('/get-kabupaten-home/{provinsiId}', [HomeAdminController::class, 'getKabupaten'])->name('get.kabupaten');
+    Route::get('/get-kecamatan-home/{kabupatenId}', [HomeAdminController::class, 'getKecamatan'])->name('get.kecamatan');
+    Route::get('/get-kelurahan-home/{kecamatanId}', [HomeAdminController::class, 'getKelurahan'])->name('get.kelurahan');
 
     // Route untuk mengembalikan data event dalam bentuk JSON
     Route::get('/getAgenda', [AgendaController::class, 'getAgendas'])->name('getAgenda');

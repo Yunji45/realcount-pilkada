@@ -141,11 +141,16 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Chart 1</div>
+                        <div class="card-title">Vote Perorangan</div>
                     </div>
                     <div class="card-body">
                         <div class="chart-container">
-                            <canvas id="doughnutChart1" style="width: 50%; height: 50%"></canvas>
+                            <center>
+                                {!! $votePerorang->container() !!}
+
+                                <script src="{{ $votePerorang->cdn() }}"></script>
+                                {{ $votePerorang->script() }}
+                            </center>
                         </div>
                     </div>
                 </div>
@@ -154,11 +159,16 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Chart 2</div>
+                        <div class="card-title">Vote Partai</div>
                     </div>
                     <div class="card-body">
                         <div class="chart-container">
-                            <canvas id="doughnutChart2" style="width: 50%; height: 50%"></canvas>
+                            <center>
+                                {!! $votePartai->container() !!}
+
+                                <script src="{{ $votePartai->cdn() }}"></script>
+                                {{ $votePartai->script() }}
+                            </center>
                         </div>
                     </div>
                 </div>
@@ -168,11 +178,74 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Bar Multi</div>
+                    <div class="card-title">Chart Bar TPS</div>
+                    <!-- Filter Form -->
+                    <style>
+                        .filter-form {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 1rem;
+                            align-items: center;
+                        }
+
+                        .form-group {
+                            margin: 0;
+                            flex: 1;
+                        }
+
+                        .form-select {
+                            width: 100%;
+                        }
+                    </style>
+
+                    <!-- Filter Form -->
+                    <form action="{{ route('admin.dashboard') }}" method="GET" class="filter-form">
+                        <div class="form-group">
+                            <label for="provinsi">Provinsi:</label>
+                            <select class="form-select" name="provinsi_id" id="provinsi">
+                                <option value="">Semua Provinsi</option>
+                                @foreach ($provinsis as $provinsi)
+                                    <option value="{{ $provinsi->id }}"
+                                        {{ request('provinsi_id') == $provinsi->id ? 'selected' : '' }}>
+                                        {{ $provinsi->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kabupaten">Kabupaten:</label>
+                            <select class="form-select" name="kabupaten_id" id="kabupaten">
+                                <option value="">Pilih Kabupaten</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kecamatan">Kecamatan:</label>
+                            <select class="form-select" name="kecamatan_id" id="kecamatan">
+                                <option value="">Pilih Kecamatan</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kelurahan">Kelurahan:</label>
+                            <select class="form-select" name="kelurahan_id" id="kelurahan">
+                                <option value="">Pilih Kelurahan</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </form>
+
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
-                        <canvas id="multipleBarChart" style="width: 50%; height: 50%"></canvas>
+                        <center>
+                            {!! $votePerTps->container() !!}
+
+                            <script src="{{ $votePerTps->cdn() }}"></script>
+                            {{ $votePerTps->script() }}
+                        </center>
                     </div>
                 </div>
             </div>
@@ -181,14 +254,14 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                  <div class="card-title">Bar Chart</div>
+                    <div class="card-title">Bar Chart</div>
                 </div>
                 <div class="card-body">
-                  <div class="chart-container">
-                    <canvas id="barChart"></canvas>
-                  </div>
+                    <div class="chart-container">
+                        <canvas id="barChart"></canvas>
+                    </div>
                 </div>
-              </div>
+            </div>
         </div>
 
         <div class="col-md-12">
@@ -205,7 +278,68 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // AJAX for loading dynamic data
+        $(document).ready(function() {
+            $('#provinsi').change(function() {
+                var provinsiId = $(this).val();
+                $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
+                $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (provinsiId) {
+                    $.ajax({
+                        url: '/get-kabupaten-home/' + provinsiId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kabupaten').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
 
+            $('#kabupaten').change(function() {
+                var kabupatenId = $(this).val();
+                $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (kabupatenId) {
+                    $.ajax({
+                        url: '/get-kecamatan-home/' + kabupatenId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kecamatan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#kecamatan').change(function() {
+                var kecamatanId = $(this).val();
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (kecamatanId) {
+                    $.ajax({
+                        url: '/get-kelurahan-home/' + kecamatanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kelurahan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
