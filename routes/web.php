@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\HomeAdminController;
-use App\Http\Controllers\Admin\HomeRelawanController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -10,13 +9,14 @@ use App\Http\Controllers\Api\WilayahController as DaerahController;
 use App\Http\Controllers\PollingPlaceController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CandidateController;
-use App\Http\Controllers\Admin\HomeKoordinatorController;
-use App\Http\Controllers\Admin\HomeLainyaController;
-use App\Http\Controllers\Admin\HomePemilihController;
-use App\Http\Controllers\Admin\HomePimpinanController;
-use App\Http\Controllers\Admin\HomeSaksiController;
-use App\Http\Controllers\Admin\HomeSimpatisanController;
-use App\Http\Controllers\Admin\HomeSuperAdminController;
+use App\Http\Controllers\Koordinator\HomeKoordinatorController;
+use App\Http\Controllers\Lainya\HomeLainyaController;
+use App\Http\Controllers\Pemilih\HomePemilihController;
+use App\Http\Controllers\Pimpinan\HomePimpinanController;
+use App\Http\Controllers\Saksi\HomeSaksiController;
+use App\Http\Controllers\Simpatisan\SuperAdmin\HomeSimpatisanController;
+use App\Http\Controllers\SuperAdmin\HomeSuperAdminController;
+use App\Http\Controllers\Relawan\HomeRelawanController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\PartaiController;
