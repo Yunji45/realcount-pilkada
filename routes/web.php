@@ -23,6 +23,8 @@ use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
+use App\Mail\PostMail;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth/login');
 });
+Route::get('/send-email',function(){
+    $data = [
+        'name' => 'Syahrizal As',
+        'body' => 'Testing Kirim Email di Santri Koding'
+    ];
+   
+    Mail::to('ihyanatikwibowo@gmail.com')->send(new PostMail($data));
+   
+    dd("Email Berhasil dikirim.");
+});
+
 
 Route::get('/home', function () {
     return view('layouts/dashboard/dashboard');
@@ -79,6 +92,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/articles' => ArticleController::class,
         '/agenda' => AgendaController::class,
     ]);
+    Route::post('/user-verifikasi/{user}',[UserController::class,'verifikasi'])->name('user.veifikasi');
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
     Route::get('/get-kelurahan/{kecamatanId}', [PollingPlaceController::class, 'getKelurahan'])->name('get.kelurahan');

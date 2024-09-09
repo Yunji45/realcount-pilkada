@@ -284,4 +284,14 @@ class UserController extends Controller
             return back()->with('error', 'User deletion failed');
         }
     }
+
+    public function verifikasi($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = 'Aktif';
+        $user->save();
+        session()->flash('success', 'Pengguna berhasil diverifikasi.');
+        return redirect()->back();
+
     }
+}

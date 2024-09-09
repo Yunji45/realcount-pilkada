@@ -55,6 +55,7 @@
                         <th>Name</th>
                         <th>Office</th>
                         <th>Nik</th>
+                        <th>Status</th>
                         <th style="width: 10%">Action</th>
                       </tr>
                     </thead>
@@ -64,6 +65,7 @@
                         <th>Name</th>
                         <th>Office</th>
                         <th>Nik</th>
+                        <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </tfoot>
@@ -74,6 +76,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ implode(', ', $user->roles->pluck('name')->toArray()) }}</td>
                             <td>{{ $user->nik }}</td>
+                            <td>{{ $user->status }}</td>
                             <td>
                                 <div class="form-button-action">
                                     <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
@@ -83,6 +86,11 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
                                     </form>
+                                    <form action="{{ route('user.verifikasi', $user->id) }}" method="POST" style="display:inline-block;">
+                                      @csrf
+                                      <button type="submit" class="btn btn-success">Verifikasi</button>
+                                    </form>
+          
                                 </div>
                             </td>
                         </tr>

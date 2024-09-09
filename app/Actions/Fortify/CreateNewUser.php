@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use App\Notifications\UserRegistered;
+use Illuminate\Support\Facades\Redirect;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -56,19 +58,19 @@ class CreateNewUser implements CreatesNewUsers
 
             // Assign role to the user
             $user->assignRole($input['role']);
+            // $user->notify(new UserRegistered($user));
 
             // Show success toast
             session()->flash('success', 'User berhasil dibuat.');
+            throw new \Illuminate\Auth\AuthenticationException('User belum dapat akses login.');
 
-            return $user;
-
+            // return $user;
         } catch (\Exception $e) {
             // Show error toast in case of failure
-            session()->flash('error', 'Gagal membuat user. ' . $e->getMessage());
+            // session()->flash('error', 'Gagal membuat user. ' . $e->getMessage());
 
-            return redirect()->back();
+            // return redirect()->back();
+            throw $e;
         }
     }
-
-
 }
