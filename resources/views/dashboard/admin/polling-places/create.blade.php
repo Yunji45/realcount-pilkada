@@ -105,7 +105,7 @@
                                             <div id="map" style="height: 400px;"></div>
                                             <input type="hidden" name="latitude" id="latitude" >
                                             <input type="hidden" name="longitude" id="longitude">
-                                        </div>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -184,29 +184,29 @@
     <script>
         // Inisialisasi peta
         var map = L.map('map').setView([{{ $kegiatan->latitude ?? '-6.200000' }}, {{ $kegiatan->longitude ?? '106.816666' }}], 13);
-    
+
         // Tambahkan layer peta
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-    
+
         // Marker awal
         var marker = L.marker([{{ $kegiatan->latitude ?? '-6.200000' }}, {{ $kegiatan->longitude ?? '106.816666' }}]).addTo(map);
-    
+
         // Fungsi untuk memperbarui marker dan koordinat
         function updateMarker(lat, lng) {
             marker.setLatLng([lat, lng]);
             document.getElementById('latitude').value = lat;
             document.getElementById('longitude').value = lng;
         }
-    
+
         // Pindahkan marker berdasarkan klik pada peta
         map.on('click', function (e) {
             var lat = e.latlng.lat;
             var lng = e.latlng.lng;
             updateMarker(lat, lng);
         });
-    
+
         // Tambahkan Geocoder Control untuk pencarian langsung di dalam peta
         L.Control.geocoder({
             defaultMarkGeocode: false
@@ -226,7 +226,7 @@
             // Anda bisa menggunakan variabel `year` sesuai kebutuhan
         });
     </script>
-    
-    
-    
+
+
+
 @endsection

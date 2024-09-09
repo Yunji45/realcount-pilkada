@@ -1,30 +1,38 @@
 @extends('layouts.dashboard.app')
 
+@section('title')
+    Pilkada | {{ $title }}
+@endsection
+
 @section('content')
-    <div class="container">
-        <h1>{{ $article->title }}</h1>
-
-        <!-- Tampilkan gambar jika ada -->
-        @if ($article->image)
-            <div class="mb-4">
-                <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}" width="300">
-            </div>
-        @endif
-
-        <!-- Tampilkan konten artikel -->
-        <div class="mb-4">
-            <p>{{ $article->content }}</p>
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3 text-center">{{ $article->title }}</h3>
         </div>
+        <div class="card">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    @if ($article->image)
+                        <div class="mb-4 text-center">
+                            <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}" class="img-fluid"
+                                 style="max-width: 40%; height: auto; border-radius:10px; object-fit:cover;margin-top:30px">
+                        </div>
+                    @endif
 
-        <!-- Tombol aksi -->
-        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-warning">Edit</a>
+                    <div class="mb-4">
+                        <b>Created on:</b> {{ $article->created_at->format('Y-m-d H:i:s') }}
+                        <hr>
+                        <p style="text-align: justify; line-height: 1.6; font-size: 16px;">
+                            {{ $article->content }}
+                        </p>
+                    </div>
 
-        <form action="{{ route('articles.destroy', $article->id) }}" method="POST" style="display:inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
-        </form>
-
-        <a href="{{ route('articles.index') }}" class="btn btn-secondary">Back to Articles</a>
+                    <div class="d-flex justify-content-end mb-4">
+                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-warning me-2">Edit</a>
+                        <a href="{{ route('articles.index') }}" class="btn btn-secondary">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

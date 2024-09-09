@@ -1,39 +1,90 @@
 @extends('layouts.dashboard.app')
 
+@section('title', 'Pilkada | {{ $title }}')
+
 @section('content')
-    <div class="container">
-        <h1>Create New Article</h1>
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">{{ $type }} {{ $title }}</h3>
+            <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <a href="{{ route('admin.dashboard') }}">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('articles.index') }}">{{ $type }}</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">{{ $title }}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Form {{ $type }} {{ $title }}</div>
+                    </div>
+                    <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Nama articles -->
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="name">Nama Artikel</label>
+                                        <input type="text" name="title" class="form-control" id="name"
+                                            value="{{ old('title') }}" required />
+                                    </div>
+                                </div>
 
-        <!-- Tampilkan pesan error jika ada -->
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                                <!-- Logo articles -->
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="logo">Images (Opsional)</label>
+                                        <input type="file" name="image" class="form-control" id="logo" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="color">Konten</label>
+                                        <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content') }}</textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Kategori Artikel -->
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="category">Kategori Artikel</label>
+                                        <select name="category_article_id" class="form-control" required>
+                                            <option value="">-- Pilih Kategori --</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}" {{ old('category_article_id') == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->category_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="card-action">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                            <a href="{{ route('articles.index') }}" class="btn btn-danger">Cancel</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        @endif
-
-        <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="content">Content:</label>
-                <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content') }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="image">Image (optional):</label>
-                <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Create Article</button>
-            <a href="{{ route('articles.index') }}" class="btn btn-secondary">Cancel</a>
-        </form>
+        </div>
     </div>
 @endsection

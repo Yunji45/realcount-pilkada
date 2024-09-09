@@ -105,12 +105,34 @@
                     <p>Kegiatan</p>
                 </a>
             </li>
-            <li class="nav-item {{ Request::is('articles*') ? 'active' : '' }}">
-                <a href="{{ route('articles.index') }}">
-                    <i class="fas fa-desktop"></i>
+
+            <li class="nav-item {{ Request::is('articles*', 'category_articles*') ? 'active' : '' }}">
+                <a data-bs-toggle="collapse" href="#berita"
+                    class="collapsed {{ Request::is('articles*', 'category_articles*') ? '' : 'collapsed' }}"
+                    aria-expanded="{{ Request::is('articles*', 'category_articles*') ? 'true' : 'false' }}">
+                    <i class="fas fa-users"></i>
                     <p>Berita</p>
+                    <span class="caret"></span>
                 </a>
+                <div class="collapse {{ Request::is('articles*', 'category_articles*') ? 'show' : '' }}"
+                    id="berita">
+                    <ul class="nav nav-collapse">
+                        <li class="{{ Request::is('articles*') ? 'active' : '' }}">
+                            <a href="{{ route('articles.index') }}">
+                                <span class="sub-item">Berita</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('category_articles*') ? 'active' : '' }}">
+                            <a href="{{ route('category_articles.index') }}">
+                                <span class="sub-item">Kategori Artikel</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
             </li>
+
+
         </ul>
     </div>
 </div>
