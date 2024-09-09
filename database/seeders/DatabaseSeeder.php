@@ -21,6 +21,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserSeeder::class);
         $this->call(FromJsonSeeder::class);
-
+        $this->call(PartaiSeeder::class);
+        $this->call(PemiluSeeder::class);
+        $this->call(CandidateSeeder::class);
+        $this->call(TPSSeeder::class);
+        $this->call(VoteSeeder::class);
     }
 }

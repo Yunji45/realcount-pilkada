@@ -20,18 +20,21 @@ info.addTo(map);
 
 // Get color based on vote count (optional)
 function getColor(d) {
-    return d > 1000 ? '#800026' :
-           d > 500  ? '#BD0026' :
-           d > 200  ? '#E31A1C' :
-           d > 100  ? '#FC4E2A' :
-           d > 50   ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
-           d > 10   ? '#FED976' : '#FFEDA0';
+    // return d > 1000 ? '#800026' :
+    //        d > 500  ? '#BD0026' :
+    //        d > 200  ? '#E31A1C' :
+    //        d > 100  ? '#FC4E2A' :
+    //        d > 50   ? '#FD8D3C' :
+    //        d > 20   ? '#FEB24C' :
+    //        d > 10   ? '#FED976' : '#FFEDA0';
+    return feature.properties.partai_color || '#FFEDA0'; // Default color jika partai_color tidak ada
+
 }
 function style(feature) {
     return {
         radius: 8,
-        fillColor: getColor(feature.properties.vote_count),
+        // fillColor: getColor(feature.properties.vote_count),
+        fillColor: getColor(feature),  // Gunakan partai_color untuk warna marker
         color: "#000",
         weight: 1,
         opacity: 1,
@@ -91,12 +94,15 @@ axios.get('/api/map').then(response => {
                 "candidate": vote.candidate_name,
                 "partai": vote.partai_name,
                 "vote_count": vote.vote_count,
-                "partai_color": vote.partai_color
+                "partai_color": vote.partai_color,
+                "marker-color": "#ed0707",
+                "marker-size": "medium",
+                "marker-symbol": "circle-stroked"
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [vote.longitude, vote.latitude]
-            }
+            },
         }))
     };
 
