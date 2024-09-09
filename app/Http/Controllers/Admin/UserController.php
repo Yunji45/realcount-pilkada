@@ -20,9 +20,33 @@ class UserController extends Controller
     {
         $title = 'User';
         $type = 'User Management';
-        $users = User::all();
+        $roles = Role::all();
+        // $users = User::all();
+        $query = User::query();
 
-        return view('dashboard.admin.user-management.users.index', compact('users','title','type'));
+        // Filter berdasarkan role
+        if ($request->has('role') && $request->role) {
+            $role = $request->role;
+            $query->whereHas('roles', function ($q) use ($role) {
+                $q->where('name', $role);
+            });
+        }
+        // Filter berdasarkan status
+        if ($request->has('status') && $request->status) {
+            $status = $request->status;
+            $query->where('status', $status);
+        }
+        $users = $query->get();
+        return view('dashboard.admin.user-management.users.index', compact('users','title','type','roles'));
+    }
+
+    public function pending()
+    {
+        $title = 'User';
+        $type = 'User Management Pending';
+        $users = User::where('status', 'Pending')->get();
+        return view('dashboard.admin.user-management.users.verifikasi', compact('title', 'type', 'users'));
+
     }
 
 

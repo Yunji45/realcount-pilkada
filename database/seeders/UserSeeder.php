@@ -144,5 +144,78 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole($saksiRole);
         //END:Saksi
+
+        $pemilihRole = Role::where('name', 'Pemilih')->first();
+        $saksiRole = Role::where('name', 'Saksi')->first();
+        $relawanRole = Role::where('name', 'Relawan RDW')->first();
+        $simpatisanRole = Role::where('name', 'Simpatisan')->first();
+        $lainnyaRole = Role::where('name', 'Lain-lain')->first();
+
+        // Seeder untuk role Pemilih
+        for ($i = 1; $i <= 10; $i++) {
+            $user = User::factory()->create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => bcrypt('qwerty12'),
+                'address' => $faker->address,
+                'status' => 'Pending',
+                'nik' => $faker->nik,
+            ]);
+            $user->assignRole($pemilihRole);
+        }
+
+        // Seeder untuk role Saksi
+        for ($i = 1; $i <= 10; $i++) {
+            $user = User::factory()->create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => bcrypt('qwerty12'),
+                'address' => $faker->address,
+                'status' => 'Aktif',
+                'nik' => $faker->nik,
+            ]);
+            $user->assignRole($saksiRole);
+        }
+
+        // Seeder untuk role Relawan RDW
+        for ($i = 1; $i <= 10; $i++) {
+            $user = User::factory()->create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => bcrypt('qwerty12'),
+                'address' => $faker->address,
+                'status' => 'Aktif',
+                'nik' => $faker->nik,
+            ]);
+            $user->assignRole($relawanRole);
+        }
+
+        // Seeder untuk role Simpatisan
+        for ($i = 1; $i <= 10; $i++) {
+            $user = User::factory()->create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => bcrypt('qwerty12'),
+                'address' => $faker->address,
+                'status' => 'Aktif',
+                'nik' => $faker->nik,
+            ]);
+            $user->assignRole($simpatisanRole);
+        }
+
+        // Seeder untuk role Lain-lain
+        for ($i = 1; $i <= 10; $i++) {
+            $user = User::factory()->create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => bcrypt('qwerty12'),
+                'address' => $faker->address,
+                'status' => 'Aktif',
+                'nik' => $faker->nik,
+            ]);
+            $user->assignRole($lainnyaRole);
+        }
     }
+
+    
 }
