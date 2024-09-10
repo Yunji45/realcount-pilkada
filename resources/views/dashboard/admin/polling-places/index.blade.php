@@ -45,6 +45,7 @@
                                         <th>Kecamatan</th>
                                         <th>Kelurahan</th>
                                         <th>DPT</th>
+                                        <th>RW</th>
                                         <th>Periode</th>
                                         <th>Status</th>
                                         <th style="width: 10%">Action</th>
@@ -57,6 +58,7 @@
                                         <th>Kecamatan</th>
                                         <th>Kelurahan</th>
                                         <th>DPT</th>
+                                        <th>RW</th>
                                         <th>Periode</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -70,6 +72,7 @@
                                             <td>{{ $tp->kecamatan->name }}</td>
                                             <td>{{ $tp->kelurahan->name }}</td>
                                             <td>{{ $tp->DPT }}</td>
+                                            <td>{{ $tp->rw }}</td>
                                             <td>{{ \Carbon\Carbon::parse($tp->periode)->format('Y') }}</td>
                                             <td>{{ $tp->status }}</td>
                                             <td>

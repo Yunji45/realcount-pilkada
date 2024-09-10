@@ -25,6 +25,8 @@ use App\Http\Controllers\VoteController;
 use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
 use App\Mail\PostMail;
+use App\Models\Kelurahan;
+use App\Models\PollingPlace;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -57,6 +59,11 @@ Route::get('/home', function () {
     return view('layouts/dashboard/dashboard');
 });
 
+// Route untuk mengambil kelurahan berdasarkan kecamatan
+Route::get('/get-kabupatens/{provinsi_id}', [VoteController::class, 'getKabupatens']);
+Route::get('/get-kecamatans/{kabupaten_id}', [VoteController::class, 'getKecamatans']);
+Route::get('/get-kelurahans/{kecamatan_id}', [VoteController::class, 'getKelurahans']);
+Route::get('/get-polling-places/{kelurahan_id}', [VoteController::class, 'getPollingPlaces']);
 
 // Dashboard Home
 Route::get('/superadmin/dashboard', [HomeSuperAdminController::class, 'index'])->name('superadmin.dashboard');
