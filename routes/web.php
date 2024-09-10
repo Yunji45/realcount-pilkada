@@ -41,7 +41,7 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/', function () {
     return view('auth/login');
 });
-Route::get('/send-email',function(){
+Route::get('/send-email', function () {
     $data = [
         'name' => 'Syahrizal As',
         'body' => 'Testing Kirim Email di Santri Koding'
@@ -60,7 +60,6 @@ Route::get('/home', function () {
 
 // Dashboard Home
 Route::get('/superadmin/dashboard', [HomeSuperAdminController::class, 'index'])->name('superadmin.dashboard');
-Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/relawan/dashboard', [HomeRelawanController::class, 'index'])->name('relawan.dashboard');
 Route::get('/saksi/dashboard', [HomeSaksiController::class, 'index'])->name('saksi.dashboard');
 Route::get('/koordinator/dashboard', [HomeKoordinatorController::class, 'index'])->name('koordinator.dashboard');
@@ -94,6 +93,8 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/category_articles' => CategoryArticleController::class,
         '/agenda' => AgendaController::class,
     ]);
+    Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
+
     Route::post('/user-verifikasi/{user}', [UserController::class, 'verifikasi'])->name('user.veifikasi');
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
@@ -106,5 +107,5 @@ Route::middleware(['verified', 'auth'])->group(function () {
     // Route untuk mengembalikan data event dalam bentuk JSON
     Route::get('/getAgenda', [AgendaController::class, 'getAgendas'])->name('getAgenda');
     // Route::get('/map',[MapController::class,'index'])->name('map');
-    Route::get('/user-pending',[UserController::class,'pending'])->name('user.pending');
+    Route::get('/user-pending', [UserController::class, 'pending'])->name('user.pending');
 });

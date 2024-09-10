@@ -4,33 +4,106 @@ namespace App\Http\Controllers\Admin;
 
 use App\Charts\VotePerorangChart;
 use App\Charts\VotePartaiChart;
-use App\Charts\VotePerPollingPlaceChart;
+use App\Charts\VotePerPollingPlacePartaiChart;
+use App\Charts\VotePerPollingPlacePerorangChart;
 use App\Http\Controllers\Controller;
+use App\Models\Election;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\User;
+use App\Models\Vote;
 use Illuminate\Http\Request;
 
 class HomeAdminController extends Controller
 {
-    public function index(Request $request, VotePerorangChart $votePerorang, VotePartaiChart $votePartai, VotePerPollingPlaceChart $votePerTps)
+    public function index(Request $request, VotePerorangChart $votePerorang, VotePartaiChart $votePartai, VotePerPollingPlacePerorangChart $votePerTpsPerorang, VotePerPollingPlacePartaiChart $votePerTpsPartai)
     {
+        //Koordinator
+        $koordinatorAktif = User::role('Koordinator')
+            ->where('status', 'Aktif')
+            ->count();
+        $koordinatorNonaktif = User::role('Koordinator')
+            ->where('status', 'Nonaktif')
+            ->count();
+
+        //Pemilih
+        $pemilihAktif = User::role('Pemilih')
+            ->where('status', 'Aktif')
+            ->count();
+        $pemilihNonaktif = User::role('Pemilih')
+            ->where('status', 'Nonaktif')
+            ->count();
+
+        //Saksi
+        $saksiAktif = User::role('Saksi')
+            ->where('status', 'Aktif')
+            ->count();
+        $saksiNonaktif = User::role('Saksi')
+            ->where('status', 'Nonaktif')
+            ->count();
+
+        //Relawan RDW
+        $relawanRdwAktif = User::role('Relawan RDW')
+            ->where('status', 'Aktif')
+            ->count();
+        $relawanRdwNonaktif = User::role('Relawan RDW')
+            ->where('status', 'Nonaktif')
+            ->count();
+
+        //Simpatisan
+        $simpatisanAktif = User::role('Simpatisan')
+            ->where('status', 'Aktif')
+            ->count();
+        $simpatisanNonaktif = User::role('Simpatisan')
+            ->where('status', 'Nonaktif')
+            ->count();
+
+        //Lain-lain
+        $lainLainAktif = User::role('Lain-lain')
+            ->where('status', 'Aktif')
+            ->count();
+        $lainLainNonaktif = User::role('Lain-lain')
+            ->where('status', 'Nonaktif')
+            ->count();
+
         $provinsis = Provinsi::all();
+        $electionsPerorangs = Election::where('type', 'Perorang')
+            ->get();
+        $electionsPartais = Election::where('type', 'Partai')
+            ->get();
 
         $filter = [
             'provinsi_id' => $request->input('provinsi_id'),
             'kabupaten_id' => $request->input('kabupaten_id'),
             'kecamatan_id' => $request->input('kecamatan_id'),
-            'kelurahan_id' => $request->input('kelurahan_id')
+            'kelurahan_id' => $request->input('kelurahan_id'),
+            'election_id' => $request->input('election_id'),
         ];
 
         // Return view with initial data and chart
         return view('dashboard.admin.dashboard.index', [
+            'koordinatorAktif' => $koordinatorAktif,
+            'koordinatorNonaktif' => $koordinatorNonaktif,
+            'pemilihAktif' => $pemilihAktif,
+            'pemilihNonaktif' => $pemilihNonaktif,
+            'saksiAktif' => $saksiAktif,
+            'saksiNonaktif' => $saksiNonaktif,
+            'relawanRdwAktif' => $relawanRdwAktif,
+            'relawanRdwNonaktif' => $relawanRdwNonaktif,
+            'simpatisanAktif' => $simpatisanAktif,
+            'simpatisanNonaktif' => $simpatisanNonaktif,
+            'lainLainAktif' => $lainLainAktif,
+            'lainLainNonaktif' => $lainLainNonaktif,
+
             'votePerorang' => $votePerorang->build(),
             'votePartai' => $votePartai->build(),
-            'votePerTps' => $votePerTps->build($filter),
+            'votePerTpsPerorang' => $votePerTpsPerorang->build($filter),
+            'votePerTpsPartai' => $votePerTpsPartai->build($filter),
             'provinsis' => $provinsis,
+            'electionsPerorangs' => $electionsPerorangs,
+            'electionsPartais' => $electionsPartais,
         ]);
     }
 
