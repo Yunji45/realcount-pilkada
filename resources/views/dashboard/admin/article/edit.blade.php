@@ -15,7 +15,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.articles.update', $article->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('articles.update', $article->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -26,8 +26,21 @@
 
             <div class="form-group">
                 <label for="content">Content:</label>
-                <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content', $article->content) }}</textarea>
+                <input id="content" type="hidden" name="content" value="{{ old('content', $article->content ?? '') }}">
+                <trix-editor input="content"></trix-editor>
             </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select class="form-control" id="category" name="category" required>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->category }}" 
+                            {{ old('category', $article->category) == $category->category ? 'selected' : '' }}>
+                            {{ $category->category }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>            
 
             <div class="form-group">
                 <label for="image">Current Image:</label><br>
@@ -42,7 +55,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Update Article</button>
-            <a href="{{ route('admin.articles.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('articles.index') }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 @endsection

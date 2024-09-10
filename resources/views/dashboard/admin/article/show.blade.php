@@ -13,7 +13,7 @@
 
         <!-- Tampilkan konten artikel -->
         <div class="mb-4">
-            <p>{{ $article->content }}</p>
+            <p>{!! $article->content !!}</p>
         </div>
 
         <!-- Tombol aksi -->

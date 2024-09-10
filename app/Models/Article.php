@@ -13,5 +13,7 @@ class Article extends Model
         'title',
         'content',
         'image', // Kolom gambar yang baru ditambahkan
+        'category',
+        'click-count',
     ];
 }

@@ -24,12 +24,19 @@
 
             <div class="form-group">
                 <label for="content">Content:</label>
-                <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content') }}</textarea>
+                <input id="content" type="hidden" name="content" value="{{ old('content') }}">
+                <trix-editor input="content"></trix-editor>
             </div>
+            
 
             <div class="form-group">
                 <label for="image">Image (optional):</label>
                 <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" class="form-control" id="category" name="category" value="{{ old('category') }}" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Create Article</button>

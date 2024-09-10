@@ -25,6 +25,18 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 // Route::get('/map', [DaerahController::class, 'map'])->name('map');
+Route::get('/login', function () {
+    return view('auth/login');
+})->name('login');
+
+
+Route::get('/', function () {
+    return view('landingpage.app');
+});
+
+Route::get('/berita', [ArticleController::class, 'showLandingPage'])->name('landingpage');
+Route::get('/category/{category}', [ArticleController::class, 'showByCategory'])->name('category.show');
+Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
 Route::get('/',[ArticleController::class,'showLandingPage'])->name('landingpage');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
