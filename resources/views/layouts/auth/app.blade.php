@@ -145,7 +145,7 @@
     }
 
     .img-preview {
-        width: 400px;
+        width: 320px;
         height: auto;
         margin-top: 10px;
         border: 2px solid #ddd;
@@ -299,6 +299,26 @@
             align-items: flex-start;
         }
     }
+
+    /* Media Query untuk layar kecil */
+    @media only screen and (max-width: 768px) {
+        .login-logo {
+            display: block;
+            /* Tampilkan logo */
+            width: 150px;
+            /* Sesuaikan ukuran logo */
+            height: auto;
+            margin: 0 auto;
+            /* Logo berada di tengah */
+        }
+    }
+
+    /* Media Query untuk layar besar */
+    @media only screen and (min-width: 769px) {
+        .login-logo {
+            display: none;
+        }
+    }
 </style>
 
 
@@ -311,7 +331,7 @@
         if (file) {
             const reader = new FileReader();
 
-            reader.onloadend = function () {
+            reader.onloadend = function() {
                 preview.src = reader.result;
                 preview.style.display = 'block'; // Tampilkan preview KTP
                 fileNameSpan.textContent = file.name; // Tampilkan nama file
