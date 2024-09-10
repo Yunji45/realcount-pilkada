@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->foreignId('partai_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('election_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('partai_id')->constrained()->restrictOnDelete();
+            $table->foreignId('election_id')->constrained()->restrictOnDelete();
             $table->string('vision');
             $table->string('mision');
             $table->text('photo')->nullable();

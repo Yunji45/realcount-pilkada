@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Partai;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -169,9 +170,12 @@ class PartaiController extends Controller
             DB::commit();
 
             return redirect()->route('partai.index')->with('success', 'Partai deleted successfully');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return back()->with('error', 'Partai deletion failed. The partai is still referenced in another table.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->with('error', 'Partai deletion failed');
+            return back()->with('error', 'An unexpected error occurred.');
         }
     }
 }

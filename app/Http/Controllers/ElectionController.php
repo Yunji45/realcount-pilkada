@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Election;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +18,7 @@ class ElectionController extends Controller
         $elections = Election::all();
         $title = "Pemilu";
 
-        return view('dashboard.admin.election.index',  compact('elections', 'title'));
+        return view('dashboard.admin.election.index', compact('elections', 'title'));
         // return $elections;
     }
 
@@ -128,18 +129,27 @@ class ElectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(Election $election)
     {
         DB::beginTransaction();
         try {
+            // Hapus election
             $election->delete();
 
             DB::commit();
 
-            return redirect()->route('election.index')->with('success', 'Election deleted successfully');
-        } catch (\Throwable $th) {
+            return redirect()->route('election.index')
+                ->with('success', 'Election deleted successfully');
+        } catch (QueryException $e) {
+            // Rollback jika terjadi error terkait basis data
             DB::rollBack();
-            return back()->with('error', 'Election deletion failed');
+            return back()->with('error', 'Cannot delete this election because it is being used in other records.');
+        } catch (\Throwable $th) {
+            // Rollback jika terjadi kesalahan umum
+            DB::rollBack();
+            return back()->with('error', 'Election deletion failed. Please try again.');
         }
     }
+
 }

@@ -7,6 +7,7 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\PollingPlace;
 use App\Models\Provinsi;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -109,10 +110,10 @@ class PollingPlaceController extends Controller
             //     'message' => 'Polling place created successfully.',
             //     'data' => $tps
             // ], 201); // 201 = Created
-    
+
         } catch (\Exception $e) {
             DB::rollBack();
-    
+
             // Logging error untuk debugging (optional)
             Log::error('Error creating polling place: ' . $e->getMessage());
 
@@ -208,21 +209,27 @@ class PollingPlaceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(PollingPlace $tp)
     {
         DB::beginTransaction();
         try {
-            $isUsed = DB::table('votes')->where('polling_place_id', $tp->id)->exists();
-            if ($isUsed) {
-                return redirect()->back()->with('error', 'Cannot delete this TPS because it is being used in other records.');
-            }
+            // Hapus partai
             $tp->delete();
+
             DB::commit();
+
             return redirect()->route('polling_places.index')
-                ->with('success', 'Polling place deleted successfully.');
-        } catch (\Exception $e) {
+                ->with('success', 'Party deleted successfully.');
+        } catch (QueryException $e) {
+            // Rollback jika terjadi error terkait basis data
             DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to delete polling place. Please try again.');
+            return redirect()->back()->with('error', 'Cannot delete this party because it is being used in other records.');
+        } catch (\Exception $e) {
+            // Rollback jika terjadi kesalahan umum
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to delete party. Please try again.');
         }
     }
+
 }

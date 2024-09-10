@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use App\Models\Election;
 use App\Models\Partai;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -186,10 +187,12 @@ class CandidateController extends Controller
             DB::commit();
 
             return redirect()->route('candidate.index')->with('success', 'Candidate deleted successfully');
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (QueryException $e) {
             DB::rollBack();
-            return back()->with('error', 'Candidate deleted failed');
+            return back()->with('error', 'Candidate deletion failed. The candidate is still referenced in another table.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', 'An unexpected error occurred.');
         }
     }
 }

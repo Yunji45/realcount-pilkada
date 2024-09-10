@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Candidate;
 use App\Models\PollingPlace;
 use App\Models\Vote;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -73,7 +74,7 @@ class VoteController extends Controller
             return redirect()->route('vote.index')->with('success', 'Vote cast successfully');
         } catch (\Exception $e) {
             DB::rollBack();
-    
+
             return back()->with('error', 'Vote casting failed');
         }
     }
@@ -143,6 +144,7 @@ class VoteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(Vote $vote)
     {
         DB::beginTransaction();
@@ -152,9 +154,13 @@ class VoteController extends Controller
             DB::commit();
 
             return redirect()->route('vote.index')->with('success', 'Vote deleted successfully');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return back()->with('error', 'Vote deletion failed. The vote is still referenced in another table.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->with('error', 'Vote deletion failed');
+            return back()->with('error', 'An unexpected error occurred.');
         }
     }
+
 }
