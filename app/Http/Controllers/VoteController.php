@@ -6,6 +6,10 @@ use App\Models\Candidate;
 use App\Models\PollingPlace;
 use App\Models\Vote;
 use Illuminate\Database\QueryException;
+use App\Models\Provinsi;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -34,10 +38,11 @@ class VoteController extends Controller
         $candidates = Candidate::with('partai', 'election')
             ->get();
         $pollingPlaces = PollingPlace::all();
+        $provinsis = Provinsi::all();
         $title = "Suara";
         $type = "Tambah Data";
 
-        return view('dashboard.admin.vote.create', compact('candidates', 'pollingPlaces', 'title', 'type'));
+        return view('dashboard.admin.vote.create', compact('candidates', 'pollingPlaces', 'title', 'type', 'provinsis'));
         // return $candidates;
     }
 
@@ -163,4 +168,30 @@ class VoteController extends Controller
         }
     }
 
+    public function getKabupatens($provinsi_id)
+    {
+        $kabupatens = Kabupaten::where('provinsi_id', $provinsi_id)->get();
+        return response()->json($kabupatens);
+    }
+
+    // Mendapatkan kecamatan berdasarkan kabupaten (AJAX)
+    public function getKecamatans($kabupaten_id)
+    {
+        $kecamatans = Kecamatan::where('kabupaten_id', $kabupaten_id)->get();
+        return response()->json($kecamatans);
+    }
+
+    // Mendapatkan kelurahan berdasarkan kecamatan (AJAX)
+    public function getKelurahans($kecamatan_id)
+    {
+        $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
+        return response()->json($kelurahans);
+    }
+
+    // Mendapatkan polling places berdasarkan kelurahan (AJAX)
+    public function getPollingPlaces($kelurahan_id)
+    {
+        $pollingPlaces = PollingPlace::where('kelurahan_id', $kelurahan_id)->get();
+        return response()->json($pollingPlaces);
+    }
 }
