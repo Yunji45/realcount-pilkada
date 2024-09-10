@@ -43,6 +43,7 @@
                                         <th>ID</th>
                                         <th>Title</th>
                                         <th>Image</th>
+                                        <th>Kategori</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -51,6 +52,7 @@
                                         <th>ID</th>
                                         <th>Title</th>
                                         <th>Image</th>
+                                        <th>Kategori</th>
                                         <th>Actions</th>
                                     </tr>
                                 </tfoot>
@@ -65,11 +67,12 @@
                                                 <td>
                                                     @if ($article->image)
                                                         <img src="{{ asset('storage/' . $article->image) }}"
-                                                            alt="{{ $article->title }}" width="100">
+                                                            alt="{{ $article->title }}" width="150" style="border-radius: 10px">
                                                     @else
                                                         No image
                                                     @endif
                                                 </td>
+                                                <td>{{ $article->categoryArticle->category_name }}</td>
                                                 <td>
                                                     <a href="{{ route('articles.show', $article->id) }}" class="btn btn-info btn-sm">
                                                         <i class="fas fa-eye"></i>

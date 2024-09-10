@@ -20,21 +20,18 @@ info.addTo(map);
 
 // Get color based on vote count (optional)
 function getColor(d) {
-    // return d > 1000 ? '#800026' :
-    //        d > 500  ? '#BD0026' :
-    //        d > 200  ? '#E31A1C' :
-    //        d > 100  ? '#FC4E2A' :
-    //        d > 50   ? '#FD8D3C' :
-    //        d > 20   ? '#FEB24C' :
-    //        d > 10   ? '#FED976' : '#FFEDA0';
-    return feature.properties.partai_color || '#FFEDA0'; // Default color jika partai_color tidak ada
-
+    return d > 1000 ? '#800026' :
+           d > 500  ? '#BD0026' :
+           d > 200  ? '#E31A1C' :
+           d > 100  ? '#FC4E2A' :
+           d > 50   ? '#FD8D3C' :
+           d > 20   ? '#FEB24C' :
+           d > 10   ? '#FED976' : '#FFEDA0';
 }
 function style(feature) {
     return {
         radius: 8,
-        // fillColor: getColor(feature.properties.vote_count),
-        fillColor: getColor(feature),  // Gunakan partai_color untuk warna marker
+        fillColor: getColor(feature.properties.vote_count),
         color: "#000",
         weight: 1,
         opacity: 1,

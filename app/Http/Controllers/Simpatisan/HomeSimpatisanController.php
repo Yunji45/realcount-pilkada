@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Simpatisan\SuperAdmin;
+namespace App\Http\Controllers\Simpatisan;
 
 use App\Http\Controllers\Controller;
 

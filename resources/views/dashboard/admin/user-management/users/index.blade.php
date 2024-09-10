@@ -42,8 +42,39 @@
                   </a>
                 </div>
               </div>
-              <div class="card-body">                
-
+              <div class="card-body">    
+                <form method="GET" action="{{ route('user.index') }}" class="mb-4">
+                  <div class="row">
+                      <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="role">Role</label>
+                              <select name="role" id="role" class="form-control">
+                                  <option value="">-- Semua Role --</option>
+                                  @foreach ($roles as $role)
+                                      <option value="{{ $role->name }}" {{ request('role') == $role->name ? 'selected' : '' }}>
+                                          {{ $role->name }}
+                                      </option>
+                                  @endforeach
+                              </select>
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                          <div class="form-group">
+                              <label for="status">Status</label>
+                              <select name="status" id="status" class="form-control">
+                                  <option value="">-- Semua Status --</option>
+                                  <option value="Aktif" {{ request('status') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                  <option value="Tidak Aktif" {{ request('status') == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="col-md-6 d-flex align-items-end">
+                          <button type="submit" class="btn btn-primary">Cari</button>
+                          <a href="{{ route('user.index') }}" class="btn btn-secondary ml-2">Reset</a>
+                      </div>
+                  </div>
+              </form>
+              
                 <div class="table-responsive">
                   <table
                     id="add-row"
@@ -53,6 +84,7 @@
                       <tr>
                         <th>No</th>
                         <th>Name</th>
+                        <th>Email</th>
                         <th>Office</th>
                         <th>Nik</th>
                         <th>Status</th>
@@ -63,6 +95,7 @@
                       <tr>
                         <th>No</th>
                         <th>Name</th>
+                        <th>Email</th>
                         <th>Office</th>
                         <th>Nik</th>
                         <th>Status</th>
@@ -74,6 +107,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}.</td>
                             <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
                             <td>{{ implode(', ', $user->roles->pluck('name')->toArray()) }}</td>
                             <td>{{ $user->nik }}</td>
                             <td>{{ $user->status }}</td>
@@ -85,12 +119,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                                    </form>
-                                    <form action="{{ route('user.verifikasi', $user->id) }}" method="POST" style="display:inline-block;">
-                                      @csrf
-                                      <button type="submit" class="btn btn-success">Verifikasi</button>
-                                    </form>
-          
+                                    </form>          
                                 </div>
                             </td>
                         </tr>
