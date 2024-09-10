@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Pilkada | Home</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -23,23 +23,93 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{{ asset('landing/lib/animate/animate.min.css')}}" rel="stylesheet">
-    <link href="{{ asset('landing/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('landing/lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('landing/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('landing/css/bootstrap.mins.css')}}" rel="stylesheet">
+    <link href="{{ asset('landing/css/bootstrap.mins.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{ asset('landing/css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('landing/css/style.css') }}" rel="stylesheet">
 
     <style>
         .col-lg-12 h5 {
-    color: #000; /* Warna teks */
-    font-size: 30px;
-    margin-bottom: 25%;
-}
+            color: #000;
+            /* Warna teks */
+            font-size: 30px;
+            margin-bottom: 25%;
+        }
 
+        .btn-custom {
+            background-color: #877E56;
+            /* warna hijau */
+            border-radius: 5px;
+
+        }
+
+        .btn-custom:hover {
+            background-color: #d4c581;
+            /* warna hijau lebih gelap saat dihover */
+        }
     </style>
+
+
+<style>
+    /* Style for Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 40px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: auto;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 3% auto; /* Reduce margin to make modal bigger */
+        padding: 30px; /* Increase padding for better readability */
+        border: 1px solid #888;
+        width: 80%; /* Set to 80% of the screen width */
+        max-width: 900px; /* Max width increased for XL size */
+        max-height: 85vh; /* Limit modal height to 85% of the viewport */
+        overflow-y: auto;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+        font-size: 1.1rem; /* Slightly larger text for better readability */
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Style to prevent scrolling */
+    .no-scroll {
+        overflow: hidden;
+    }
+
+    /* Add responsive design for smaller screens */
+    @media (max-width: 600px) {
+        .modal-content {
+            width: 95%;
+            margin: 5% auto;
+            font-size: 1rem; /* Slightly reduce text size on smaller screens */
+        }
+    }
+</style>
+
 </head>
 
 <body>
@@ -56,18 +126,21 @@
         <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
             <div class="col-lg-6 px-5 text-start">
                 <small><i class="fa fa-map-marker-alt text-primary me-2"></i>
-                    DPC Partai Gerindra Kota Bandung | Jl. Talaga Bodas No. 37 Bandung</small>
-                <small class="ms-5"><i class="fa fa-clock text-primary me-2"></i>8 AM - 5 PM</small>
+                    Jl. Talaga Bodas No. 37 Bandung</small>
+                <small class="ms-6" style="margin-left: 20px"><i class="fa fa-clock text-primary me-2"></i>8 AM - 5 PM
+                    | Hari libur (Tutup)</small>
             </div>
             <div class="col-lg-6 px-5 text-end">
-                <small><i class="fa fa-envelope text-primary me-2"></i>info@example.com</small>
+                <small><i class="fa fa-envelope text-primary me-2"></i>adminpc@gerindrakotabandung.com</small>
                 <small class="ms-4"><i class="fa fa-phone-alt text-primary me-2"></i>0852-9816-5808</small>
             </div>
         </div>
 
         <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-            <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-                <h1 class="display-5 text-primary m-0">Finanza</h1>
+            <a href="" class="navbar-brand ms-4 ms-lg-0">
+                <h1 class="display-5 text-primary m-0"></h1>
+                <img src="{{ asset('template/assets/img/logo.png') }}" alt="Logo" class="login-logo"
+                    style="width: 200px;margin-left:30px">
             </a>
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"
                 data-bs-target="#navbarCollapse">
@@ -75,20 +148,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
-                    <a href="about.html" class="nav-item nav-link">About</a>
-                    <a href="service.html" class="nav-item nav-link">Services</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu border-light m-0">
-                            <a href="project.html" class="dropdown-item">Projects</a>
-                            <a href="feature.html" class="dropdown-item">Features</a>
-                            <a href="team.html" class="dropdown-item">Team Member</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    <a href="#header-carousel" class="nav-item nav-link active">Home</a>
+                    <a href="#container" class="nav-item nav-link">Profile</a>
+                    <a href="" class="nav-item nav-link">Berita</a>
+                    <a href="#footer" class="nav-item nav-link">Kontak</a>
+                    <a href="/login" class="nav-item nav-link btn-custom"
+                        style="color: white;font-weight: bold;">Login</a>
+
                 </div>
                 <div class="d-none d-lg-flex ms-2">
                     <a class="btn btn-light btn-sm-square rounded-circle ms-3" href="">
@@ -112,7 +178,7 @@
         <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="{{ asset('landing/img/bg-tes.png')}}" alt="Image">
+                    <img class="w-100" src="{{ asset('landing/img/bg-tes.png') }}" alt="Image">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content">
@@ -120,8 +186,11 @@
                                     <p style="color: black;font-weight:bold"></p>
                                     <h5 class="display-1 animated slideInDown" style="color:#877E56">
                                         DPC Gerindra Kota Bandung
-                                        <br><p style="font-size: 25px;font-weight:bold;color:#877E56">Partai Politik yang mampu menciptakan Kesejahteraan rakyat</p>
-                                        <p style="font-size: 19px; text-align: justify; color:#877E56; line-height: 1.5;">
+                                        <br>
+                                        <p style="font-size: 25px;font-weight:bold;color:#877E56">Partai Politik yang
+                                            mampu menciptakan Kesejahteraan rakyat</p>
+                                        <p
+                                            style="font-size: 19px; text-align: justify; color:#877E56; line-height: 1.5;">
                                             Menegakkan Kedaulatan dan Tegaknya<br>
                                             Negara Kesatuan Republik Indonesia yang<br>
                                             Berdasarkan Pancasila dan Undang-Undang Dasar 1945<br>
@@ -151,14 +220,14 @@
                     </div>
                 </div> --}}
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+            {{-- <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
-            </button>
+            </button> --}}
         </div>
     </div>
     <!-- Carousel End -->
@@ -166,550 +235,145 @@
 
     <!-- About Start -->
     <div class="container-xxl py-5">
-        <div class="container">
+        <div class="container" id="container">
             <div class="row g-4 align-items-end mb-4">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded" src="img/about.jpg">
+                    <img class="img-fluid rounded" src="{{ asset('landing/img/bg-2.png') }}"
+                        style="margin-bottom: 90px">
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">About Us</p>
-                    <h1 class="display-5 mb-4">We Help Our Clients To Grow Their Business</h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et
-                        eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
+                    <h1 class="display-5 mb-4">DPC Partai Gerindra Kota Bandung</h1>
+                    <p class="mb-4">Partai Gerakan Indonesia Raya adalah partai rakyat yang mendambakan Indonesia
+                        yang bangun jiwanya, dan bangun badannya.
                     </p>
                     <div class="border rounded p-4">
                         <nav>
                             <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
                                 <button class="nav-link fw-semi-bold active" id="nav-story-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-story" type="button" role="tab" aria-controls="nav-story"
-                                    aria-selected="true">Story</button>
+                                    data-bs-target="#nav-story" type="button" role="tab"
+                                    aria-controls="nav-story" aria-selected="true">Deklarasi</button>
                                 <button class="nav-link fw-semi-bold" id="nav-mission-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-mission" type="button" role="tab" aria-controls="nav-mission"
-                                    aria-selected="false">Mission</button>
+                                    data-bs-target="#nav-mission" type="button" role="tab"
+                                    aria-controls="nav-mission" aria-selected="false">Sejarah</button>
                                 <button class="nav-link fw-semi-bold" id="nav-vision-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-vision" type="button" role="tab" aria-controls="nav-vision"
-                                    aria-selected="false">Vision</button>
+                                    data-bs-target="#nav-vision" type="button" role="tab"
+                                    aria-controls="nav-vision" aria-selected="false">Visi dan misi</button>
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-story" role="tabpanel"
                                 aria-labelledby="nav-story-tab">
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum et tempor sit. Aliqu diam
-                                    amet diam et eos labore.</p>
-                                <p class="mb-0">Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et eos labore.
-                                    Clita erat ipsum et lorem et sit</p>
+                                <p style="text-align: justify">Bismillahirrahmaanirrahiim
+                                    Terwujudnya tatanan masyarakat Indonesia yang merdeka, berdaulat, bersatu,
+                                    demokratis, adil dan makmur serta beradab dan berketuhanan  yang berlandaskan
+                                    Pancasila, sebagaimana termaktub di dalam Pembukaan UUD 1945, merupakan cita-cita
+                                    bersama dari seluruh rakyat Indonesia. Untuk mewujudkan cita-cita tersebut, hanya
+                                    dapat dicapai dengan mempertahankan persatuan dan kesatuan bangsa, dengan landasan
+                                    Pancasila.</p>
+
+                                <a class="border-bottom" href="#" style="font-weight: bold">Selengkapnya</a>
                             </div>
                             <div class="tab-pane fade" id="nav-mission" role="tabpanel"
                                 aria-labelledby="nav-mission-tab">
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum et tempor sit. Aliqu diam
-                                    amet diam et eos labore.</p>
-                                <p class="mb-0">Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et eos labore.
-                                    Clita erat ipsum et lorem et sit</p>
+                                <p style="text-align: justify">Bermula dari Keprihatinan, Partai Gerindra lahir untuk
+                                    mengangkat
+                                    rakyat dari jerat kemelaratan, akibat permainan orang-orang yang tidak peduli pada
+                                    kesejahteraan. Dalam sebuah perjalanan menuju Bandara Soekarno-Hatta, terjadi
+                                    obrolan antara intelektual muda Fadli Zon dan pengusaha Hashim Djojohadikusumo.
+                                    Ketika itu, November 2007, keduanya membahas politik terkini, yang jauh dari
+                                    nilai-nilai demokrasi sesungguhnya.</p>
+
+                                <a class="border-bottom" href="#" style="font-weight: bold">Selengkapnya</a>
                             </div>
-                            <div class="tab-pane fade" id="nav-vision" role="tabpanel" aria-labelledby="nav-vision-tab">
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum et tempor sit. Aliqu diam
-                                    amet diam et eos labore.</p>
-                                <p class="mb-0">Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et eos labore.
-                                    Clita erat ipsum et lorem et sit</p>
+                            <div class="tab-pane fade" id="nav-vision" role="tabpanel"
+                                aria-labelledby="nav-vision-tab">
+                                <p style="text-align: justify">Visi :
+                                    Menjadi Partai Politik yang mampu menciptakan kesejahteraan rakyat, keadilan sosial
+                                    dan tatanan politik negara yang melandaskan diri pada nilai-nilai nasionalisme dan
+                                    religiusitas dalam wadah Negara Kesatuan Republik Indonesia yang berdasarkan pada
+                                    Pancasila dan Undang-Undang Dasar 1945 yang senantiasa berdaulat di bidang politik,
+                                    berkepribadian di bidang budaya dan berdiri diatas kaki sendiri dalam bidang
+                                    ekonomi.</p>
+
+                                <a class="border-bottom" href="#container" style="font-weight: bold"
+                                    id="openModal">Selengkapnya</a>
+
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <h1 style="margin-bottom:20px"> Visi Dan Misi</h1>
+                                        <p style="text-align: justify">
+                                            Dalam sebuah perjalanan menuju Bandara Soekarno-Hatta, terjadi obrolan
+                                            antara intelektual muda Fadli Zon dan pengusaha Hashim Djojohadikusumo.
+                                            Ketika itu, November 2007, keduanya membahas politik terkini, yang jauh dari
+                                            nilai-nilai demokrasi sesungguhnya. Demokrasi sudah dibajak oleh orang-orang
+                                            yang tidak bertanggung jawab dan memiliki kapital besar. Akibatnya, rakyat
+                                            hanya jadi alat. Bahkan, siapapun yang tidak memiliki kekuasaan ekonomi dan
+                                            politik akan dengan mudah jadi korban. Kebetulan, salah satu korban itu
+                                            adalah Hashim sendiri. Dia diperkarakan ke pengadilan dengan tudingan
+                                            mencuri benda-benda purbakala dari Museum radya Pustaka, Solo, Jawa tengah.
+                                            “Padahal Pak Hashim ingin melestarikan benda-benda cagar budaya,“ kata Fadli
+                                            mengenang peristiwa itu. Bila keadaan ini dibiarkan, negara hanya akan
+                                            diperintah oleh para mafia. Fadli Zon lalu mengutip kata-kata politisi
+                                            inggris abad kedelapan belas, Edmund Burke: “The only thing necessary for
+                                            the triumph [of evil] is for good men to do nothing.” Dalam terjemahan
+                                            bebasnya, “kalau orang baik-baik tidak berbuat apa-apa, maka para penjahat
+                                            yang akan bertindak.“ terinspirasi oleh kata-kata tersebut, Hashim pun
+                                            setuju bila ada sebuah partai baru yang memberikan haluan baru dan harapan
+                                            baru. Tujuannya tidak lain, agar negara ini bisa diperintah oleh manusia
+                                            yang memerhatikan kesejahteraan rakyat, bukan untuk kepentingan golongannya
+                                            saja. Sementara kondisi yang sedang berjalan, justru memaksakan demokrasi di
+                                            tengah himpitan kemiskinan, yang hanya berujung pada kekacauan.
+
+                                            <br><br>Gagasan pendirian partai pun kemudian diwacanakan di lingkaran orang-orang
+                                            Hashim dan Prabowo. Rupanya, tidak semua setuju. Ada pula yang menolak,
+                                            dengan alasan bila ingin ikut terlibat dalam proses politik sebaiknya ikut
+                                            saja pada partai politik yang ada. Kebetulan, Prabowo adalah anggota Dewan
+                                            Penasihat Partai Golkar, sehingga bisa mencalonkan diri maju menjadi ketua
+                                            umum. Namun, ketika itu Ketua Umum Partai Golkar Jusuf Kalla adalah wakil
+                                            presiden mendampingi Presiden Susilo Bambang Yudhoyono. “Mana mau Jusuf
+                                            Kalla memberikan jabatan Ketua Umum Golkar kepada Prabowo?” kata Fadli.
+
+                                            <br><br>Setelah perdebatan cukup panjang dan alot, akhirnya disepakati perlu ada
+                                            partai baru yang benar-benar memiliki manifesto perjuangan demi
+                                            kesejahteraan rakyat. Untuk mematangkan konsep partai, pada Desember 2007,
+                                            di sebuah rumah, yang menjadi markas IPS (Institute for Policy Studies) di
+                                            Bendungan Hilir, berkumpulah sejumlah nama. Selain Fadli Zon, hadir pula
+                                            Ahmad Muzani, M. Asrian Mirza, Amran Nasution, Halida Hatta, Tanya Alwi,
+                                            Haris Bobihoe, Sufmi Dasco Ahmad, Muchdi Pr, Widjono Hardjanto dan Prof
+                                            Suhardi. Mereka membicarakan anggaran dasar dan anggaran rumah tangga
+                                            (AD/ART) partai yang akan dibentuk. “Pembahasan dilakukan siang dan malam,”
+                                            kenang Fadli. Karena padatnya jadwal pembuatan AD/ART , akhirnya fisik Fadli
+                                            ambruk juga. Lelaki yang menjabat sebagai Direktur Eksekutif di IPS ini
+                                            harus dirawat di rumah sakit selama dua minggu.
+
+
+                                        </p>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="border rounded p-4 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="row g-4">
-                    <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
-                        <div class="h-100">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 btn-lg-square rounded-circle bg-primary">
-                                    <i class="fa fa-times text-white"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h4>No Hidden Cost</h4>
-                                    <span>Clita erat ipsum lorem sit sed stet duo justo</span>
-                                </div>
-                                <div class="border-end d-none d-lg-block"></div>
-                            </div>
-                            <div class="border-bottom mt-4 d-block d-lg-none"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 wow fadeIn" data-wow-delay="0.3s">
-                        <div class="h-100">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 btn-lg-square rounded-circle bg-primary">
-                                    <i class="fa fa-users text-white"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h4>Dedicated Team</h4>
-                                    <span>Clita erat ipsum lorem sit sed stet duo justo</span>
-                                </div>
-                                <div class="border-end d-none d-lg-block"></div>
-                            </div>
-                            <div class="border-bottom mt-4 d-block d-lg-none"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 wow fadeIn" data-wow-delay="0.5s">
-                        <div class="h-100">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 btn-lg-square rounded-circle bg-primary">
-                                    <i class="fa fa-phone text-white"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h4>24/7 Available</h4>
-                                    <span>Clita erat ipsum lorem sit sed stet duo justo</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
     <!-- About End -->
 
-
-    <!-- Facts Start -->
-    <div class="container-fluid facts my-5 py-5">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
-                    <i class="fa fa-users fa-3x text-white mb-3"></i>
-                    <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 text-white">Happy Clients</span>
-                    <hr class="bg-white w-25 mx-auto mb-0">
-                </div>
-                <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
-                    <i class="fa fa-check fa-3x text-white mb-3"></i>
-                    <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 text-white">Projects Completed</span>
-                    <hr class="bg-white w-25 mx-auto mb-0">
-                </div>
-                <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
-                    <i class="fa fa-users-cog fa-3x text-white mb-3"></i>
-                    <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 text-white">Dedicated Staff</span>
-                    <hr class="bg-white w-25 mx-auto mb-0">
-                </div>
-                <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
-                    <i class="fa fa-award fa-3x text-white mb-3"></i>
-                    <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 text-white">Awards Achieved</span>
-                    <hr class="bg-white w-25 mx-auto mb-0">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Facts End -->
-
-
-    <!-- Features Start -->
-    <div class="container-xxl feature py-5">
-        <div class="container">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">Why Choosing Us!</p>
-                    <h1 class="display-5 mb-4">Few Reasons Why People Choosing Us!</h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et
-                        eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
-                    </p>
-                    <a class="btn btn-primary py-3 px-5" href="">Explore More</a>
-                </div>
-                <div class="col-lg-6">
-                    <div class="row g-4 align-items-center">
-                        <div class="col-md-6">
-                            <div class="row g-4">
-                                <div class="col-12 wow fadeIn" data-wow-delay="0.3s">
-                                    <div class="feature-box border rounded p-4">
-                                        <i class="fa fa-check fa-3x text-primary mb-3"></i>
-                                        <h4 class="mb-3">Fast Executions</h4>
-                                        <p class="mb-3">Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo
-                                            justo erat amet</p>
-                                        <a class="fw-semi-bold" href="">Read More <i
-                                                class="fa fa-arrow-right ms-1"></i></a>
-                                    </div>
-                                </div>
-                                <div class="col-12 wow fadeIn" data-wow-delay="0.5s">
-                                    <div class="feature-box border rounded p-4">
-                                        <i class="fa fa-check fa-3x text-primary mb-3"></i>
-                                        <h4 class="mb-3">Guide & Support</h4>
-                                        <p class="mb-3">Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo
-                                            justo erat amet</p>
-                                        <a class="fw-semi-bold" href="">Read More <i
-                                                class="fa fa-arrow-right ms-1"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 wow fadeIn" data-wow-delay="0.7s">
-                            <div class="feature-box border rounded p-4">
-                                <i class="fa fa-check fa-3x text-primary mb-3"></i>
-                                <h4 class="mb-3">Financial Secure</h4>
-                                <p class="mb-3">Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo
-                                    erat amet</p>
-                                <a class="fw-semi-bold" href="">Read More <i class="fa fa-arrow-right ms-1"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Features End -->
-
-
-    <!-- Service Start -->
-    <div class="container-xxl service py-5">
-        <div class="container">
-            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">Our Services</p>
-                <h1 class="display-5 mb-5">Awesome Financial Services For Business</h1>
-            </div>
-            <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="col-lg-4">
-                    <div class="nav nav-pills d-flex justify-content-between w-100 h-100 me-4">
-                        <button class="nav-link w-100 d-flex align-items-center text-start border p-4 mb-4 active"
-                            data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button">
-                            <h5 class="m-0"><i class="fa fa-bars text-primary me-3"></i>Financial Planning</h5>
-                        </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start border p-4 mb-4"
-                            data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button">
-                            <h5 class="m-0"><i class="fa fa-bars text-primary me-3"></i>Cash Investment</h5>
-                        </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start border p-4 mb-4"
-                            data-bs-toggle="pill" data-bs-target="#tab-pane-3" type="button">
-                            <h5 class="m-0"><i class="fa fa-bars text-primary me-3"></i>Financial Consultancy</h5>
-                        </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start border p-4 mb-0"
-                            data-bs-toggle="pill" data-bs-target="#tab-pane-4" type="button">
-                            <h5 class="m-0"><i class="fa fa-bars text-primary me-3"></i>Business Loans</h5>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="tab-content w-100">
-                        <div class="tab-pane fade show active" id="tab-pane-1">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute rounded w-100 h-100" src="img/service-1.jpg"
-                                            style="object-fit: cover;" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h3 class="mb-4">25 Years Of Experience In Financial Support</h3>
-                                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                                        diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit
-                                        clita duo justo erat amet.</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Secured Loans</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Credit Facilities</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Cash Advanced</p>
-                                    <a href="" class="btn btn-primary py-3 px-5 mt-3">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-pane-2">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute rounded w-100 h-100" src="img/service-2.jpg"
-                                            style="object-fit: cover;" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h3 class="mb-4">25 Years Of Experience In Financial Support</h3>
-                                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                                        diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit
-                                        clita duo justo erat amet.</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Secured Loans</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Credit Facilities</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Cash Advanced</p>
-                                    <a href="" class="btn btn-primary py-3 px-5 mt-3">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-pane-3">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute rounded w-100 h-100" src="img/service-3.jpg"
-                                            style="object-fit: cover;" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h3 class="mb-4">25 Years Of Experience In Financial Support</h3>
-                                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                                        diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit
-                                        clita duo justo erat amet.</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Secured Loans</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Credit Facilities</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Cash Advanced</p>
-                                    <a href="" class="btn btn-primary py-3 px-5 mt-3">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-pane-4">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute rounded w-100 h-100" src="img/service-4.jpg"
-                                            style="object-fit: cover;" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h3 class="mb-4">25 Years Of Experience In Financial Support</h3>
-                                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                                        diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit
-                                        clita duo justo erat amet.</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Secured Loans</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Credit Facilities</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Cash Advanced</p>
-                                    <a href="" class="btn btn-primary py-3 px-5 mt-3">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Service End -->
-
-
-    <!-- Callback Start -->
-    <div class="container-fluid callback my-5 pt-5">
-        <div class="container pt-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-7">
-                    <div class="bg-white border rounded p-4 p-sm-5 wow fadeInUp" data-wow-delay="0.5s">
-                        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                            <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">Get In Touch
-                            </p>
-                            <h1 class="display-5 mb-5">Request A Call-Back</h1>
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-sm-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" placeholder="Your Name">
-                                    <label for="name">Your Name</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" id="mail" placeholder="Your Email">
-                                    <label for="mail">Your Email</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="mobile" placeholder="Your Mobile">
-                                    <label for="mobile">Your Mobile</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                    <label for="subject">Subject</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a message here" id="message"
-                                        style="height: 100px"></textarea>
-                                    <label for="message">Message</label>
-                                </div>
-                            </div>
-                            <div class="col-12 text-center">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Submit Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Callback End -->
-
-
-    <!-- Projects Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">Our Projects</p>
-                <h1 class="display-5 mb-5">We Have Completed Latest Projects</h1>
-            </div>
-            <div class="owl-carousel project-carousel wow fadeInUp" data-wow-delay="0.3s">
-                <div class="project-item pe-5 pb-5">
-                    <div class="project-img mb-3">
-                        <img class="img-fluid rounded" src="img/service-1.jpg" alt="">
-                        <a href=""><i class="fa fa-link fa-3x text-primary"></i></a>
-                    </div>
-                    <div class="project-title">
-                        <h4 class="mb-0">Financial Planning</h4>
-                    </div>
-                </div>
-                <div class="project-item pe-5 pb-5">
-                    <div class="project-img mb-3">
-                        <img class="img-fluid rounded" src="img/service-2.jpg" alt="">
-                        <a href=""><i class="fa fa-link fa-3x text-primary"></i></a>
-                    </div>
-                    <div class="project-title">
-                        <h4 class="mb-0">Cash Investment</h4>
-                    </div>
-                </div>
-                <div class="project-item pe-5 pb-5">
-                    <div class="project-img mb-3">
-                        <img class="img-fluid rounded" src="img/service-3.jpg" alt="">
-                        <a href=""><i class="fa fa-link fa-3x text-primary"></i></a>
-                    </div>
-                    <div class="project-title">
-                        <h4 class="mb-0">Financial Consultancy</h4>
-                    </div>
-                </div>
-                <div class="project-item pe-5 pb-5">
-                    <div class="project-img mb-3">
-                        <img class="img-fluid rounded" src="img/service-4.jpg" alt="">
-                        <a href=""><i class="fa fa-link fa-3x text-primary"></i></a>
-                    </div>
-                    <div class="project-title">
-                        <h4 class="mb-0">Business Loans</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Projects End -->
-
-
-    <!-- Team Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">Our Team</p>
-                <h1 class="display-5 mb-5">Exclusive Team</h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item">
-                        <img class="img-fluid rounded" src="img/team-1.jpg" alt="">
-                        <div class="team-text">
-                            <h4 class="mb-0">Kate Winslet</h4>
-                            <div class="team-social d-flex">
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i
-                                        class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="team-item">
-                        <img class="img-fluid rounded" src="img/team-2.jpg" alt="">
-                        <div class="team-text">
-                            <h4 class="mb-0">Jac Jacson</h4>
-                            <div class="team-social d-flex">
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i
-                                        class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="team-item">
-                        <img class="img-fluid rounded" src="img/team-3.jpg" alt="">
-                        <div class="team-text">
-                            <h4 class="mb-0">Doris Jordan</h4>
-                            <div class="team-social d-flex">
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square rounded-circle mx-1" href=""><i
-                                        class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
-
-
-    <!-- Testimonial Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">Testimonial</p>
-                <h1 class="display-5 mb-5">What Our Clients Say!</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.3s">
-                <div class="testimonial-item">
-                    <div class="testimonial-text border rounded p-4 pt-5 mb-5">
-                        <div class="btn-square bg-white border rounded-circle">
-                            <i class="fa fa-quote-right fa-2x text-primary"></i>
-                        </div>
-                        Dolores sed duo clita tempor justo dolor et stet lorem kasd labore dolore lorem ipsum. At lorem
-                        lorem magna ut et, nonumy et labore et tempor diam tempor erat.
-                    </div>
-                    <img class="rounded-circle mb-3" src="img/testimonial-1.jpg" alt="">
-                    <h4>Client Name</h4>
-                    <span>Profession</span>
-                </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-text border rounded p-4 pt-5 mb-5">
-                        <div class="btn-square bg-white border rounded-circle">
-                            <i class="fa fa-quote-right fa-2x text-primary"></i>
-                        </div>
-                        Dolores sed duo clita tempor justo dolor et stet lorem kasd labore dolore lorem ipsum. At lorem
-                        lorem magna ut et, nonumy et labore et tempor diam tempor erat.
-                    </div>
-                    <img class="rounded-circle mb-3" src="img/testimonial-2.jpg" alt="">
-                    <h4>Client Name</h4>
-                    <span>Profession</span>
-                </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-text border rounded p-4 pt-5 mb-5">
-                        <div class="btn-square bg-white border rounded-circle">
-                            <i class="fa fa-quote-right fa-2x text-primary"></i>
-                        </div>
-                        Dolores sed duo clita tempor justo dolor et stet lorem kasd labore dolore lorem ipsum. At lorem
-                        lorem magna ut et, nonumy et labore et tempor diam tempor erat.
-                    </div>
-                    <img class="rounded-circle mb-3" src="img/testimonial-3.jpg" alt="">
-                    <h4>Client Name</h4>
-                    <span>Profession</span>
-                </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-text border rounded p-4 pt-5 mb-5">
-                        <div class="btn-square bg-white border rounded-circle">
-                            <i class="fa fa-quote-right fa-2x text-primary"></i>
-                        </div>
-                        Dolores sed duo clita tempor justo dolor et stet lorem kasd labore dolore lorem ipsum. At lorem
-                        lorem magna ut et, nonumy et labore et tempor diam tempor erat.
-                    </div>
-                    <img class="rounded-circle mb-3" src="img/testimonial-4.jpg" alt="">
-                    <h4>Client Name</h4>
-                    <span>Profession</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial End -->
-
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
+        <div class="container py-5" id="footer">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-4">Our Office</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <h4 class="text-white mb-4">DPC Partai Gerindra Kota Bandung</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>DPC Partai Gerindra Kota Bandung <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jl. Talaga Bodas No.37 Bandung</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>0852-9816-5808</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-1"></i>admin@gerindrakotabandung.com</p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i
                                 class="fab fa-twitter"></i></a>
@@ -723,13 +387,11 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-white mb-4">Services</h4>
-                    <a class="btn btn-link" href="">Financial Planning</a>
-                    <a class="btn btn-link" href="">Cash Investment</a>
-                    <a class="btn btn-link" href="">Financial Consultancy</a>
-                    <a class="btn btn-link" href="">Business Loans</a>
-                    <a class="btn btn-link" href="">Business Analysis</a>
+                    <a class="btn btn-link" href="#header-carousel">Home</a>
+                    <a class="btn btn-link" href="#container">Profile</a>
+                    <a class="btn btn-link" href="#news">Berita</a>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                {{-- <div class="col-lg-3 col-md-6">
                     <h4 class="text-white mb-4">Quick Links</h4>
                     <a class="btn btn-link" href="">About Us</a>
                     <a class="btn btn-link" href="">Contact Us</a>
@@ -746,7 +408,7 @@
                         <button type="button"
                             class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -758,12 +420,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+                    &copy; <a class="border-bottom" href="#">Distributed by DPC Gerindra.</a>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                    Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a
-                    href="https://themewagon.com">ThemeWagon</a>
+                    Copyright © 2024 DPC Partai Gerindra Kota Bandung. All rights reserved.
                 </div>
             </div>
         </div>
@@ -776,17 +437,59 @@
             class="bi bi-arrow-up"></i></a>
 
 
+    {{-- Modal Skrip --}}
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("openModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // Function to toggle scroll
+        function toggleScroll(enable) {
+            if (enable) {
+                document.body.classList.remove('no-scroll');
+            } else {
+                document.body.classList.add('no-scroll');
+            }
+        }
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+            toggleScroll(false); // Disable scrolling
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+            toggleScroll(true); // Enable scrolling
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                toggleScroll(true); // Enable scrolling
+            }
+        }
+    </script>
+
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('landing/lib/wow/wow.min.js')}}"></script>
-    <script src="{{ asset('landing/lib/easing/easing.min.js')}}"></script>
-    <script src="{{ asset('landing/lib/waypoints/waypoints.min.js')}}"></script>
-    <script src="{{ asset('landing/lib/owlcarousel/owl.carousel.min.js')}}"></script>
-    <script src="{{ asset('landing/lib/counterup/counterup.min.js')}}"></script>
+    <script src="{{ asset('landing/lib/wow/wow.min.js') }}"></script>
+    <script src="{{ asset('landing/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ asset('landing/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ asset('landing/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('landing/lib/counterup/counterup.min.js') }}"></script>
 
     <!-- Template Javascript -->
-    <script src="{{ asset('landing/js/main.js')}}"></script>
+    <script src="{{ asset('landing/js/main.js') }}"></script>
 </body>
 
 </html>
