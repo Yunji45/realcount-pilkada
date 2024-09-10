@@ -73,7 +73,7 @@ Route::get('/lain-lain/dashboard', [HomeLainyaController::class, 'index'])->name
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-// Route::get('/map', [DaerahController::class, 'map'])->name('map');
+Route::get('/map', [DaerahController::class, 'map'])->name('map');
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name('landingpage');
 
 // Route::get('/home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');

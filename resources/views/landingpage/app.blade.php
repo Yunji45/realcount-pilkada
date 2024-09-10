@@ -27,7 +27,7 @@
     <link href="{{ asset('landing/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('landing/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('landing/css/bootstrap.mins.css')}}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('landing/css/style.css')}}" rel="stylesheet">
@@ -55,12 +55,13 @@
     <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
         <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
             <div class="col-lg-6 px-5 text-start">
-                <small><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</small>
-                <small class="ms-4"><i class="fa fa-clock text-primary me-2"></i>9.00 am - 9.00 pm</small>
+                <small><i class="fa fa-map-marker-alt text-primary me-2"></i>
+                    DPC Partai Gerindra Kota Bandung | Jl. Talaga Bodas No. 37 Bandung</small>
+                <small class="ms-5"><i class="fa fa-clock text-primary me-2"></i>8 AM - 5 PM</small>
             </div>
             <div class="col-lg-6 px-5 text-end">
                 <small><i class="fa fa-envelope text-primary me-2"></i>info@example.com</small>
-                <small class="ms-4"><i class="fa fa-phone-alt text-primary me-2"></i>+012 345 6789</small>
+                <small class="ms-4"><i class="fa fa-phone-alt text-primary me-2"></i>0852-9816-5808</small>
             </div>
         </div>
 
@@ -111,22 +112,22 @@
         <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="{{ asset('landing/img/tes-2.png')}}" alt="Image">
+                    <img class="w-100" src="{{ asset('landing/img/bg-tes.png')}}" alt="Image">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content">
                                 <div class="col-lg-12">
                                     <p style="color: black;font-weight:bold"></p>
-                                    <h5 class="display-1 animated slideInDown">
+                                    <h5 class="display-1 animated slideInDown" style="color:#877E56">
                                         DPC Gerindra Kota Bandung
-                                        <br><p style="font-size: 25px;font-weight:bold">Partai Politik yang mampu menciptakan Kesejahteraan rakyat</p>
-                                        <p style="font-size: 19px; text-align: justify;">
-                                            Menegakkan kedaulatan dan tegaknya
-                                            <br>negara kesatuan republik indonesia yang
-                                            <br>berdasarkan pancasila dan undang-undang
-                                            <br>dasar 1945 yang ditetapkan pada
-                                            <br>tanggal 18 agustus 1945.
+                                        <br><p style="font-size: 25px;font-weight:bold;color:#877E56">Partai Politik yang mampu menciptakan Kesejahteraan rakyat</p>
+                                        <p style="font-size: 19px; text-align: justify; color:#877E56; line-height: 1.5;">
+                                            Menegakkan Kedaulatan dan Tegaknya<br>
+                                            Negara Kesatuan Republik Indonesia yang<br>
+                                            Berdasarkan Pancasila dan Undang-Undang Dasar 1945<br>
+                                            yang Ditetapkan pada Tanggal 18 Agustus 1945.
                                         </p>
+
                                     </h5>
                                 </div>
                             </div>
