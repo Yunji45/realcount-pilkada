@@ -79,7 +79,7 @@ function onEachFeature(feature, layer) {
     });
 }
 // Fetch the vote data from API
-axios.get('/api/map').then(response => {
+axios.get('https://dpcgerindrakotabandung.com/api/map').then(response => {
     const votesData = response.data;
 
     const geojsonData = {

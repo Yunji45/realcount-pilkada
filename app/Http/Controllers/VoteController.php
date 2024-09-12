@@ -22,7 +22,7 @@ class VoteController extends Controller
      */
     public function index()
     {
-        $votes = Vote::with('candidate.partai', 'polling_place')
+        $votes = Vote::with('candidate.partai', 'polling_place.kelurahan','polling_place.kecamatan')
             ->get();
         $title = "Suara";
 
