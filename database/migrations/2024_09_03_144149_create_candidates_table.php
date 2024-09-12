@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->foreignId('partai_id')->constrained()->restrictOnDelete();
             $table->foreignId('election_id')->constrained()->restrictOnDelete();
-            $table->string('vision');
-            $table->string('mision');
+            $table->text('vision');
+            $table->text('mision');
             $table->text('photo')->nullable();
             $table->timestamps();
         });

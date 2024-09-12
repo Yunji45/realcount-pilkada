@@ -40,7 +40,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="name">Nama Kandidat</label>
-                                        <input type="text" name="name" class="form-control" id="name" required />
+                                        <input type="text" name="name" class="form-control" id="name"/>
                                     </div>
                                 </div>
 

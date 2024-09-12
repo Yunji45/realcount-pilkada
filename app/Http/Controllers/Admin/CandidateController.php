@@ -51,7 +51,7 @@ class CandidateController extends Controller
         try {
             // Validasi data input
             $validator = Validator::make($request->all(), [
-                'name' => ['required', 'string', 'max:255'],
+                'name' => ['nullable', 'string', 'max:255'],
                 'partai_id' => ['required', 'exists:partais,id'], // Validasi partai_id harus ada di tabel partai
                 'election_id' => ['required', 'exists:elections,id'], // Validasi election_id harus ada di tabel election
                 'vision' => ['required', 'string'],
@@ -90,6 +90,8 @@ class CandidateController extends Controller
         } catch (\Throwable $th) {
             // Rollback jika ada kesalahan
             DB::rollBack();
+
+            dd($th->getMessage());
             return back()->with('error', 'Candidate creation failed');
         }
     }
