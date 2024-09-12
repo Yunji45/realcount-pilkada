@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Map;
 use Illuminate\Http\Request;
 use App\Models\Vote;
+use Illuminate\Support\Facades\DB;
+
 
 class MapController extends Controller
 {
@@ -95,6 +97,60 @@ class MapController extends Controller
     
         return response()->json($votes);
     }   
+
+    public function tes(Request $request)
+{
+    // Sub-query untuk mendapatkan TPS dengan suara terbanyak di setiap kelurahan
+    $subQuery = Vote::select(
+        'polling_places.kelurahan_id',
+        'polling_places.latitude', 
+        'polling_places.longitude',
+        DB::raw('SUM(votes.vote_count) as total_vote_per_tps')
+    )
+    ->join('polling_places', 'votes.polling_place_id', '=', 'polling_places.id')
+    ->groupBy('polling_places.id', 'polling_places.kelurahan_id', 'polling_places.latitude', 'polling_places.longitude')
+    ->orderBy('total_vote_per_tps', 'desc');
+
+    // Query utama untuk mendapatkan suara gabungan per kelurahan dan titik koordinat TPS dengan suara terbanyak per partai
+    $votes = Vote::select(
+        'kelurahans.name as kelurahan_name',
+        'kecamatans.name as kecamatan_name',
+        'kabupatens.name as kabupaten_name',
+        'provinsis.name as provinsi_name',
+        'top_tps.latitude', 
+        'top_tps.longitude',
+        'partais.name as partai_name', 
+        'partais.color as partai_color',
+        DB::raw('SUM(votes.vote_count) as total_vote_per_kelurahan_partai')
+    )
+    ->join('candidates', 'votes.candidate_id', '=', 'candidates.id')
+    ->join('partais', 'candidates.partai_id', '=', 'partais.id')
+    ->join('elections', 'candidates.election_id', '=', 'elections.id')
+    ->join('polling_places', 'votes.polling_place_id', '=', 'polling_places.id')
+    ->join('provinsis', 'polling_places.provinsi_id', '=', 'provinsis.id')
+    ->join('kabupatens', 'polling_places.kabupaten_id', '=', 'kabupatens.id')
+    ->join('kecamatans', 'polling_places.kecamatan_id', '=', 'kecamatans.id')
+    ->join('kelurahans', 'polling_places.kelurahan_id', '=', 'kelurahans.id')
+    // Gabungkan dengan subquery TPS suara terbanyak
+    ->joinSub($subQuery, 'top_tps', function ($join) {
+        $join->on('polling_places.kelurahan_id', '=', 'top_tps.kelurahan_id');
+    })
+    ->groupBy(
+        'kelurahans.name', 
+        'kecamatans.name',
+        'kabupatens.name',
+        'provinsis.name',
+        'top_tps.latitude', 
+        'top_tps.longitude',
+        'partais.name', 
+        'partais.color'
+    )
+    ->get();
+
+    return response()->json($votes);
+}
+
+
 
 
     /**

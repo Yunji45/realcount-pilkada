@@ -45,6 +45,8 @@
                                         <th>Nama TPS</th>
                                         <th>Nama Partai</th>
                                         <th>Nama Pemilu</th>
+                                        <th>Kecamatan</th>
+                                        <th>Kelurahan</th>
                                         <th>Vote</th>
                                         <th style="width: 10%">Action</th>
                                     </tr>
@@ -56,6 +58,8 @@
                                         <th>Nama TPS</th>
                                         <th>Nama Partai</th>
                                         <th>Nama Pemilu</th>
+                                        <th>Kecamatan</th>
+                                        <th>Kelurahan</th>
                                         <th>Vote</th>
                                         <th>Action</th>
                                     </tr>
@@ -68,6 +72,8 @@
                                             <td>{{ $vote->polling_place->name }}</td>
                                             <td>{{ $vote->candidate->partai->name }}</td>
                                             <td>{{ $vote->candidate->election->name }}</td>
+                                            <td>{{ $vote->polling_place->kecamatan->name }}</td>
+                                            <td>{{ $vote->polling_place->kelurahan->name }}</td>
                                             <td>{{ $vote->vote_count }}</td>
 
                                             <td>

@@ -488,5 +488,5 @@
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
-    <script src="{{ asset('json_wilayah/tesmap.js') }}"></script>
+    <script src="{{ asset('json_wilayah/map.js') }}"></script>
 @endsection
