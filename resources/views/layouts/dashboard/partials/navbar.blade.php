@@ -63,8 +63,7 @@
                                 </a>
                                 <a href="#">
                                     <div class="notif-img">
-                                        <img src="{{ asset('template/assets/img/profile2.jpg') }}"
-                                            alt="Img Profile" />
+                                        <img src="{{ asset('template/assets/img/profile2.jpg') }}" alt="Img Profile" />
                                     </div>
                                     <div class="notif-content">
                                         <span class="block">
@@ -95,11 +94,10 @@
 
 
             <li class="nav-item topbar-user dropdown hidden-caret">
-                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                    aria-expanded="false">
+                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                     <div class="avatar-sm">
-                        <img src="{{ asset('template/') }}assets/img/profile.jpg" alt="..."
-                            class="avatar-img rounded-circle" />
+                        <img src="{{ asset('storage/' . Auth::user()->photo ? 'template/assets/img/profile.jpg' : '') }}"
+                            alt="..." class="avatar-img rounded-circle" />
                     </div>
                     <span class="profile-username">
                         <span class="op-7">Hi,</span>
@@ -111,7 +109,7 @@
                         <li>
                             <div class="user-box">
                                 <div class="avatar-lg">
-                                    <img src="{{ asset('template/') }}assets/img/profile.jpg" alt="image profile"
+                                    <img src="{{ asset('template/assets/img/profile.jpg') }}" alt="image profile"
                                         class="avatar-img rounded" />
                                 </div>
                                 <div class="u-text">

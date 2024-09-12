@@ -1,8 +1,11 @@
 const map = L.map('map').setView([-6.9320011, 107.5733367], 12);
+
 const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://portofolio-ihya.netlify.app">Ihya Natik W</a>'
 }).addTo(map);
+
+// Kontrol informasi
 const info = L.control();
 
 info.onAdd = function (map) {
@@ -12,32 +15,30 @@ info.onAdd = function (map) {
 };
 
 info.update = function (props) {
-    const contents = props ? `<b>${props.name}</b>` : 'Pilih wilayah';
-    this._div.innerHTML = `<h4>Informasi TPS</h4>${contents}`;
+    const contents = props ? `<b>${props.kelurahan_name}</b>` : 'Pilih lokasi';
+    this._div.innerHTML = `<h4>Detail Lokasi</h4>${contents}`;
 };
 
 info.addTo(map);
 
-// Get color based on vote count (optional)
-function getColor(d) {
-    return d > 1000 ? '#800026' :
-           d > 500  ? '#BD0026' :
-           d > 200  ? '#E31A1C' :
-           d > 100  ? '#FC4E2A' :
-           d > 50   ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
-           d > 10   ? '#FED976' : '#FFEDA0';
+// Fungsi untuk menentukan warna marker berdasarkan warna partai
+function getColor(partaiColor) {
+    return partaiColor || '#FFEDA0'; // Default jika warna tidak ada
 }
+
+// Style fungsi
 function style(feature) {
     return {
         radius: 8,
-        fillColor: getColor(feature.properties.vote_count),
+        fillColor: getColor(feature.properties.partai_color),
         color: "#000",
         weight: 1,
         opacity: 1,
         fillOpacity: 0.8
     };
 }
+
+// Fungsi untuk meng-highlight lokasi
 function highlightFeature(e) {
     const layer = e.target;
 
@@ -49,28 +50,40 @@ function highlightFeature(e) {
     });
 
     layer.bringToFront();
-
     info.update(layer.feature.properties);
 }
+
+// Fungsi untuk mereset highlight
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
     info.update();
 }
+
+// Fungsi untuk zoom ke fitur
 function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
+
+// Fungsi untuk setiap fitur
 function onEachFeature(feature, layer) {
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        click: function(e) {
+        click: function (e) {
             const props = e.target.feature.properties;
-            const content = `
-                <b>${props.name}</b><br>
-                Kandidat: ${props.candidate}<br>
-                Partai: ${props.partai}<br>
-                Jumlah Suara: ${props.vote_count}
-            `;
+
+            // Looping untuk menampilkan semua partai dan total suara
+            let content = `<b>${props.kelurahan_name}</b><br>`;
+            if (props.parties && props.parties.length > 0) {
+                content += `<ul>`;
+                props.parties.forEach(party => {
+                    content += `<li>Partai: ${party.partai_name}, Total Vote: ${party.total_votes}</li>`;
+                });
+                content += `</ul>`;
+            } else {
+                content += `No party data available.`;
+            }
+
             L.popup()
                 .setLatLng(e.latlng)
                 .setContent(content)
@@ -78,58 +91,66 @@ function onEachFeature(feature, layer) {
         }
     });
 }
-// Fetch the vote data from API
-axios.get('https://dpcgerindrakotabandung.com/api/map').then(response => {
-    const votesData = response.data;
 
-    const geojsonData = {
-        "type": "FeatureCollection",
-        "features": votesData.map(vote => ({
-            "type": "Feature",
-            "properties": {
-                "name": vote.polling_place_name,
-                "candidate": vote.candidate_name,
-                "partai": vote.partai_name,
-                "vote_count": vote.vote_count,
-                "partai_color": vote.partai_color,
-                "marker-color": "#ed0707",
-                "marker-size": "medium",
-                "marker-symbol": "circle-stroked"
+// Ambil data dari API dan tambahkan ke peta
+fetch('http://realcount-pilkada.test/api/map')
+    .then(response => response.json())
+    .then(data => {
+        const geojsonData = {
+            "type": "FeatureCollection",
+            "features": data.map(item => {
+                // Validasi koordinat
+                const longitude = parseFloat(item.longitude);
+                const latitude = parseFloat(item.latitude);
+
+                // Jika latitude atau longitude bukan angka, abaikan data ini
+                if (isNaN(longitude) || isNaN(latitude)) {
+                    console.warn(`Invalid coordinates for kelurahan: ${item.kelurahan_name}`);
+                    return null; // Abaikan fitur ini
+                }
+
+                return {
+                    "type": "Feature",
+                    "properties": {
+                        "kelurahan_name": item.kelurahan_name,
+                        "kecamatan_name": item.kecamatan_name,
+                        "kabupaten_name": item.kabupaten_name,
+                        "provinsi_name": item.provinsi_name,
+                        "parties": item.parties, // array partai yang sudah di-looping dari API
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [longitude, latitude]
+                    }
+                };
+            }).filter(item => item !== null) // Filter data yang valid saja
+        };
+
+        const geojson = L.geoJson(geojsonData, {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, style(feature));
             },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [vote.longitude, vote.latitude]
-            },
-        }))
-    };
+            onEachFeature: onEachFeature
+        }).addTo(map);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
-    const geojson = L.geoJson(geojsonData, {
-        pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, style(feature));
-        },
-        onEachFeature: onEachFeature
-    }).addTo(map);
-});
-
-const legend = L.control({position: 'bottomright'});
+// Tambahkan kontrol legend jika diperlukan
+const legend = L.control({ position: 'bottomright' });
 
 legend.onAdd = function (map) {
     const div = L.DomUtil.create('div', 'info legend');
-    const grades = [0, 10, 20, 50, 100, 200, 500, 1000];
-    let labels = [];
-    let from, to;
-
-    for (let i = 0; i < grades.length; i++) {
-        from = grades[i];
-        to = grades[i + 1];
-
-        labels.push(
-            `<i style="background:${getColor(from + 1)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`
-        );
-    }
-
-    div.innerHTML = labels.join('<br>');
+    div.innerHTML = '<h4>Legenda</h4>';
     return div;
 };
 
 legend.addTo(map);
+
+// Tambahkan kontrol pencarian ke peta
+const geocoder = L.Control.Geocoder.nominatim();
+L.Control.geocoder({
+    geocoder: geocoder,
+    placeholder: 'Cari kelurahan...'
+}).addTo(map);
