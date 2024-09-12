@@ -37,6 +37,7 @@ class VoteController extends Controller
     {
         $candidates = Candidate::with('partai', 'election')
             ->get();
+        // $candidates = Candidate::all();
         $pollingPlaces = PollingPlace::all();
         $provinsis = Provinsi::all();
         $title = "Suara";
