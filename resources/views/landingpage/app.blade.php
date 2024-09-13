@@ -364,6 +364,61 @@
     </div>
     <!-- About End -->
 
+    <div class="container-xxl py-5">
+        <div class="container" id="container">
+            <section class="latest-articles" style="margin-top: 40px;">
+                <h2 style="font-size: 32px; margin-bottom: 20px;">Latest Articles</h2>
+                <div class="articles-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    @if($articles->isEmpty())
+                        <p>No articles available.</p>
+                    @else
+                        @foreach ($articles as $article)
+                            <div class="article-card" style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}" class="article-image" style="max-width: 100%; height: auto; display: block; border-radius: 8px;">
+                                <h3 style="font-size: 24px; margin-bottom: 10px;">{{ $article->title }}</h3>
+                                <p style="color: #555;">{!! Str::limit($article->content, 100) !!}</p>
+                                <a href="{{ route('article.show', $article->id) }}" class="read-more" style="display: inline-block; margin-top: 10px; color: #fff; background-color: #3498db; padding: 10px 20px; border-radius: 5px;">Read More</a>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </section>
+
+            <section class="categories" style="margin-top: 40px;">
+                <h2 style="font-size: 32px; margin-bottom: 20px;">Categories</h2>
+                <div class="categories-list" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    @if($categories->isEmpty())
+                        <p>No categories available.</p>
+                    @else
+                        @foreach ($categories as $category)
+                            {{-- <a href="{{ route('category.show', $category->category) }}" class="category-item" style="background-color: #3498db; color: #fff; padding: 10px 20px; border-radius: 5px;">{{ $category->category }}</a> --}}
+                        @endforeach
+                    @endif
+                </div>
+            </section>
+
+            <!-- Trending Topics Section -->
+            <section class="trending-topics" style="margin-top: 40px;">
+                <h2 style="font-size: 32px; margin-bottom: 20px;">Trending Topics</h2>
+                <div class="trending-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    @if($trendingArticles->isEmpty())
+                        <p>No trending articles available.</p>
+                    @else
+                        @foreach ($trendingArticles as $article)
+                            <div class="trending-item" style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                <h3 style="font-size: 24px; margin-bottom: 10px;">{{ $article->title }}</h3>
+                                <p>{!! Str::limit($article->content, 50) !!}</p>
+                                <a href="{{ route('article.show', $article->id) }}" class="read-more" style="display: inline-block; margin-top: 10px; color: #fff; background-color: #3498db; padding: 10px 20px; border-radius: 5px;">Read More</a>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </section>
+
+
+        </div>
+    </div>
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5" id="footer">

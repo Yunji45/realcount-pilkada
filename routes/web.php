@@ -82,6 +82,9 @@ Route::get('/lain-lain/dashboard', [HomeLainyaController::class, 'index'])->name
 Route::get('/map', [DaerahController::class, 'map'])->name('map');
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name('landingpage');
 
+Route::get('/category/{category}', [ArticleController::class, 'showByCategory'])->name('category.show');
+Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
+
 // Route::get('/home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
 
 // Route::middleware(['verified', 'auth', 'role:Super Admin|Admin'])->group(function () {

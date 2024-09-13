@@ -103,7 +103,11 @@ class ArticleController extends Controller
     }
 
     public function showLandingPage() {
-        $articles = Article::latest()->take(6)->get(); // Mengambil 6 artikel terbaru
-        return view('landingpage.app', compact('articles'));
+        $articles = Article::latest()->take(6)->get();
+        $categories = Article::select('category_article_id')->distinct()->get(); // Mengambil semua kategori unik
+        $trendingArticles = Article::orderBy('click-count', 'desc')->take(5)->get(); // Mengambil 5 artikel dengan click_count tertinggi
+
+
+        return view('landingpage.app', compact('articles','trendingArticles','categories'));
     }
 }
