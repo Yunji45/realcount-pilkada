@@ -104,7 +104,7 @@ function onEachFeature(feature, layer) {
 
 
 // Ambil data dari API dan tambahkan ke peta
-fetch('http://realcount-pilkada.test/api/map')
+fetch('https://dpcgerindrakotabandung.com/api/map')
     .then(response => response.json())
     .then(data => {
         const geojsonData = {

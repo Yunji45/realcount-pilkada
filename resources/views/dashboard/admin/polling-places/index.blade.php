@@ -46,6 +46,8 @@
                                         <th>Kelurahan</th>
                                         <th>DPT</th>
                                         <th>RW</th>
+                                        <th>Latitude</th>
+                                        <th>Longitude</th>
                                         <th>Periode</th>
                                         <th>Status</th>
                                         <th style="width: 10%">Action</th>
@@ -59,6 +61,8 @@
                                         <th>Kelurahan</th>
                                         <th>DPT</th>
                                         <th>RW</th>
+                                        <th>Latitude</th>
+                                        <th>Longitude</th>
                                         <th>Periode</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -73,6 +77,8 @@
                                             <td>{{ $tp->kelurahan->name }}</td>
                                             <td>{{ $tp->DPT }}</td>
                                             <td>{{ $tp->rw }}</td>
+                                            <td>{{ $tp->latitude }}</td>
+                                            <td>{{ $tp->longitude }}</td>
                                             <td>{{ \Carbon\Carbon::parse($tp->periode)->format('Y') }}</td>
                                             <td>{{ $tp->status }}</td>
                                             <td>
