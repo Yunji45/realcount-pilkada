@@ -24,10 +24,9 @@ use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
-use App\Mail\PostMail;
-use App\Models\Kelurahan;
-use App\Models\PollingPlace;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifikasiEmail;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -43,21 +42,23 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/', function () {
     return view('auth/login');
 });
-Route::get('/send-email', function () {
+
+Route::get('/send-email',function(){
     $data = [
         'name' => 'Syahrizal As',
-        'body' => 'Testing Kirim Email di Santri Koding'
+        'email' => 'Testing Kirim Email di Santri Koding',
+        'nik' => 'Testing Kirim Email di Santri Koding',
+        'status' => 'Testing Kirim Email di Santri Koding'
     ];
-
-    Mail::to('ihyanatikwibowo@gmail.com')->send(new PostMail($data));
-
+   
+    Mail::to('ihyanatikwibowo@gmail.com')->send(new VerifikasiEmail($data));
+   
     dd("Email Berhasil dikirim.");
 });
 
-
-Route::get('/home', function () {
-    return view('layouts/dashboard/dashboard');
-});
+// Route::get('/home', function () {
+//     return view('layouts/dashboard/dashboard');
+// });
 
 // Route untuk mengambil kelurahan berdasarkan kecamatan
 Route::get('/get-kabupatens/{provinsi_id}', [VoteController::class, 'getKabupatens']);
@@ -102,7 +103,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     ]);
     Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
 
-    Route::post('/user-verifikasi/{user}', [UserController::class, 'verifikasi'])->name('user.veifikasi');
+    Route::post('/user-verifikasi/{user}', [UserController::class, 'verifikasi'])->name('user.verifikasi');
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
     Route::get('/get-kelurahan/{kecamatanId}', [PollingPlaceController::class, 'getKelurahan'])->name('get.kelurahan');

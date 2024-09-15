@@ -33,11 +33,13 @@
 <body>
     <div class="container">
         <h1>Selamat, {{ $data['name'] }}!</h1>
-        <p>Terima kasih telah mendaftar di aplikasi kami. Registrasi Anda telah berhasil.</p>
+        <p>Terima kasih telah mendaftar di aplikasi kami. Registrasi Anda telah lolos verifikasi.</p>
         <p>Berikut adalah detail akun Anda:</p>
         <ul>
+            <li><strong>Nik:</strong> {{ $data['nik'] }}</li>
             <li><strong>Nama:</strong> {{ $data['name'] }}</li>
             <li><strong>Email:</strong> {{ $data['email'] }}</li>
+            <li><strong>Status:</strong> {{ $data['status'] }}</li>
         </ul>
         <p>Jika Anda memiliki pertanyaan atau butuh bantuan, jangan ragu untuk menghubungi kami.</p>
         

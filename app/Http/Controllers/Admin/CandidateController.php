@@ -20,6 +20,7 @@ class CandidateController extends Controller
     public function index()
     {
         $candidates = Candidate::with('partai', 'election')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $title = 'Kandidat';
