@@ -76,6 +76,11 @@ Route::get('/simpatisan/dashboard', [HomeSimpatisanController::class, 'index'])-
 Route::get('/lain-lain/dashboard', [HomeLainyaController::class, 'index'])->name('lain-lain.dashboard');
 
 
+Route::get('/admin/dashboard/perorangan', action: [HomeAdminController::class, 'indexPerorangan'])->name('admin.dashboard.perorangan');
+Route::get('/admin/dashboard/partai', action: [HomeAdminController::class, 'indexPartai'])->name('admin.dashboard.partai');
+Route::get('/admin/dashboard/peta', action: [HomeAdminController::class, 'indexPeta'])->name('admin.dashboard.peta');
+
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
