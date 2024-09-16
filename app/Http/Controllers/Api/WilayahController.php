@@ -177,4 +177,10 @@ class WilayahController extends Controller
         $title = 'msp';
         return view('map',compact('title'));
     }
+
+    public function get()
+    {
+        $kecamatan = Kecamatan::with(['kelurahan'])->where('id', 7135)->first();
+        return $kecamatan;
+    }
 }
