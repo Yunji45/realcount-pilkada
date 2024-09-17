@@ -1,8 +1,7 @@
-@ -1,12 +1,49 @@
+@ -0,0 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>santrikoding.com</title>
     <title>Registrasi Berhasil</title>
     <style>
         body {
@@ -33,17 +32,15 @@
     </style>
 </head>
 <body>
-    <h3>{{ $data['name'] }}</h3>
-    <h4>{{ $data['body'] }}</h4>
-   
-    <p>Terimakasih</p>
     <div class="container">
         <h1>Selamat, {{ $data['name'] }}!</h1>
-        <p>Terima kasih telah mendaftar di aplikasi kami. Registrasi Anda telah berhasil.</p>
+        <p>Terima kasih telah mendaftar di aplikasi kami. Registrasi Anda telah lolos verifikasi.</p>
         <p>Berikut adalah detail akun Anda:</p>
         <ul>
+            <li><strong>Nik:</strong> {{ $data['nik'] }}</li>
             <li><strong>Nama:</strong> {{ $data['name'] }}</li>
             <li><strong>Email:</strong> {{ $data['email'] }}</li>
+            <li><strong>Status:</strong> {{ $data['status'] }}</li>
         </ul>
         <p>Jika Anda memiliki pertanyaan atau butuh bantuan, jangan ragu untuk menghubungi kami.</p>
         
@@ -52,5 +49,4 @@
         </div>
     </div>
 </body>
-</html>
 </html>
