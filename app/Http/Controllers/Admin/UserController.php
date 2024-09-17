@@ -12,10 +12,6 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Notifications\WelcomeMailNotification;
-use App\Mail\RegistrasiEmail;
-use App\Mail\VerifikasiEmail;
-use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -48,9 +44,7 @@ class UserController extends Controller
     {
         $title = 'User';
         $type = 'User Management Pending';
-        $users = User::where('status', 'Pending')
-                        ->orderBy('created_at', 'desc')
-                        ->get();
+        $users = User::where('status', 'Pending')->get();
         return view('dashboard.admin.user-management.users.verifikasi', compact('title', 'type', 'users'));
 
     }
@@ -115,13 +109,6 @@ class UserController extends Controller
             ]);
 
             $user->assignRole($request->input('roles'));
-            $emailData = [
-                'name' => $user->name,
-                'email' => $user->email,
-            ];
-            Mail::to($user->email)->send(new RegistrasiEmail($emailData));
-
-            // $user->notify(new WelcomeMailNotification($user));
 
             DB::commit();
             // return response()->json([
@@ -133,14 +120,13 @@ class UserController extends Controller
             return redirect('/user')->with('success', 'User created successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'User creation failed',
-                'error' => $th->getMessage(),
-            ], 500);
-            
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'User creation failed',
+            //     'error' => $th->getMessage(),
+            // ], 500);
 
-            // return back()->with(['error' => 'User creation failed.']);
+            return back()->with(['error' => 'User creation failed.']);
         }
     }
 
@@ -328,15 +314,8 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->status = 'Aktif';
         $user->save();
-        $emailData = [
-            'nik' => $user->nik,
-            'name' => $user->name,
-            'email' => $user->email,
-            'status' => $user->status,
-        ];
-        Mail::to($user->email)->send(new VerifikasiEmail($emailData));
-
         session()->flash('success', 'Pengguna berhasil diverifikasi.');
         return redirect()->back();
+
     }
 }

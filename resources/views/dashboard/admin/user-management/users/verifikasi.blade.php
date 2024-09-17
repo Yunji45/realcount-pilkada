@@ -42,7 +42,7 @@
                   </a>
                 </div>
               </div>
-              <div class="card-body">                          
+              <div class="card-body">
                 <div class="table-responsive">
                   <table
                     id="add-row"
@@ -77,7 +77,7 @@
                             <td>{{ $user->nik }}</td>
                             <td>{{ $user->status }}</td>
                             <td>
-                                <div class="form-button-action">                                
+                                <div class="form-button-action">
                                     <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
@@ -87,12 +87,12 @@
                                         @csrf
                                         <button type="submit" class="btn btn-success btn-sm">Verifikasi</button>
                                     </form>
-                                              
+
                                 </div>
                             </td>
                         </tr>
                         @endforeach
-                      
+
                     </tbody>
                   </table>
                 </div>

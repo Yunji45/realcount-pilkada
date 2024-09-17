@@ -38,6 +38,5 @@ Route::get('map',[MapController::class,'tes'])->name('map');
 route::get('chart-vote',[ChartController::class, 'getVotesPerPartaiElection'])->name('chart');
 Route::get('/votes-per-election', [ChartController::class, 'getVotesByElection']);
 Route::get('/elections', [ChartController::class, 'getElections']);
-Route::get('tes', [WilayahController::class, 'get']);
 
 

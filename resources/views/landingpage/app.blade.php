@@ -64,28 +64,32 @@
         top: 40px;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: transparent; /* Make background transparent */
         overflow: auto;
     }
 
     .modal-content {
         background-color: #fefefe;
-        margin: 3% auto; /* Reduce margin to make modal bigger */
-        padding: 30px; /* Increase padding for better readability */
+        margin: 3% auto;
+        padding: 30px;
         border: 1px solid #888;
-        width: 80%; /* Set to 80% of the screen width */
-        max-width: 900px; /* Max width increased for XL size */
-        max-height: 85vh; /* Limit modal height to 85% of the viewport */
+        width: 80%;
+        max-width: 900px;
+        max-height: 85vh;
         overflow-y: auto;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
-        font-size: 1.1rem; /* Slightly larger text for better readability */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        font-size: 1.1rem;
+        position: relative;
     }
 
     .close {
         color: #aaa;
-        float: right;
+        position: absolute;
+        right: 15px;
+        top: 15px;
         font-size: 28px;
         font-weight: bold;
+        cursor: pointer;
     }
 
     .close:hover,
@@ -100,15 +104,17 @@
         overflow: hidden;
     }
 
-    /* Add responsive design for smaller screens */
+    /* Responsive design */
     @media (max-width: 600px) {
         .modal-content {
             width: 95%;
             margin: 5% auto;
-            font-size: 1rem; /* Slightly reduce text size on smaller screens */
+            font-size: 1rem;
         }
     }
 </style>
+
+
 
 </head>
 
@@ -271,7 +277,18 @@
                                     dapat dicapai dengan mempertahankan persatuan dan kesatuan bangsa, dengan landasan
                                     Pancasila.</p>
 
-                                <a class="border-bottom" href="#" style="font-weight: bold">Selengkapnya</a>
+                                <a class="border-bottom" href="#container" style="font-weight: bold" id="openDeklarasi" data-open-modal="Deklarasi">Selengkapnya</a>
+
+                                <!-- The Modal -->
+                                <div id="Deklarasi" class="modal">
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <h1 style="margin-bottom:20px"> Dasx</h1>
+                                        <p style="text-align: justify">
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="nav-mission" role="tabpanel"
                                 aria-labelledby="nav-mission-tab">
@@ -283,7 +300,19 @@
                                     Ketika itu, November 2007, keduanya membahas politik terkini, yang jauh dari
                                     nilai-nilai demokrasi sesungguhnya.</p>
 
-                                <a class="border-bottom" href="#" style="font-weight: bold">Selengkapnya</a>
+                                <a class="border-bottom" href="#container" style="font-weight: bold" id="openSejarah" data-open-modal="Sejarah">Selengkapnya</a>
+
+                                <!-- The Modal -->
+                                <div id="Sejarah" class="modal">
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <h1 style="margin-bottom:20px"> Dasx</h1>
+                                        <p style="text-align: justify">
+                                        </p>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="tab-pane fade" id="nav-vision" role="tabpanel"
                                 aria-labelledby="nav-vision-tab">
@@ -296,10 +325,10 @@
                                     ekonomi.</p>
 
                                 <a class="border-bottom" href="#container" style="font-weight: bold"
-                                    id="openModal">Selengkapnya</a>
+                                id="openVisiMisi" data-open-modal="VisiMisi">Selengkapnya</a>
 
                                 <!-- The Modal -->
-                                <div id="myModal" class="modal">
+                                <div id="VisiMisi" class="modal">
                                     <!-- Modal content -->
                                     <div class="modal-content">
                                         <span class="close">&times;</span>
@@ -327,7 +356,8 @@
                                             saja. Sementara kondisi yang sedang berjalan, justru memaksakan demokrasi di
                                             tengah himpitan kemiskinan, yang hanya berujung pada kekacauan.
 
-                                            <br><br>Gagasan pendirian partai pun kemudian diwacanakan di lingkaran orang-orang
+                                            <br><br>Gagasan pendirian partai pun kemudian diwacanakan di lingkaran
+                                            orang-orang
                                             Hashim dan Prabowo. Rupanya, tidak semua setuju. Ada pula yang menolak,
                                             dengan alasan bila ingin ikut terlibat dalam proses politik sebaiknya ikut
                                             saja pada partai politik yang ada. Kebetulan, Prabowo adalah anggota Dewan
@@ -336,7 +366,8 @@
                                             presiden mendampingi Presiden Susilo Bambang Yudhoyono. “Mana mau Jusuf
                                             Kalla memberikan jabatan Ketua Umum Golkar kepada Prabowo?” kata Fadli.
 
-                                            <br><br>Setelah perdebatan cukup panjang dan alot, akhirnya disepakati perlu ada
+                                            <br><br>Setelah perdebatan cukup panjang dan alot, akhirnya disepakati perlu
+                                            ada
                                             partai baru yang benar-benar memiliki manifesto perjuangan demi
                                             kesejahteraan rakyat. Untuk mematangkan konsep partai, pada Desember 2007,
                                             di sebuah rumah, yang menjadi markas IPS (Institute for Policy Studies) di
@@ -363,6 +394,69 @@
         </div>
     </div>
     <!-- About End -->
+
+    <div class="container-xxl py-5">
+        <div class="container" id="container">
+            <section class="latest-articles" style="margin-top: 40px;">
+                <h2 style="font-size: 32px; margin-bottom: 20px;">Latest Articles</h2>
+                <div class="articles-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    @if ($articles->isEmpty())
+                        <p>No articles available.</p>
+                    @else
+                        @foreach ($articles as $article)
+                            <div class="article-card"
+                                style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
+                                    class="article-image"
+                                    style="max-width: 100%; height: auto; display: block; border-radius: 8px;">
+                                <h3 style="font-size: 24px; margin-bottom: 10px;">{{ $article->title }}</h3>
+                                <p style="color: #555;">{!! Str::limit($article->content, 100) !!}</p>
+                                <a href="{{ route('article.show', $article->id) }}" class="read-more"
+                                    style="display: inline-block; margin-top: 10px; color: #fff; background-color: #3498db; padding: 10px 20px; border-radius: 5px;">Read
+                                    More</a>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </section>
+
+            <section class="categories" style="margin-top: 40px;">
+                <h2 style="font-size: 32px; margin-bottom: 20px;">Categories</h2>
+                <div class="categories-list" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    @if ($categories->isEmpty())
+                        <p>No categories available.</p>
+                    @else
+                        @foreach ($categories as $category)
+                            {{-- <a href="{{ route('category.show', $category->category) }}" class="category-item" style="background-color: #3498db; color: #fff; padding: 10px 20px; border-radius: 5px;">{{ $category->category }}</a> --}}
+                        @endforeach
+                    @endif
+                </div>
+            </section>
+
+            <!-- Trending Topics Section -->
+            <section class="trending-topics" style="margin-top: 40px;">
+                <h2 style="font-size: 32px; margin-bottom: 20px;">Trending Topics</h2>
+                <div class="trending-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    @if ($trendingArticles->isEmpty())
+                        <p>No trending articles available.</p>
+                    @else
+                        @foreach ($trendingArticles as $article)
+                            <div class="trending-item"
+                                style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                <h3 style="font-size: 24px; margin-bottom: 10px;">{{ $article->title }}</h3>
+                                <p>{!! Str::limit($article->content, 50) !!}</p>
+                                <a href="{{ route('article.show', $article->id) }}" class="read-more"
+                                    style="display: inline-block; margin-top: 10px; color: #fff; background-color: #3498db; padding: 10px 20px; border-radius: 5px;">Read
+                                    More</a>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </section>
+
+
+        </div>
+    </div>
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
@@ -439,15 +533,6 @@
 
     {{-- Modal Skrip --}}
     <script>
-        // Get the modal
-        var modal = document.getElementById("myModal");
-
-        // Get the button that opens the modal
-        var btn = document.getElementById("openModal");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
         // Function to toggle scroll
         function toggleScroll(enable) {
             if (enable) {
@@ -457,26 +542,54 @@
             }
         }
 
-        // When the user clicks the button, open the modal
-        btn.onclick = function() {
+        // Function to open a modal
+        function openModal(modalId) {
+            var modal = document.getElementById(modalId);
             modal.style.display = "block";
             toggleScroll(false); // Disable scrolling
         }
 
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        // Function to close a modal
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
             modal.style.display = "none";
             toggleScroll(true); // Enable scrolling
         }
 
+        // Get all buttons that open modals
+        var openButtons = document.querySelectorAll("[data-open-modal]");
+
+        // Add click event to all buttons to open the corresponding modal
+        openButtons.forEach(function(button) {
+            button.onclick = function() {
+                var modalId = this.getAttribute("data-open-modal");
+                openModal(modalId);
+            };
+        });
+
+        // Get all <span> elements that close the modals
+        var closeButtons = document.querySelectorAll(".close");
+
+        // Add click event to all close buttons
+        closeButtons.forEach(function(span) {
+            span.onclick = function() {
+                var modalId = this.getAttribute("data-modal");
+                closeModal(modalId);
+            };
+        });
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-                toggleScroll(true); // Enable scrolling
-            }
-        }
+            var modals = document.querySelectorAll(".modal");
+            modals.forEach(function(modal) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                    toggleScroll(true); // Enable scrolling
+                }
+            });
+        };
     </script>
+
 
 
     <!-- JavaScript Libraries -->

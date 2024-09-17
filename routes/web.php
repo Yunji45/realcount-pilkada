@@ -24,9 +24,10 @@ use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
+use App\Mail\PostMail;
+use App\Models\Kelurahan;
+use App\Models\PollingPlace;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\VerifikasiEmail;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -42,23 +43,21 @@ use App\Mail\VerifikasiEmail;
 Route::get('/', function () {
     return view('auth/login');
 });
-
-Route::get('/send-email',function(){
+Route::get('/send-email', function () {
     $data = [
         'name' => 'Syahrizal As',
-        'email' => 'Testing Kirim Email di Santri Koding',
-        'nik' => 'Testing Kirim Email di Santri Koding',
-        'status' => 'Testing Kirim Email di Santri Koding'
+        'body' => 'Testing Kirim Email di Santri Koding'
     ];
-   
-    Mail::to('ihyanatikwibowo@gmail.com')->send(new VerifikasiEmail($data));
-   
+
+    Mail::to('ihyanatikwibowo@gmail.com')->send(new PostMail($data));
+
     dd("Email Berhasil dikirim.");
 });
 
-// Route::get('/home', function () {
-//     return view('layouts/dashboard/dashboard');
-// });
+
+Route::get('/home', function () {
+    return view('layouts/dashboard/dashboard');
+});
 
 // Route untuk mengambil kelurahan berdasarkan kecamatan
 Route::get('/get-kabupatens/{provinsi_id}', [VoteController::class, 'getKabupatens']);
@@ -77,11 +76,19 @@ Route::get('/simpatisan/dashboard', [HomeSimpatisanController::class, 'index'])-
 Route::get('/lain-lain/dashboard', [HomeLainyaController::class, 'index'])->name('lain-lain.dashboard');
 
 
+Route::get('/admin/dashboard/perorangan', action: [HomeAdminController::class, 'indexPerorangan'])->name('admin.dashboard.perorangan');
+Route::get('/admin/dashboard/partai', action: [HomeAdminController::class, 'indexPartai'])->name('admin.dashboard.partai');
+Route::get('/admin/dashboard/peta', action: [HomeAdminController::class, 'indexPeta'])->name('admin.dashboard.peta');
+
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 Route::get('/map', [DaerahController::class, 'map'])->name('map');
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name('landingpage');
+
+Route::get('/category/{category}', [ArticleController::class, 'showByCategory'])->name('category.show');
+Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
 
 // Route::get('/home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
 
@@ -103,7 +110,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     ]);
     Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
 
-    Route::post('/user-verifikasi/{user}', [UserController::class, 'verifikasi'])->name('user.verifikasi');
+    Route::post('/user-verifikasi/{user}', [UserController::class, 'verifikasi'])->name('user.veifikasi');
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
     Route::get('/get-kelurahan/{kecamatanId}', [PollingPlaceController::class, 'getKelurahan'])->name('get.kelurahan');

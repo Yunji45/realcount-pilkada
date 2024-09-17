@@ -33,78 +33,94 @@
                         <p style="margin-left:16px">Dashboard</p>
                     </a>
                 @elseif(Auth::user()->hasRole('Admin'))
-                    <a href="{{ route('admin.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
+                <li class="nav-item {{ Request::is('perorangan*', 'partai*', 'peta*') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#dashboard"
+                        class="collapsed {{ Request::is('perorangan*', 'partai*', 'peta*') ? '' : 'collapsed' }}"
+                        aria-expanded="{{ Request::is('perorangan*', 'partai*', 'peta*') ? 'true' : 'false' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
+                            <path d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
                         </svg>
                         <p style="margin-left:16px">Dashboard</p>
+                        <span class="caret"></span>
                     </a>
-                @elseif(Auth::user()->hasRole('Relawan RDW'))
-                    <a href="{{ route('relawan.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                @elseif(Auth::user()->hasRole('Saksi'))
-                    <a href="{{ route('saksi.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                @elseif(Auth::user()->hasRole('Koordinator'))
-                    <a href="{{ route('koordinator.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                @elseif(Auth::user()->hasRole('Pimpinan'))
-                    <a href="{{ route('pimpinan.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                @elseif(Auth::user()->hasRole('Pemilih'))
-                    <a href="{{ route('pemilih.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                @elseif(Auth::user()->hasRole('Simpatisan'))
-                    <a href="{{ route('simpatisan.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                @elseif(Auth::user()->hasRole('Lain-lain'))
-                    <a href="{{ route('lain-lain.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                @endif
+                    <div class="collapse {{ Request::is('perorangan*', 'partai*', 'peta*') ? 'show' : '' }}" id="dashboard">
+                        <ul class="nav nav-collapse">
+                            <li class="{{ Request::is('perorangan*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.dashboard.perorangan') }}">
+                                    <span class="sub-item">Perorangan</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('partai*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.dashboard.partai') }}">
+                                    <span class="sub-item">Partai</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('peta*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.dashboard.peta') }}">
+                                    <span class="sub-item">Peta</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+        @elseif(Auth::user()->hasRole('Relawan RDW'))
+            <a href="{{ route('relawan.dashboard') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
+                    <path
+                        d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
+                </svg>
+                <p style="margin-left:16px">Dashboard</p>
+            </a>
+        @elseif(Auth::user()->hasRole('Saksi'))
+            <a href="{{ route('saksi.dashboard') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
+                    <path
+                        d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
+                </svg>
+                <p style="margin-left:16px">Dashboard</p>
+            </a>
+        @elseif(Auth::user()->hasRole('Koordinator'))
+            <a href="{{ route('koordinator.dashboard') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
+                    <path
+                        d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
+                </svg>
+                <p style="margin-left:16px">Dashboard</p>
+            </a>
+        @elseif(Auth::user()->hasRole('Pimpinan'))
+            <a href="{{ route('pimpinan.dashboard') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
+                    <path
+                        d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
+                </svg>
+                <p style="margin-left:16px">Dashboard</p>
+            </a>
+        @elseif(Auth::user()->hasRole('Pemilih'))
+            <a href="{{ route('pemilih.dashboard') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
+                    <path
+                        d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
+                </svg>
+                <p style="margin-left:16px">Dashboard</p>
+            </a>
+        @elseif(Auth::user()->hasRole('Simpatisan'))
+            <a href="{{ route('simpatisan.dashboard') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
+                    <path
+                        d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
+                </svg>
+                <p style="margin-left:16px">Dashboard</p>
+            </a>
+        @elseif(Auth::user()->hasRole('Lain-lain'))
+            <a href="{{ route('lain-lain.dashboard') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
+                    <path
+                        d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
+                </svg>
+                <p style="margin-left:16px">Dashboard</p>
+            </a>
+            @endif
             </li>
 
             <li class="nav-section">
@@ -230,7 +246,8 @@
                 <a data-bs-toggle="collapse" href="#berita"
                     class="collapsed {{ Request::is('articles*', 'category_articles*') ? '' : 'collapsed' }}"
                     aria-expanded="{{ Request::is('articles*', 'category_articles*') ? 'true' : 'false' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="24" height="24">
+                    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24"
+                        width="24" height="24">
                         <path
                             d="m21,0h-13c-1.654,0-3,1.346-3,3v3H0v14.5c0,1.93,1.57,3.5,3.5,3.5h17c1.93,0,3.5-1.57,3.5-3.5V3c0-1.654-1.346-3-3-3ZM5,20.5c0,.827-.673,1.5-1.5,1.5s-1.5-.673-1.5-1.5v-12.5h3v12.5Zm17,0c0,.827-.673,1.5-1.5,1.5H6.662c.216-.455.338-.963.338-1.5V3c0-.551.449-1,1-1h13c.551,0,1,.449,1,1v17.5Zm-7-14.5h5v2h-5v-2Zm-6,4h11v2h-11v-2Zm0,4h11v2h-11v-2Zm0,4h11v2h-11v-2Zm4-10h-4v-4h4v4Z" />
                     </svg>

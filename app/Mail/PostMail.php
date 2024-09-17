@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class VerifikasiEmail extends Mailable
+class PostMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
@@ -28,7 +28,7 @@ class VerifikasiEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Verifikasi Berhasil')
-                    ->view('verif');
+        return $this->subject('Testing Kirim Email')
+                    ->view('email');
     }
 }

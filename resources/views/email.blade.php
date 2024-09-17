@@ -1,49 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Registrasi Berhasil</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            margin: 0 auto;
-            padding: 20px;
-            max-width: 600px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2e6da4;
-        }
-        p {
-            font-size: 16px;
-        }
-        .footer {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #888;
-            text-align: center;
-        }
-    </style>
+    <title>santrikoding.com</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Selamat, {{ $data['name'] }}!</h1>
-        <p>Terima kasih telah mendaftar di aplikasi kami. Registrasi Anda telah berhasil.</p>
-        <p>Berikut adalah detail akun Anda:</p>
-        <ul>
-            <li><strong>Nama:</strong> {{ $data['name'] }}</li>
-            <li><strong>Email:</strong> {{ $data['email'] }}</li>
-        </ul>
-        <p>Jika Anda memiliki pertanyaan atau butuh bantuan, jangan ragu untuk menghubungi kami.</p>
-        
-        <div class="footer">
-            <p>&copy; {{ date('Y') }} Aplikasi Kami. Semua hak dilindungi.</p>
-        </div>
-    </div>
+    <h3>{{ $data['name'] }}</h3>
+    <h4>{{ $data['body'] }}</h4>
+   
+    <p>Terimakasih</p>
 </body>
 </html>
