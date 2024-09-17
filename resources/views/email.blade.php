@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>santrikoding.com</title>
     <title>Registrasi Berhasil</title>
     <style>
         body {
@@ -33,10 +32,6 @@
     </style>
 </head>
 <body>
-    <h3>{{ $data['name'] }}</h3>
-    <h4>{{ $data['body'] }}</h4>
-   
-    <p>Terimakasih</p>
     <div class="container">
         <h1>Selamat, {{ $data['name'] }}!</h1>
         <p>Terima kasih telah mendaftar di aplikasi kami. Registrasi Anda telah berhasil.</p>
@@ -52,5 +47,4 @@
         </div>
     </div>
 </body>
-</html>
 </html>
