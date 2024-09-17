@@ -15,21 +15,24 @@ class PollingPlaceImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        return new PollingPlace([
-            'name' => $row['tps'],
-            'provinsi_id' => $row['provinsi'],
-            'kabupaten_id' => $row['kabupaten'],
-            'kecamatan_id' => $row['kecamatan'],
-            'kelurahan_id' => $row['kelurahan'],
-            'rw' => $row['rw'],
-            'DPT' => $row['dpt'],
-            'periode' => now(),
-            'latitude' => $row['latitude'],
-            'longtitude' => $row['longtitude'],
-            'status' => $row['status'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        if (isset($row['tps'])) {
+            return new PollingPlace([
+                'name' => $row['tps'],
+                'provinsi_id' => $row['provinsi'],
+                'kabupaten_id' => $row['kabupaten'],
+                'kecamatan_id' => $row['kecamatan'],
+                'kelurahan_id' => $row['kelurahan'],
+                'rw' => $row['rw'],
+                'DPT' => $row['dpt'],
+                'latitude' => $row['latitude'],
+                'longitude' => $row['longitude'],
+                'status' => $row['status'],
+                'periode' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+        return null; // Abaikan baris jika tidak ada TPS
     }
 
     /**

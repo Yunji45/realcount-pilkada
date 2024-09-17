@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Candidate;
+use App\Models\PollingPlace;
 use App\Models\Vote;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -16,10 +17,29 @@ class VoteImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
+        // Cari kandidat berdasarkan partai_id
+        $candidate = Candidate::where('partai_id', $row['partai'])->first();
+
+        // Jika kandidat tidak ditemukan, Anda bisa menangani sesuai kebutuhan, misalnya return null atau lempar exception
+        if (!$candidate) {
+            // Tindakan jika kandidat tidak ditemukan, misalnya skip row ini
+            return null;
+        }
+
+        // Cari kandidat berdasarkan partai_id
+        $tps = PollingPlace::where('name', $row['tps'])->first();
+
+        // Jika kandidat tidak ditemukan, Anda bisa menangani sesuai kebutuhan, misalnya return null atau lempar exception
+        if (!$tps) {
+            // Tindakan jika kandidat tidak ditemukan, misalnya skip row ini
+            return null;
+        }
+
+        // Jika ditemukan, simpan vote dengan candidate_id yang ditemukan
         return new Vote([
-            'candidate_id' => $row['partai'],
-            'polling_place_id' => $row['tps'],
-            'vote_count' => $row['vote'],
+            'candidate_id' => $candidate->id, // Ambil ID dari kandidat yang ditemukan
+            'polling_place_id' => $tps->id, // TPS diambil dari file Excel
+            'vote_count' => $row['vote'], // Jumlah suara diambil dari file Excel
             'created_at' => now(),
             'updated_at' => now(),
         ]);
