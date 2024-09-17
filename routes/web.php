@@ -110,7 +110,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     ]);
     Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
 
-    Route::post('/user-verifikasi/{user}', [UserController::class, 'verifikasi'])->name('user.veifikasi');
+    Route::post('/user-verifikasi/{user}', [UserController::class, 'verifikasi'])->name('user.verifikasi');
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
     Route::get('/get-kelurahan/{kecamatanId}', [PollingPlaceController::class, 'getKelurahan'])->name('get.kelurahan');
