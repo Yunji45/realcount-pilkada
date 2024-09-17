@@ -200,7 +200,7 @@
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
-                        <div id="map" style="width: 100%; height: 400px;"></div>
+                        <div id="map" style="width: 100%; height: 800px;"></div>
                     </div>
                 </div>
             </div>

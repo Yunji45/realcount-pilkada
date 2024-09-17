@@ -72,14 +72,24 @@ function onEachFeature(feature, layer) {
         click: function (e) {
             const props = e.target.feature.properties;
 
-            // Looping untuk menampilkan semua partai dan total suara
+            // Perhitungan persentase suara
             let content = `<b>${props.kelurahan_name}</b><br>`;
             if (props.parties && props.parties.length > 0) {
                 content += `<ul>`;
+                let totalVotes = 0;
                 props.parties.forEach(party => {
+                    totalVotes += party.total_votes;
                     content += `<li>Partai: ${party.partai_name}, Total Vote: ${party.total_votes}</li>`;
                 });
+
+                // Hitung persentase jika dpt ada
+                let dpt = props.dpt || 0;
+                let percentage = dpt > 0 ? ((totalVotes / dpt) * 100).toFixed(2) : 0;
+
                 content += `</ul>`;
+                content += `<p>Total Suara: ${totalVotes}<br>`;
+                content += `Jumlah DPT: ${dpt}<br>`;
+                content += `Persentase Suara: ${percentage}%</p>`;
             } else {
                 content += `No party data available.`;
             }
@@ -92,9 +102,10 @@ function onEachFeature(feature, layer) {
     });
 }
 
+
 // Ambil data dari API dan tambahkan ke peta
 // fetch('https://dpcgerindrakotabandung.com/api/map')
-fetch('http://realcount-pilkada.test/api/map')
+fetch('http://localhost:8000/api/map')
     .then(response => response.json())
     .then(data => {
         const geojsonData = {

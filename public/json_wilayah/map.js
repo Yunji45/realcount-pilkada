@@ -30,7 +30,7 @@ function getColor(partaiColor) {
 function style(feature) {
     return {
         radius: 8,
-        fillColor: getColor(feature.properties.partai_color),
+        fillColor: getColor(feature.properties.parties[0]?.partai_color),
         color: "#000",
         weight: 1,
         opacity: 1,
@@ -79,11 +79,11 @@ function onEachFeature(feature, layer) {
                 let totalVotes = 0;
                 props.parties.forEach(party => {
                     totalVotes += party.total_votes;
-                    content += `<li>Partai: ${party.partai_name}, Total Vote: ${party.total_votes}</li>`;
+                    content += `<li>Partai: ${party.partai_name}, Total Vote: ${party.total_votes}, Persentase: ${party.vote_percentage}%</li>`;
                 });
 
                 // Hitung persentase jika dpt ada
-                let dpt = props.dpt || 0;
+                let dpt = props.total_dpt || 0;
                 let percentage = dpt > 0 ? ((totalVotes / dpt) * 100).toFixed(2) : 0;
 
                 content += `</ul>`;
@@ -102,10 +102,8 @@ function onEachFeature(feature, layer) {
     });
 }
 
-
 // Ambil data dari API dan tambahkan ke peta
-// fetch('https://dpcgerindrakotabandung.com/api/map')
-fetch('http://realcount-pilkada.test/api/map')
+fetch('http://localhost:8000/api/map')
     .then(response => response.json())
     .then(data => {
         const geojsonData = {
@@ -128,6 +126,7 @@ fetch('http://realcount-pilkada.test/api/map')
                         "kecamatan_name": item.kecamatan_name,
                         "kabupaten_name": item.kabupaten_name,
                         "provinsi_name": item.provinsi_name,
+                        "total_dpt": item.total_dpt,  // Total DPT per kelurahan
                         "parties": item.parties, // array partai yang sudah di-looping dari API
                     },
                     "geometry": {
