@@ -1,5 +1,9 @@
 @extends('layouts.auth.app')
 
+@section('title')
+    Pilkada | Login
+@endsection
+
 @section('content')
     <br><br><br><br>
     <!-- TABS CONTENT LOGIN -->

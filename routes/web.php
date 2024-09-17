@@ -43,16 +43,16 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/', function () {
     return view('auth/login');
 });
-Route::get('/send-email', function () {
-    $data = [
-        'name' => 'Syahrizal As',
-        'body' => 'Testing Kirim Email di Santri Koding'
-    ];
+// Route::get('/send-email', function () {
+//     $data = [
+//         'name' => 'Syahrizal As',
+//         'body' => 'Testing Kirim Email di Santri Koding'
+//     ];
 
-    Mail::to('ihyanatikwibowo@gmail.com')->send(new PostMail($data));
+//     Mail::to('ihyanatikwibowo@gmail.com')->send(new VerifikasiEmail($data));
 
-    dd("Email Berhasil dikirim.");
-});
+//     dd("Email Berhasil dikirim.");
+// });
 
 
 Route::get('/home', function () {
@@ -114,6 +114,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
     Route::get('/get-kelurahan/{kecamatanId}', [PollingPlaceController::class, 'getKelurahan'])->name('get.kelurahan');
+
+    Route::post('/tps-import', [PollingPlaceController::class, 'import'])->name('tps.import');
+    Route::post('/vote-import', [VoteController::class, 'import'])->name('vote.import');
 
     Route::get('/get-kabupaten-home/{provinsiId}', [HomeAdminController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan-home/{kabupatenId}', [HomeAdminController::class, 'getKecamatan'])->name('get.kecamatan');
