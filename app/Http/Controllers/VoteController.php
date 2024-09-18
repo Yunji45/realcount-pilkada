@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\VoteImport;
+// use App\Imports\VoteImport;
 use App\Models\Candidate;
 use App\Models\PollingPlace;
 use App\Models\Vote;
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
+// use Maatwebsite\Excel\Facades\Excel;
 
 class VoteController extends Controller
 {
@@ -197,14 +197,14 @@ class VoteController extends Controller
         return response()->json($pollingPlaces);
     }
 
-    public function import()
-    {
-        try {
-            Excel::import(new VoteImport, request()->file('your_file'));
+    // public function import()
+    // {
+    //     try {
+    //         Excel::import(new VoteImport, request()->file('your_file'));
 
-            return redirect()->route("vote.index")->with('success', 'Suara Berhasil Di Import!');
-        } catch (\Throwable $th) {
-            return back()->with("error", $th->getMessage());
-        }
-    }
+    //         return redirect()->route("vote.index")->with('success', 'Suara Berhasil Di Import!');
+    //     } catch (\Throwable $th) {
+    //         return back()->with("error", $th->getMessage());
+    //     }
+    // }
 }
