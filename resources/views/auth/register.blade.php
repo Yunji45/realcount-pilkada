@@ -1,5 +1,9 @@
 @extends('layouts.auth.app')
 
+@section('title')
+    Pilkada | Register
+@endsection
+
 @section('content')
     <!-- TABS CONTENT SIGNUP -->
 

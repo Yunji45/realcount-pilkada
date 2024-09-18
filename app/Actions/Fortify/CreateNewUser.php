@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Mail\RegistrasiEmail;
 use Illuminate\Support\Facades\Mail;
 
+
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -65,6 +66,7 @@ class CreateNewUser implements CreatesNewUsers
                 'email' => $user->email,
             ];
             Mail::to($user->email)->send(new RegistrasiEmail($emailData));
+
 
             // Show success toast
             session()->flash('success', 'User berhasil dibuat.');

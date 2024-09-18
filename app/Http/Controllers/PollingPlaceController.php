@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+// use App\Imports\PollingPlaceImport;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -11,6 +12,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+// use Maatwebsite\Excel\Facades\Excel;
 
 class PollingPlaceController extends Controller
 {
@@ -231,5 +233,16 @@ class PollingPlaceController extends Controller
             return redirect()->back()->with('error', 'Failed to delete party. Please try again.');
         }
     }
+
+    // public function import()
+    // {
+    //     try {
+    //         Excel::import(new PollingPlaceImport, request()->file('your_file'));
+
+    //         return redirect()->route("tps.index")->with('success', 'TPS Berhasil Di Import!');
+    //     } catch (\Throwable $th) {
+    //         return back()->with("error", $th->getMessage());
+    //     }
+    // }
 
 }

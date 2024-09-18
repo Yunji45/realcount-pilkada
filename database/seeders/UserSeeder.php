@@ -110,7 +110,6 @@ class UserSeeder extends Seeder
 
         //START:Admin
         $user = User::factory()->create([
-            'nik' => '201904011',
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('qwerty12'),
@@ -216,6 +215,4 @@ class UserSeeder extends Seeder
             $user->assignRole($lainnyaRole);
         }
     }
-
-    
 }
