@@ -96,7 +96,7 @@
                                         <select name="candidate_id" class="form-control" id="candidate_id" required>
                                             <option value="" selected disabled>Pilih Candidate</option>
                                             @foreach ($candidates as $candidate)
-                                                <option value="{{ $candidate->id }}">{{ $candidate->name }}</option>
+                                                <option value="{{ $candidate->id }}">{{ $candidate->name }} / {{ $candidate->partai->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

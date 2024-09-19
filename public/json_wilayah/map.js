@@ -103,7 +103,7 @@ function onEachFeature(feature, layer) {
 }
 
 // Ambil data dari API dan tambahkan ke peta
-fetch('http://localhost:8000/api/map')
+fetch('https://dpcgerindrakotabandung.com/api/map')
     .then(response => response.json())
     .then(data => {
         const geojsonData = {
