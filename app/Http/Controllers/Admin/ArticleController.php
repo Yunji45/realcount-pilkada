@@ -14,7 +14,7 @@ class ArticleController extends Controller
     {
         $articles = Article::all();
         $title = 'Artikel';
-        return view('dashboard.admin.article.index', compact('articles','title'));
+        return view('dashboard.admin.article.index', compact('articles', 'title'));
     }
 
     // Menampilkan form untuk membuat artikel baru
@@ -58,7 +58,7 @@ class ArticleController extends Controller
     {
         $title = 'Artikel';
         $type = "Tambah Data";
-        return view('dashboard.admin.article.show', compact('article','title','type'));
+        return view('dashboard.admin.article.show', compact('article', 'title', 'type'));
     }
 
     // Menampilkan form untuk mengedit artikel
@@ -67,7 +67,7 @@ class ArticleController extends Controller
         $title = 'Artikel';
         $type = "Tambah Data";
         $categories = CategoryArticle::all(); // Mengambil semua kategori
-        return view('dashboard.admin.article.edit', compact('article','title','type','categories'));
+        return view('dashboard.admin.article.edit', compact('article', 'title', 'type', 'categories'));
     }
 
     // Mengupdate artikel yang sudah ada
@@ -102,12 +102,36 @@ class ArticleController extends Controller
         return redirect()->route('articles.index')->with('success', 'Article deleted successfully.');
     }
 
-    public function showLandingPage() {
-        $articles = Article::latest()->take(6)->get();
+    public function showLandingPage()
+    {
+        $articles = Article::latest()->simplePaginate(perPage: 6);
         $categories = Article::select('category_article_id')->distinct()->get(); // Mengambil semua kategori unik
         $trendingArticles = Article::orderBy('click-count', 'desc')->take(5)->get(); // Mengambil 5 artikel dengan click_count tertinggi
 
 
-        return view('landingpage.app', compact('articles','trendingArticles','categories'));
+        return view('landingpage.berita.index', compact('articles', 'trendingArticles', 'categories'));
     }
+    public function showLandingPageAll()
+    {
+        $articles = Article::latest()->simplePaginate(9);
+        $trendingArticles = Article::orderBy('click-count', 'desc')->take(5)->get();
+
+        return view('landingpage.berita.show', compact('articles', 'trendingArticles'));
+    }
+
+    public function showDetail($id)
+    {
+        // Ambil artikel berdasarkan id
+        $article = Article::findOrFail($id);
+
+        // Update jumlah klik ketika artikel ditampilkan
+        $article->increment(column: 'click-count');
+
+        // Ambil 5 artikel terpopuler
+        $trendingArticles = Article::orderBy('click-count', 'desc')->take(5)->get();
+
+        return view('landingpage.berita.detail', compact('article', 'trendingArticles'));
+    }
+
+
 }
