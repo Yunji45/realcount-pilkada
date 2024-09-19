@@ -109,10 +109,11 @@ class VoteController extends Controller
         $candidates = Candidate::with('partai', 'election')
             ->get();
         $pollingPlaces = PollingPlace::all();
+        $provinsis = Provinsi::all();
         $title = "Suara";
         $type = "Edit Data";
 
-        return view('dashboard.admin.vote.edit', compact('candidates', 'pollingPlaces', 'title', 'type'));
+        return view('dashboard.admin.vote.edit', compact('candidates', 'pollingPlaces', 'title', 'type','vote','provinsis'));
         // return $vote;
     }
 
@@ -121,32 +122,36 @@ class VoteController extends Controller
      */
     public function update(Request $request, Vote $vote)
     {
+        // Mulai transaksi
         DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [
-                'candidate_id' => ['required', 'exists:candidates,id'],
-                'polling_place_id' => ['required', 'exists:polling_places,id'],
-                'vote_count' => ['required', 'string', 'max:255'],
+            // Validasi data input, menggunakan nullable untuk kolom yang tidak wajib
+            $validatedData = $request->validate([
+                'candidate_id' => ['nullable', 'exists:candidates,id'], // Tidak wajib diisi
+                'polling_place_id' => ['nullable', 'exists:polling_places,id'], // Tidak wajib diisi
+                'vote_count' => ['nullable', 'integer'], // Tidak wajib diisi
             ]);
 
-            if ($validator->fails()) {
-                return back()->withErrors($validator)->withInput();
-            }
+            // Hanya update kolom yang ada di dalam input
+            $vote->update(array_filter($validatedData)); // Hanya kolom yang tidak null yang akan diupdate
 
-            $vote->update([
-                'candidate_id' => $request->candidate_id,
-                'polling_place_id' => $request->polling_place_id,
-                'vote_count' => $request->vote_count,
-            ]);
-
+            // Commit transaksi jika update berhasil
             DB::commit();
 
+            // Redirect dengan pesan sukses
             return redirect()->route('vote.index')->with('success', 'Vote updated successfully');
         } catch (\Throwable $th) {
+            // Rollback jika terjadi error
             DB::rollBack();
-            return back()->with('error', 'Vote update failed');
+
+            // Log error untuk debugging
+            Log::error('Vote update failed: ' . $th->getMessage());
+
+            // Redirect dengan pesan error
+            return back()->with('error', 'Vote update failed')->withInput();
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
