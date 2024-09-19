@@ -28,7 +28,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Add {{ $title }}</h4>
-                            <a href="{{ route('tps.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
+                            <a href="{{ route('vote.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
                             </a>

@@ -85,7 +85,9 @@ Route::get('/admin/dashboard/peta', action: [HomeAdminController::class, 'indexP
 //     return view('welcome');
 // });
 Route::get('/map', [DaerahController::class, 'map'])->name('map');
-Route::get('/', [ArticleController::class, 'showLandingPage'])->name('landingpage');
+Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
+Route::get('/berita/all', [ArticleController::class, 'showLandingPageAll'])->name('berita.all');
+Route::get('/berita/{id}', [ArticleController::class, 'showDetail'])->name('berita.detail');
 
 Route::get('/category/{category}', [ArticleController::class, 'showByCategory'])->name('category.show');
 Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
