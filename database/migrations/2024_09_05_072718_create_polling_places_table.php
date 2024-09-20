@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('rw'); //RW
             $table->string('DPT');
             $table->date('periode')->nullable();
-            $table->decimal('latitude', 10, 7)->nullable();
-            $table->decimal('longitude', 10, 7)->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->enum('status', ['Aktif', 'Non-aktif'])->default('Aktif');
             $table->timestamps();
         });
