@@ -26,19 +26,10 @@ class VoteImport implements ToModel, WithHeadingRow
             return null;
         }
 
-        // Cari kandidat berdasarkan partai_id
-        $tps = PollingPlace::where('name', $row['tps'])->first();
-
-        // Jika kandidat tidak ditemukan, Anda bisa menangani sesuai kebutuhan, misalnya return null atau lempar exception
-        if (!$tps) {
-            // Tindakan jika kandidat tidak ditemukan, misalnya skip row ini
-            return null;
-        }
-
         // Jika ditemukan, simpan vote dengan candidate_id yang ditemukan
         return new Vote([
             'candidate_id' => $candidate->id, // Ambil ID dari kandidat yang ditemukan
-            'polling_place_id' => $tps->id, // TPS diambil dari file Excel
+            'polling_place_id' => $row['tps'], // TPS diambil dari file Excel
             'vote_count' => $row['vote'], // Jumlah suara diambil dari file Excel
             'created_at' => now(),
             'updated_at' => now(),
