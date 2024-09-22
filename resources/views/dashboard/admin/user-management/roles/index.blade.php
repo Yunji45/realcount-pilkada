@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-    Pilkada | Data Role
+My Gerindra | Data Role
 @endsection
 
 @section('content')
@@ -40,7 +40,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="card-body">                
+                <div class="card-body">
                     <div class="table-responsive">
                         <table id="add-row" class="display table table-striped table-hover">
                             <thead>
@@ -75,14 +75,24 @@
                                             </ul>
                                         @endif
                                     </td>
+
                                     <td>
                                         <div class="form-button-action">
-                                            <a href="{{ route('role.edit', $role->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                        
-                                            <form action="{{ route('role.destroy', $role->id) }}" method="POST" style="display:inline-block;">
+                                            <!-- Tombol Edit dengan ikon pensil berwarna putih -->
+                                            <a href="{{ route('role.edit', $role->id) }}"
+                                                class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                <i class="fas fa-edit"></i> <!-- Ikon Edit berwarna putih -->
+                                            </a>
+
+                                            <!-- Tombol Delete dengan ikon tong sampah -->
+                                            <form action="{{ route('role.destroy', $role->id) }}" method="POST"
+                                                style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this role?')">Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Are you sure you want to delete this Partai?')">
+                                                    <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                </button>
                                             </form>
                                         </div>
                                     </td>

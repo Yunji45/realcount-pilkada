@@ -42,6 +42,11 @@ class VotePerPollingPlacePerorangChart
             $query->where('elections.id', $filter['election_id']);
         }
 
+        // Tambahkan filter RW
+        if (isset($filter['rw_id']) && $filter['rw_id']) {
+            $query->where('polling_places.rw', operator: $filter['rw_id']);
+        }
+
         $votes = $query->get();
 
         // Prepare data for chart

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'Pilkada | Dash Superadmin')
+@section('title', 'My Gerindra | Dashboard Superadmin')
 
 @section('content')
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -207,5 +207,5 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   {{-- <script src="{{ asset('json_wilayah/map.js') }}"></script> --}}
   <script src="{{ asset('json_wilayah/tesmap.js') }}"></script>
-  
+
 @endsection

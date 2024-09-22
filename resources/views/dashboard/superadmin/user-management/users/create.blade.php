@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'Pilkada | Create User')
+@section('title', 'My Gerindra | Create User')
 
 @section('content')
 <div class="page-inner">
@@ -144,7 +144,7 @@
                     <button class="btn btn-success">Submit</button>
                     <button class="btn btn-danger">Cancel</button>
                   </div>
-                      
+
                 </form>
               </div>
             </div>

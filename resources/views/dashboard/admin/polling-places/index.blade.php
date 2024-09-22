@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-    Pilkada | {{ $title }}
+My Gerindra | {{ $title }}
 @endsection
 
 @section('content')
@@ -32,7 +32,7 @@
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
                             </a>
-    
+
                         </div>
                         {{-- <a href="" class="btn btn-danger btn-round ms-auto mt-3" data-bs-toggle="modal"
                             data-bs-target="#kt_customers_export_modal">

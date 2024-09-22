@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'Pilkada | Edit User')
+@section('title', 'My Gerindra | Edit User')
 
 @section('content')
 <div class="page-inner">
@@ -147,7 +147,7 @@
                     <button class="btn btn-success">Update</button>
                     <a href="{{ route('user.index') }}" class="btn btn-danger">Cancel</a>
                   </div>
-                      
+
                 </form>
               </div>
             </div>

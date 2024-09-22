@@ -27,9 +27,10 @@ class VoteController extends Controller
         $votes = Vote::with('candidate.partai', 'polling_place.kelurahan','polling_place.kecamatan')
             ->get();
         $title = "Suara";
+        $tps = PollingPlace::all();
 
         return view('dashboard.admin.vote.index', compact('votes', 'title'));
-        // return $votes;
+        // return $tps;
     }
 
     /**

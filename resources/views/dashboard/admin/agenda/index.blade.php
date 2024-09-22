@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-    Pilkada | Agenda
+My Gerindra | Agenda
 @endsection
 
 @section('content')

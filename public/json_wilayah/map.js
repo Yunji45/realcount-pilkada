@@ -73,7 +73,8 @@ function onEachFeature(feature, layer) {
             const props = e.target.feature.properties;
 
             // Perhitungan persentase suara
-            let content = `<b>${props.kelurahan_name}</b><br>`;
+            let content = `<b>${props.kelurahan_name}</b>`;
+            content += `<b> (RW : ${props.rw})</b><br>`; 
             if (props.parties && props.parties.length > 0) {
                 content += `<ul>`;
                 let totalVotes = 0;
@@ -103,7 +104,7 @@ function onEachFeature(feature, layer) {
 }
 
 // Ambil data dari API dan tambahkan ke peta
-fetch('https://dpcgerindrakotabandung.com/api/map')
+fetch('http://localhost:8000/api/map')
     .then(response => response.json())
     .then(data => {
         const geojsonData = {
@@ -128,6 +129,7 @@ fetch('https://dpcgerindrakotabandung.com/api/map')
                         "provinsi_name": item.provinsi_name,
                         "total_dpt": item.total_dpt,  // Total DPT per kelurahan
                         "parties": item.parties, // array partai yang sudah di-looping dari API
+                        "rw": item.rw,
                     },
                     "geometry": {
                         "type": "Point",

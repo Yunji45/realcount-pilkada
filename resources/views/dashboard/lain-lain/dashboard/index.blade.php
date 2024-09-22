@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Pilkada | Dashboard
+My Gerindra | Dashboard
 @endsection
 
 @section('content')

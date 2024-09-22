@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'Pilkada | Permissions')
+@section('title', 'My Gerindra | Permissions')
 
 @section('content')
 <div class="page-inner">
@@ -62,11 +62,21 @@
                                     <td>{{ $permission->name }}</td>
                                     <td>
                                         <div class="form-button-action">
-                                            <a href="{{ route('permission.edit', $permission->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('permission.destroy', $permission->id) }}" method="POST" style="display:inline-block;">
+                                            <!-- Tombol Edit dengan ikon pensil berwarna putih -->
+                                            <a href="{{ route('permission.edit', $permission->id) }}"
+                                                class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                <i class="fas fa-edit"></i> <!-- Ikon Edit berwarna putih -->
+                                            </a>
+
+                                            <!-- Tombol Delete dengan ikon tong sampah -->
+                                            <form action="{{ route('permission.destroy', $permission->id) }}" method="POST"
+                                                style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this permission?')">Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Are you sure you want to delete this Partai?')">
+                                                    <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                </button>
                                             </form>
                                         </div>
                                     </td>
