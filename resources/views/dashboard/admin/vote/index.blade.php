@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-My Gerindra | {{ $title }}
+    My Gerindra | {{ $title }}
 @endsection
 
 @section('content')
@@ -62,7 +62,7 @@ My Gerindra | {{ $title }}
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table id="add-row" class="display table table-striped table-hover">
+                            <table id="tableVote" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -92,7 +92,7 @@ My Gerindra | {{ $title }}
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach ($votes as $vote)
+                                    {{-- @foreach ($votes as $vote)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $vote->polling_place_id }}</td>
@@ -126,7 +126,7 @@ My Gerindra | {{ $title }}
                                             </td>
 
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -169,8 +169,8 @@ My Gerindra | {{ $title }}
                                 <!--begin::Modal body-->
                                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                     <!--begin::Form-->
-                                    <form class="row g-3 needs-validation" method="POST" action="{{ route('vote.import') }}"
-                                        enctype="multipart/form-data" novalidate>
+                                    <form class="row g-3 needs-validation" method="POST"
+                                        action="{{ route('vote.import') }}" enctype="multipart/form-data" novalidate>
                                         @csrf
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
@@ -186,8 +186,7 @@ My Gerindra | {{ $title }}
                                         <div class="text-center">
                                             <button type="reset" id="kt_customers_export_cancel"
                                                 class="btn btn-white me-3" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" id="kt_customers_export_submit"
-                                                class="btn btn-primary">
+                                            <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
                                                 <span class="indicator-label">Submit</span>
                                             </button>
                                         </div>
@@ -206,4 +205,84 @@ My Gerindra | {{ $title }}
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Periksa apakah tabel sudah diinisialisasi
+            if (!$.fn.DataTable.isDataTable('#tableVote')) {
+                var table = $('#tableVote').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "{{ route('vote.index') }}", // URL untuk request data
+                        type: 'GET',
+                        data: function(d) {
+                            d.start = d.start; // Baris awal (untuk paginasi)
+                            d.length = d.length; // Panjang (jumlah baris per halaman)
+                            d.draw = d.draw; // Nomor draw
+                        },
+                        dataSrc: function(json) {
+                            return json.data; // Data yang dikembalikan dari server
+                        }
+                    },
+                    columns: [{
+                            data: null,
+                            render: function(data, type, row, meta) {
+                                return meta.row + 1;
+                            }
+                        },
+                        {
+                            data: 'polling_place_id'
+                        },
+                        {
+                            data: 'candidate.name'
+                        },
+                        {
+                            data: 'polling_place.name'
+                        },
+                        {
+                            data: 'candidate.partai.name'
+                        },
+                        {
+                            data: 'candidate.election.name'
+                        },
+                        {
+                            data: 'polling_place.kecamatan.name'
+                        },
+                        {
+                            data: 'polling_place.kelurahan.name'
+                        },
+                        {
+                            data: 'vote_count'
+                        },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return `
+                    <div class="form-button-action">
+                        <a href="/votes/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="/votes/${row.id}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Vote?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>`;
+                            }
+                        }
+                    ],
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100],
+                    order: [
+                        [1, 'asc']
+                    ]
+                });
+            }
+        });
+    </script>
 @endsection
