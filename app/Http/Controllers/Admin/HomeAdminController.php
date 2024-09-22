@@ -8,6 +8,7 @@ use App\Charts\VotePerPollingPlacePartaiChart;
 use App\Charts\VotePerPollingPlacePerorangChart;
 use App\Http\Controllers\Controller;
 use App\Models\Election;
+use App\Models\PollingPlace;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -256,6 +257,7 @@ class HomeAdminController extends Controller
             'kabupaten_id' => $request->input('kabupaten_id'),
             'kecamatan_id' => $request->input('kecamatan_id'),
             'kelurahan_id' => $request->input('kelurahan_id'),
+            'rw_id' => $request->input('rw_id'),  // Tambah RW ID
             'election_id' => $request->input('election_id'),
         ];
 
@@ -281,7 +283,6 @@ class HomeAdminController extends Controller
             'electionsPerorangs' => $electionsPerorangs,
             'electionsPartais' => $electionsPartais,
         ]);
-
     }
     public function indexPeta(Request $request, VotePerorangChart $votePerorang, VotePartaiChart $votePartai, VotePerPollingPlacePerorangChart $votePerTpsPerorang, VotePerPollingPlacePartaiChart $votePerTpsPartai)
     {
@@ -392,4 +393,11 @@ class HomeAdminController extends Controller
         $kelurahan = Kelurahan::where('kecamatan_id', $kecamatanId)->get();
         return response()->json($kelurahan);
     }
+
+    public function getRw($kelurahanId)
+    {
+        $rws = PollingPlace::where('kelurahan_id', $kelurahanId)->select('rw')->distinct()->get();
+        return response()->json($rws);
+    }
+
 }

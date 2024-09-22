@@ -38,6 +38,9 @@ class VotePerPollingPlacePartaiChart
         if (isset($filter['kelurahan_id']) && $filter['kelurahan_id']) {
             $query->where('polling_places.kelurahan_id', $filter['kelurahan_id']);
         }
+        if (isset($filter['rw_id']) && $filter['rw_id']) {
+            $query->where('polling_places.rw', operator: $filter['rw_id']); // Filter based on RW
+        }
         if (isset($filter['election_id']) && $filter['election_id']) {
             $query->where('elections.id', $filter['election_id']);
         }
@@ -47,6 +50,11 @@ class VotePerPollingPlacePartaiChart
         // Group data by polling places (TPS)
         $pollingPlaces = $votes->groupBy('polling_place_name');
         $labels = $pollingPlaces->keys()->toArray(); // TPS names as labels
+
+        // Menambahkan deskripsi "RW" sebelum setiap label TPS
+        $labels = array_map(function ($label) {
+            return 'RW ' . $label;
+        }, $labels);
 
         // Prepare data for each partai, with partai color
         $series = [];
@@ -58,7 +66,7 @@ class VotePerPollingPlacePartaiChart
 
             foreach ($labels as $pollingPlace) {
                 // Get vote count for this partai at this polling place
-                $vote = $pollingPlaces->get($pollingPlace)->where('partai_name', $partai)->first();
+                $vote = $pollingPlaces->get(str_replace('RW ', '', $pollingPlace))->where('partai_name', $partai)->first();
                 $data[] = $vote ? $vote->total_votes : 0;
 
                 // Get the partai color
@@ -82,5 +90,6 @@ class VotePerPollingPlacePartaiChart
             ->setWidth('1200')
             ->setHeight('400')
             ->setDataset($series); // Partai votes data
+
     }
 }

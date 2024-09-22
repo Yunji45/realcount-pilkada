@@ -122,7 +122,8 @@ Route::middleware(['verified', 'auth'])->group(function () {
 
     Route::get('/get-kabupaten-home/{provinsiId}', [HomeAdminController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan-home/{kabupatenId}', [HomeAdminController::class, 'getKecamatan'])->name('get.kecamatan');
-    Route::get('/get-kelurahan-home/{kecamatanId}', [HomeAdminController::class, 'getKelurahan'])->name('get.kelurahan');
+    Route::get('/get-kelurahan-home/{kecamatanId}', action: [HomeAdminController::class, 'getKelurahan'])->name('get.kelurahan');
+    Route::get('/get-rw/{kelurahan_id}', action: [HomeAdminController::class, 'getRw'])->name('get-rw');
 
     // Route untuk mengembalikan data event dalam bentuk JSON
     Route::get('/getAgenda', [AgendaController::class, 'getAgendas'])->name('getAgenda');

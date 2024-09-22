@@ -266,6 +266,14 @@
                         <label for="kelurahan">Kelurahan:</label>
                         <select class="form-select" name="kelurahan_id" id="kelurahan">
                             <option value="">Pilih Kelurahan</option>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="rw-group" style="display:none;">
+                        <label for="rw">RW:</label>
+                        <select class="form-select" name="rw_id" id="rw">
+                            <option value="">Pilih RW</option>
                         </select>
                     </div>
 
@@ -385,6 +393,37 @@
             });
         });
     </script>
+
+    <script>
+        document.getElementById('kelurahan').addEventListener('change', function() {
+            var kelurahanId = this.value;
+            var rwGroup = document.getElementById('rw-group');
+            var rwSelect = document.getElementById('rw');
+            rwSelect.innerHTML = '<option value="">Pilih RW</option>'; // Clear previous options
+
+            if (kelurahanId) {
+                // Show the RW select input
+                rwGroup.style.display = 'block';
+
+                // Fetch RW data via AJAX
+                fetch(`/get-rw/${kelurahanId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(function(rw) {
+                            var option = document.createElement('option');
+                            option.value = rw.rw;
+                            option.textContent = rw.rw;
+                            rwSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                // Hide the RW select input if no Kelurahan is selected
+                rwGroup.style.display = 'none';
+            }
+        });
+    </script>
+
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
