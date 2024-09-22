@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-    Pilkada | Data User
+    My Gerindra | Data User
 @endsection
 
 @section('content')
@@ -76,20 +76,28 @@
                             <td>{{ implode(', ', $user->roles->pluck('name')->toArray()) }}</td>
                             <td>{{ $user->nik }}</td>
                             <td>{{ $user->status }}</td>
+
                             <td>
                                 <div class="form-button-action">
-                                    <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline-block;">
+                                    <!-- Tombol Edit dengan ikon pensil berwarna putih -->
+                                    <a href="{{ route('user.verifikasi', $user->id) }}" title="Verifikasi"
+                                        class="btn btn-success btn-sm" style="margin-right:10px">
+                                        <i class="fas fa-check-circle"></i> <!-- Ikon Verifikasi dengan Lingkaran -->
+                                     </a>
+
+                                    <!-- Tombol Delete dengan ikon tong sampah -->
+                                    <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                        style="display:inline-block;" title="Delete">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to delete this Partai?')">
+                                            <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                        </button>
                                     </form>
-                                    <form action="{{ route('user.verifikasi', $user->id) }}" method="POST" style="display:inline-block;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">Verifikasi</button>
-                                    </form>
-
                                 </div>
                             </td>
+
                         </tr>
                         @endforeach
 

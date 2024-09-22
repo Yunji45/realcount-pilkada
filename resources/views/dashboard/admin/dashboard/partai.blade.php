@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Pilkada | Dashboard
+    My Gerindra | {{ $title }}
 @endsection
 
 @section('content')
@@ -412,7 +412,8 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                rwSelect.append('<option value="' + value.rw + '">' + value.rw + '</option>');
+                                rwSelect.append('<option value="' + value.rw + '">' +
+                                    value.rw + '</option>');
                             });
                         },
                         error: function(error) {

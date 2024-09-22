@@ -83,6 +83,8 @@ class HomeAdminController extends Controller
             'election_id' => $request->input('election_id'),
         ];
 
+        $title = 'Dashboard | Admin';
+
         // Return view with initial data and chart
         return view('dashboard.admin.dashboard.index', [
             'koordinatorAktif' => $koordinatorAktif,
@@ -105,6 +107,7 @@ class HomeAdminController extends Controller
             'provinsis' => $provinsis,
             'electionsPerorangs' => $electionsPerorangs,
             'electionsPartais' => $electionsPartais,
+            'title' => $title,
         ]);
     }
 
@@ -173,6 +176,8 @@ class HomeAdminController extends Controller
             'election_id' => $request->input('election_id'),
         ];
 
+        $title = 'Perorangan';
+
         // Return view with initial data and chart
         return view('dashboard.admin.dashboard.perorangan', data: [
             'koordinatorAktif' => $koordinatorAktif,
@@ -195,6 +200,7 @@ class HomeAdminController extends Controller
             'provinsis' => $provinsis,
             'electionsPerorangs' => $electionsPerorangs,
             'electionsPartais' => $electionsPartais,
+            'title' => $title,
         ]);
     }
     public function indexPartai(Request $request, VotePerorangChart $votePerorang, VotePartaiChart $votePartai, VotePerPollingPlacePerorangChart $votePerTpsPerorang, VotePerPollingPlacePartaiChart $votePerTpsPartai)
@@ -262,6 +268,8 @@ class HomeAdminController extends Controller
             'election_id' => $request->input('election_id'),
         ];
 
+        $title = 'Partai';
+
         return view('dashboard.admin.dashboard.partai', data: [
             'koordinatorAktif' => $koordinatorAktif,
             'koordinatorNonaktif' => $koordinatorNonaktif,
@@ -283,6 +291,7 @@ class HomeAdminController extends Controller
             'provinsis' => $provinsis,
             'electionsPerorangs' => $electionsPerorangs,
             'electionsPartais' => $electionsPartais,
+            'title' => $title
         ]);
     }
     public function indexPeta(Request $request, VotePerorangChart $votePerorang, VotePartaiChart $votePartai, VotePerPollingPlacePerorangChart $votePerTpsPerorang, VotePerPollingPlacePartaiChart $votePerTpsPartai)
@@ -349,6 +358,8 @@ class HomeAdminController extends Controller
             'election_id' => $request->input('election_id'),
         ];
 
+        $title = 'Peta';
+
         // Return view with initial data and chart
         return view('dashboard.admin.dashboard.peta', [
             'koordinatorAktif' => $koordinatorAktif,
@@ -371,6 +382,7 @@ class HomeAdminController extends Controller
             'provinsis' => $provinsis,
             'electionsPerorangs' => $electionsPerorangs,
             'electionsPartais' => $electionsPartais,
+            'title' => $title,
         ]);
     }
 

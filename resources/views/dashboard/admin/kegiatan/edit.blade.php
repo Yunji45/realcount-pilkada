@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'Pilkada | Edit Kegiatan')
+@section('title', 'My Gerindra | Edit Kegiatan')
 
 @section('content')
 <div class="page-inner">
@@ -55,7 +55,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                
+
                                 <!-- Waktu -->
                                 <div class="form-group">
                                     <label for="waktu">Waktu</label>
@@ -72,7 +72,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                
+
                                 <!-- Deskripsi -->
                                 <div class="form-group">
                                     <label for="deskripsi">Deskripsi</label>
@@ -88,7 +88,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                
+
                                 <!-- Photo -->
                                 <div class="form-group">
                                     <label for="photo">Photo</label>
@@ -108,7 +108,7 @@
                                     @enderror
                                 </div>
                             </div>
-                
+
                             <div class="col-md-6 col-lg-6">
                                 <!-- Longitude -->
                                 <div class="form-group">
@@ -127,7 +127,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                
+
                                 <!-- Latitude -->
                                 <div class="form-group">
                                     <label for="latitude">Latitude</label>
@@ -148,14 +148,14 @@
                             </div>
                         </div>
                     </div>
-                
+
                     <!-- Buttons -->
                     <div class="card-action">
                         <button type="submit" class="btn btn-success">Simpan</button>
                         <a href="{{ route('kegiatan.index') }}" class="btn btn-danger">Batal</a>
                     </div>
                 </form>
-                
+
             </div>
         </div>
     </div>

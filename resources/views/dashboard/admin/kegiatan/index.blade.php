@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'Pilkada | Kegiatan List')
+@section('title', 'My Gerindra | Kegiatan List')
 
 @section('content')
 <div class="page-inner">

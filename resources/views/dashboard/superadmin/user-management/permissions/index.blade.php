@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'Pilkada | Permissions')
+@section('title', 'My Gerindra | Permissions')
 
 @section('content')
 <div class="page-inner">

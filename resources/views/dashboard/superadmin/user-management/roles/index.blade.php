@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-    Pilkada | Data Role
+My Gerindra | Data Role
 @endsection
 
 @section('content')
@@ -40,7 +40,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="card-body">                
+                <div class="card-body">
                     <div class="table-responsive">
                         <table id="add-row" class="display table table-striped table-hover">
                             <thead>
@@ -78,7 +78,7 @@
                                     <td>
                                         <div class="form-button-action">
                                             <a href="{{ route('role.edit', $role->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                        
+
                                             <form action="{{ route('role.destroy', $role->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Pilkada | Dashboard
+    My Gerindra | {{ $title }}
 @endsection
 
 @section('content')

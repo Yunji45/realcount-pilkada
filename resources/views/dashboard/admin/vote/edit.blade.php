@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'Pilkada | {{ $title }}')
+@section('title', 'My Gerindra | {{ $title }}')
 
 @section('content')
     <div class="page-inner">
@@ -89,7 +89,7 @@
                                         <input type="text" name="vote_count" class="form-control" id="vote_count" value="{{ old('vote_count',$vote->vote_count) }}"/>
                                     </div>
                                 </div>
-                    
+
                                 <!-- Kandidat -->
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
@@ -102,7 +102,7 @@
                                         </select>
                                     </div>
                                 </div>
-                    
+
                                 <!-- Provinsi -->
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
@@ -115,7 +115,7 @@
                                         </select>
                                     </div>
                                 </div>
-                    
+
                                 <!-- Kabupaten -->
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
@@ -125,7 +125,7 @@
                                         </select>
                                     </div>
                                 </div>
-                    
+
                                 <!-- Kecamatan -->
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
@@ -135,7 +135,7 @@
                                         </select>
                                     </div>
                                 </div>
-                    
+
                                 <!-- Kelurahan -->
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
@@ -145,7 +145,7 @@
                                         </select>
                                     </div>
                                 </div>
-                    
+
                                 <!-- TPS -->
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
@@ -157,13 +157,13 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                         <div class="card-action">
                             <button type="submit" class="btn btn-success">Submit</button>
                             <a href="{{ route('vote.index') }}" class="btn btn-danger">Cancel</a>
                         </div>
                     </form>
-                    
+
                 </div>
             </div>
         </div>
@@ -184,7 +184,7 @@
                     document.getElementById('polling_place_id').innerHTML = '<option value="" selected disabled>Pilih TPS</option>';
                 });
         });
-    
+
         document.getElementById('kabupaten_id').addEventListener('change', function () {
             let kabupaten_id = this.value;
             fetch(`/get-kecamatans/${kabupaten_id}`)
@@ -199,7 +199,7 @@
                     document.getElementById('polling_place_id').innerHTML = '<option value="" selected disabled>Pilih TPS</option>';
                 });
         });
-    
+
         document.getElementById('kecamatan_id').addEventListener('change', function () {
             let kecamatan_id = this.value;
             fetch(`/get-kelurahans/${kecamatan_id}`)
@@ -213,7 +213,7 @@
                     document.getElementById('polling_place_id').innerHTML = '<option value="" selected disabled>Pilih TPS</option>';
                 });
         });
-    
+
         document.getElementById('kelurahan_id').addEventListener('change', function () {
             let kelurahan_id = this.value;
             fetch(`/get-polling-places/${kelurahan_id}`)
