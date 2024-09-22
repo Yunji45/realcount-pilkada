@@ -28,13 +28,13 @@ My Gerindra | {{ $title }}
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Add {{ $title }}</h4>
-                            {{-- <a href="{{ route('vote.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
+                            <a href="{{ route('vote.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
-                            </a> --}}
+                            </a>
 
                         </div>
-                        <a href="" class="btn btn-danger btn-round ms-auto mt-3" data-bs-toggle="modal"
+                        {{-- <a href="" class="btn btn-danger btn-round ms-auto mt-3" data-bs-toggle="modal"
                             data-bs-target="#kt_customers_export_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -53,7 +53,7 @@ My Gerindra | {{ $title }}
                                 </g>
                             </svg>
                             Import
-                        </a>
+                        </a> --}}
                         {{-- <a href="{{ route('vote.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
                             <i class="fa fa-plus"></i>
                             {{ $title }}
