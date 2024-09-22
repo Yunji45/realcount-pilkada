@@ -169,6 +169,7 @@ class HomeAdminController extends Controller
             'kabupaten_id' => $request->input('kabupaten_id'),
             'kecamatan_id' => $request->input('kecamatan_id'),
             'kelurahan_id' => $request->input('kelurahan_id'),
+            'rw_id' => $request->input('rw_id'),  // Add RW filter here
             'election_id' => $request->input('election_id'),
         ];
 

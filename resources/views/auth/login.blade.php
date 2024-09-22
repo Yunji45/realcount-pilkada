@@ -13,7 +13,7 @@
     <div id="login-tab-content" class="active">
         <h1
             style="margin-bottom: 60px; color: #555555; font-weight: bold; font-family: 'Arial Black', sans-serif; font-size: 2rem; text-align: center; text-transform: uppercase; letter-spacing: 2px; -webkit-text-stroke: 1px #877E56; text-stroke: 1px #877E56;">
-            DPC Kota Bandung
+            My Gerindra
         </h1>
 
 

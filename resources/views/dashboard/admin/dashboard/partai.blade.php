@@ -270,7 +270,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group" id="rw-group" style="display:none;">
+                    <div class="form-group" id="rw-group">
                         <label for="rw">RW:</label>
                         <select class="form-select" name="rw_id" id="rw">
                             <option value="">Pilih RW</option>
@@ -335,11 +335,13 @@
     <script>
         // AJAX for loading dynamic data
         $(document).ready(function() {
+            // Handle Provinsi change
             $('#provinsi').change(function() {
                 var provinsiId = $(this).val();
                 $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
                 $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
                 if (provinsiId) {
                     $.ajax({
                         url: '/get-kabupaten-home/' + provinsiId,
@@ -355,10 +357,12 @@
                 }
             });
 
+            // Handle Kabupaten change
             $('#kabupaten').change(function() {
                 var kabupatenId = $(this).val();
                 $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
                 if (kabupatenId) {
                     $.ajax({
                         url: '/get-kecamatan-home/' + kabupatenId,
@@ -374,9 +378,11 @@
                 }
             });
 
+            // Handle Kecamatan change
             $('#kecamatan').change(function() {
                 var kecamatanId = $(this).val();
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
                 if (kecamatanId) {
                     $.ajax({
                         url: '/get-kelurahan-home/' + kecamatanId,
@@ -391,38 +397,34 @@
                     });
                 }
             });
+
+            // Handle Kelurahan change and fetch RW data
+            $('#kelurahan').change(function() {
+                var kelurahanId = $(this).val();
+                var rwSelect = $('#rw');
+                rwSelect.empty().append('<option value="">Pilih RW</option>'); // Clear previous RW options
+
+                if (kelurahanId) {
+                    // Fetch RW data via AJAX
+                    $.ajax({
+                        url: '/get-rw/' + kelurahanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                rwSelect.append('<option value="' + value.rw + '">' + value.rw + '</option>');
+                            });
+                        },
+                        error: function(error) {
+                            console.error('Error fetching RW data:', error);
+                        }
+                    });
+                }
+            });
         });
     </script>
 
-    <script>
-        document.getElementById('kelurahan').addEventListener('change', function() {
-            var kelurahanId = this.value;
-            var rwGroup = document.getElementById('rw-group');
-            var rwSelect = document.getElementById('rw');
-            rwSelect.innerHTML = '<option value="">Pilih RW</option>'; // Clear previous options
 
-            if (kelurahanId) {
-                // Show the RW select input
-                rwGroup.style.display = 'block';
-
-                // Fetch RW data via AJAX
-                fetch(`/get-rw/${kelurahanId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(function(rw) {
-                            var option = document.createElement('option');
-                            option.value = rw.rw;
-                            option.textContent = rw.rw;
-                            rwSelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else {
-                // Hide the RW select input if no Kelurahan is selected
-                rwGroup.style.display = 'none';
-            }
-        });
-    </script>
 
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
