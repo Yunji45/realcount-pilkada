@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-My Gerindra | {{ $title }}
+    My Gerindra | {{ $title }}
 @endsection
 
 @section('content')
@@ -62,7 +62,7 @@ My Gerindra | {{ $title }}
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table id="add-row" class="display table table-striped table-hover">
+                            <table id="tableTps" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -93,45 +93,9 @@ My Gerindra | {{ $title }}
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
-                                <tbody>
-                                    @foreach ($tps as $tp)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $tp->name }}</td>
-                                            <td>{{ $tp->kecamatan->name }}</td>
-                                            <td>{{ $tp->kelurahan->name }}</td>
-                                            <td>{{ $tp->DPT }}</td>
-                                            <td>{{ $tp->rw }}</td>
-                                            <td>{{ $tp->latitude }}</td>
-                                            <td>{{ $tp->longitude }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($tp->periode)->format('Y') }}</td>
-                                            <td>{{ $tp->status }}</td>
-                                            <td>
-                                                <div class="form-button-action">
-                                                    <!-- Tombol Edit dengan ikon pensil -->
-                                                    <a href="{{ route('tps.edit', $tp->id) }}"
-                                                        class="btn btn-warning btn-sm" style="margin-right:10px">
-                                                        <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                    </a>
-
-                                                    <!-- Tombol Delete dengan ikon tong sampah -->
-                                                    <form action="{{ route('tps.destroy', $tp->id) }}" method="POST"
-                                                        style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this TPS?')">
-                                                            <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-
-                                        </tr>
-                                    @endforeach
-                                </tbody>
                             </table>
                         </div>
+
                     </div>
 
                     <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
@@ -188,8 +152,7 @@ My Gerindra | {{ $title }}
                                         <div class="text-center">
                                             <button type="reset" id="kt_customers_export_cancel"
                                                 class="btn btn-white me-3" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" id="kt_customers_export_submit"
-                                                class="btn btn-primary">
+                                            <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
                                                 <span class="indicator-label">Submit</span>
                                             </button>
                                         </div>
@@ -208,4 +171,109 @@ My Gerindra | {{ $title }}
             </div>
         </div>
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Ambil nilai lengthMenu dan halaman terakhir dari localStorage
+            var selectedLength = localStorage.getItem('selectedLength') || 10; // Default ke 10 jika tidak ada nilai di localStorage
+            var lastPage = localStorage.getItem('lastPage') || 0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
+
+            // Inisialisasi DataTable dengan server-side processing
+            var table = $('#tableTps').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('tps.index') }}", // URL untuk request data
+                    type: 'GET',
+                    data: function(d) {
+                        d.start = d.start; // Baris awal (untuk paginasi)
+                        d.length = parseInt(selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
+                        d.draw = d.draw; // Nomor draw
+                    },
+                    dataSrc: function(json) {
+                        return json.data; // Data yang dikembalikan dari server
+                    }
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            // Nomor berurutan yang memperhitungkan halaman
+                            var start = table.page.info().start;
+                            return start + meta.row + 1;
+                        }
+                    },
+                    {
+                        data: 'name'
+                    },
+                    {
+                        data: 'kecamatan.name'
+                    },
+                    {
+                        data: 'kelurahan.name'
+                    },
+                    {
+                        data: 'dpt'
+                    },
+                    {
+                        data: 'rw'
+                    },
+                    {
+                        data: 'latitude'
+                    },
+                    {
+                        data: 'longitude'
+                    },
+                    {
+                        data: 'periode'
+                    },
+                    {
+                        data: 'status'
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return `
+                                <div class="form-button-action">
+                                    <a href="/tps/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="/tps/${row.id}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this TPS?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>`;
+                        }
+                    }
+                ],
+                paging: true,
+                pageLength: parseInt(selectedLength), // Panjang halaman dari localStorage
+                lengthMenu: [5, 10, 25, 50, 100], // Pilihan jumlah data yang ditampilkan
+                displayStart: parseInt(lastPage) * selectedLength, // Memulai dari halaman terakhir yang tersimpan
+                order: [[1, 'asc']]
+            });
+
+            // Ketika panjang data diubah, simpan ke localStorage dan refresh tabel
+            $('#tableTps').on('length.dt', function(e, settings, len) {
+                localStorage.setItem('selectedLength', len);
+                table.page.len(len).draw(false); // Reload tabel dengan jumlah baris yang baru
+            });
+
+            // Simpan halaman terakhir yang diakses ke localStorage setiap kali pagination berubah
+            $('#tableTps').on('page.dt', function() {
+                var info = table.page.info();
+                localStorage.setItem('lastPage', info.page);
+            });
+
+            // Custom search input
+            $('#tableSearch').on('keyup', function() {
+                table.search(this.value).draw(); // Pencarian otomatis saat mengetik
+            });
+        });
+    </script>
 @endsection
