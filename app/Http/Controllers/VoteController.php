@@ -22,16 +22,37 @@ class VoteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $votes = Vote::with('candidate.partai', 'polling_place.kelurahan','polling_place.kecamatan')
-            ->get();
-        $title = "Suara";
-        $tps = PollingPlace::all();
+        // Pastikan 'length' ada dan lebih besar dari 0, jika tidak set nilai default misalnya 10
+        $length = $request->input('length', 10); // Default ke 10 jika length tidak dikirim
+        if ($length <= 0) {
+            $length = 10; // Set ke 10 jika length kurang atau sama dengan 0
+        }
 
-        return view('dashboard.admin.vote.index', compact('votes', 'title'));
-        // return $tps;
+        // Menghitung halaman saat ini berdasarkan parameter 'start' dari DataTables
+        $page = ($request->start / $length) + 1;
+
+        // Mengambil data dengan pagination
+        $votes = Vote::with('candidate.partai', 'polling_place.kelurahan', 'polling_place.kecamatan', 'candidate.election')
+            ->paginate($length, ['*'], 'page', $page);
+
+        // Mengembalikan JSON response jika request dari DataTables (AJAX)
+        if ($request->ajax()) {
+            return response()->json([
+                'draw' => intval($request->draw), // Mengirim draw count
+                'recordsTotal' => $votes->total(), // Total data
+                'recordsFiltered' => $votes->total(), // Total data setelah filtering
+                'data' => $votes->items() // Data untuk halaman ini
+            ]);
+        }
+
+        $title = "Suara";
+
+        return view('dashboard.admin.vote.index', compact('title'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -115,7 +136,7 @@ class VoteController extends Controller
         $title = "Suara";
         $type = "Edit Data";
 
-        return view('dashboard.admin.vote.edit', compact('candidates', 'pollingPlaces', 'title', 'type','vote','provinsis'));
+        return view('dashboard.admin.vote.edit', compact('candidates', 'pollingPlaces', 'title', 'type', 'vote', 'provinsis'));
         // return $vote;
     }
 

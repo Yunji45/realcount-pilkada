@@ -115,7 +115,7 @@
                                 <div class="u-text">
                                     <h4>{{ Auth::user()->name }}</h4>
                                     <p class="text-muted">{{ Auth::user()->email }}</p>
-                                    <a href="" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                    <a href="{{ route('profile.index') }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                 </div>
                                 {{ Auth::user()->getRoleNames()->first() }}
 

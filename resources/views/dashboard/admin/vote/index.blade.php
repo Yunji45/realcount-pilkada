@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-My Gerindra | {{ $title }}
+    My Gerindra | {{ $title }}
 @endsection
 
 @section('content')
@@ -62,7 +62,7 @@ My Gerindra | {{ $title }}
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table id="add-row" class="display table table-striped table-hover">
+                            <table id="tableVote" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -92,7 +92,7 @@ My Gerindra | {{ $title }}
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach ($votes as $vote)
+                                    {{-- @foreach ($votes as $vote)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $vote->polling_place_id }}</td>
@@ -126,7 +126,7 @@ My Gerindra | {{ $title }}
                                             </td>
 
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -169,8 +169,8 @@ My Gerindra | {{ $title }}
                                 <!--begin::Modal body-->
                                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                     <!--begin::Form-->
-                                    <form class="row g-3 needs-validation" method="POST" action="{{ route('vote.import') }}"
-                                        enctype="multipart/form-data" novalidate>
+                                    <form class="row g-3 needs-validation" method="POST"
+                                        action="{{ route('vote.import') }}" enctype="multipart/form-data" novalidate>
                                         @csrf
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
@@ -186,8 +186,7 @@ My Gerindra | {{ $title }}
                                         <div class="text-center">
                                             <button type="reset" id="kt_customers_export_cancel"
                                                 class="btn btn-white me-3" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" id="kt_customers_export_submit"
-                                                class="btn btn-primary">
+                                            <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
                                                 <span class="indicator-label">Submit</span>
                                             </button>
                                         </div>
@@ -206,4 +205,93 @@ My Gerindra | {{ $title }}
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Ambil nilai lengthMenu dan halaman terakhir dari localStorage
+            var selectedLength = localStorage.getItem('selectedLength') || 10; // Default ke 10 jika tidak ada nilai di localStorage
+            var lastPage = localStorage.getItem('lastPage') || 0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
+
+            // Inisialisasi DataTable dengan server-side processing
+            var table = $('#tableVote').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('vote.index') }}", // URL untuk request data
+                    type: 'GET',
+                    data: function(d) {
+                        d.start = d.start; // Baris awal (untuk paginasi)
+                        d.length = parseInt(selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
+                        d.draw = d.draw; // Nomor draw
+                    },
+                    dataSrc: function(json) {
+                        return json.data; // Data yang dikembalikan dari server
+                    }
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            // Nomor berurutan yang memperhitungkan halaman
+                            var start = table.page.info().start;
+                            return start + meta.row + 1;
+                        }
+                    },
+                    { data: 'polling_place_id' },
+                    { data: 'candidate.name' },
+                    { data: 'polling_place.name' },
+                    { data: 'candidate.partai.name' },
+                    { data: 'candidate.election.name' },
+                    { data: 'polling_place.kecamatan.name' },
+                    { data: 'polling_place.kelurahan.name' },
+                    { data: 'vote_count' },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return `
+                                <div class="form-button-action">
+                                    <a href="/vote/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="/vote/${row.id}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Vote?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>`;
+                        }
+                    }
+                ],
+                paging: true,
+                pageLength: parseInt(selectedLength), // Panjang halaman dari localStorage
+                lengthMenu: [5, 10, 25, 50, 100], // Pilihan jumlah data yang ditampilkan
+                displayStart: parseInt(lastPage) * selectedLength, // Memulai dari halaman terakhir yang tersimpan
+                order: [[1, 'asc']]
+            });
+
+            // Ketika panjang data diubah, simpan ke localStorage dan refresh tabel
+            $('#tableVote').on('length.dt', function(e, settings, len) {
+                localStorage.setItem('selectedLength', len);
+                table.page.len(len).draw(false); // Reload tabel dengan jumlah baris yang baru
+            });
+
+            // Simpan halaman terakhir yang diakses ke localStorage setiap kali pagination berubah
+            $('#tableVote').on('page.dt', function() {
+                var info = table.page.info();
+                localStorage.setItem('lastPage', info.page);
+            });
+
+            // Custom search input
+            $('#tableSearch').on('keyup', function() {
+                table.search(this.value).draw(); // Pencarian otomatis saat mengetik
+            });
+        });
+    </script>
+
+
+
+
 @endsection

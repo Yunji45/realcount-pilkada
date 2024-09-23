@@ -19,14 +19,34 @@ class PollingPlaceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Mengambil semua TPS dan mengembalikannya ke tampilan
-        $tps = PollingPlace::with('provinsi', 'kabupaten', 'kecamatan', 'kelurahan')
-            ->get();
+        $length = $request->input('length', 10); // Default to 10 if no length provided
+        if ($length <= 0) {
+            $length = 10; // Set to 10 if length is zero or negative
+        }
+
+        $page = ($request->start / $length) + 1;
+
+        $tps = PollingPlace::with(['kecamatan', 'kelurahan'])
+            ->select('polling_places.*', 'dpt', 'rw', 'latitude', 'longitude', 'periode', 'status') // Ensure required fields are selected
+            ->paginate($length, ['*'], 'page', $page);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'draw' => intval($request->draw),
+                'recordsTotal' => $tps->total(),
+                'recordsFiltered' => $tps->total(),
+                'data' => $tps->items(),
+            ]);
+        }
+
         $title = 'TPS';
         return view('dashboard.admin.polling-places.index', compact('tps', 'title'));
     }
+
+
+
 
     /**
      * Show the form for creating a new resource.

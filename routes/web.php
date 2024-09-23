@@ -23,6 +23,7 @@ use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Mail\PostMail;
 use App\Models\Kelurahan;
@@ -129,4 +130,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/getAgenda', [AgendaController::class, 'getAgendas'])->name('getAgenda');
     // Route::get('/map',[MapController::class,'index'])->name('map');
     Route::get('/user-pending', [UserController::class, 'pending'])->name('user.pending');
+
+
+    //Profile
+    Route::get('/dashboard/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
