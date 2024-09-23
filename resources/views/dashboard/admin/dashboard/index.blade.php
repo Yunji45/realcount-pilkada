@@ -410,7 +410,7 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        {{-- <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">Peta Persebaran</div>
@@ -421,7 +421,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
