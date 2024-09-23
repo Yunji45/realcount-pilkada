@@ -261,10 +261,10 @@
                             render: function(data, type, row) {
                                 return `
                     <div class="form-button-action">
-                        <a href="/votes/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
+                        <a href="/vote/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <form action="/votes/${row.id}" method="POST" style="display:inline-block;">
+                        <form action="/vote/${row.id}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Vote?')">
