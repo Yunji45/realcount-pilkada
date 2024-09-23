@@ -33,6 +33,7 @@ Route::get('kecamatan/{id}', [WilayahController::class, 'show_kecamatan'])->name
 Route::get('kelurahan', [WilayahController::class, 'index_kelurahan'])->name('kelurahan.index');
 Route::get('kelurahan/{id}', [WilayahController::class, 'show_kelurahan'])->name('kelurahan.show');
 Route::get('map',[MapController::class,'index'])->name('map');
+Route::get('color-partai',[MapController::class,'getcolor'])->name('color');
 
 //chart
 route::get('chart-vote',[ChartController::class, 'getVotesPerPartaiElection'])->name('chart');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Map;
 use Illuminate\Http\Request;
 use App\Models\Vote;
+use App\Models\Partai;
 use Illuminate\Support\Facades\DB;
 
 
@@ -86,6 +87,10 @@ class MapController extends Controller
                     'vote_percentage' => round($vote->vote_percentage, 2) // Persentase suara dibulatkan ke 2 desimal
                 ];
             }
+            usort($parties, function($a, $b) {
+                return $b['total_votes'] <=> $a['total_votes'];
+            });
+    
 
             // Buat entry hasil dengan mengelompokkan berdasarkan wilayah
             $result[] = [
@@ -190,5 +195,11 @@ class MapController extends Controller
     public function map()
     {
         return view('map');
+    }
+
+    public function getcolor()
+    {
+        $data = Partai::select('name', 'color')->get();
+        return response()->json($data);
     }
 }
