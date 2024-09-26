@@ -19,8 +19,10 @@
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
-            <input type="text" class="input" name="email" autocomplete="off" placeholder="Username"
-                value="{{ old('name') }}">
+            {{-- <input type="text" class="input" name="email" autocomplete="off" placeholder="Email"
+                value="{{ old('email') }}"> --}}
+            <input type="text" class="input" name="nik" autocomplete="off" placeholder="Username"
+                value="{{ old('nik') }}">
             <input type="password" class="input" id="password" name="password" autocomplete="off" placeholder="Password">
             @if ($errors->any())
                 <div class="alert alert-danger">

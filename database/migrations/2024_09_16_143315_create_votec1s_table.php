@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('candidate_id')->constrained()->restrictOnDelete();
             $table->foreignId('polling_place_id')->constrained()->restrictOnDelete();
-            $table->string('real_count');
+            $table->string('real_count')->nullable();
+            $table->string('file_C1')->nullable();
+            $table->enum('status', ['Open', 'Locked'])->default('Open');
             $table->timestamps();
         });
     }

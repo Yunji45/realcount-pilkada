@@ -14,6 +14,7 @@ class Votec1 extends Model
         'candidate_id',
         'polling_place_id',
         'real_count',
+        'status'
     ];
 
     public function candidate()

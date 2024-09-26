@@ -22,6 +22,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
+use App\Http\Controllers\RealcountController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -135,4 +136,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     //Profile
     Route::get('/dashboard/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    //Realcount
+    Route::get('/realcount', [RealCountController::class, 'realcount'])->name('realcount');
 });
