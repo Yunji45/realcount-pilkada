@@ -34,11 +34,6 @@ class Candidate extends Model
         return $this->hasMany(Vote::class, 'candidate_id');
     }
 
-    public function vote()
-    {
-        return $this->hasMany(Vote::class, 'candidate_id');
-    }
-
     public function vote_c1()
     {
         return $this->hasMany(Votec1::class, 'candidate_id');

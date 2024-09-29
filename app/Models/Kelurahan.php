@@ -17,4 +17,8 @@ class Kelurahan extends Model
         return $this->belongsTo(Kecamatan::class);
     }
 
+    public function user()
+    {
+        return $this->hasMany(User::class, 'kelurahan_id');
+    }
 }

@@ -435,7 +435,7 @@
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 if (provinsiId) {
                     $.ajax({
-                        url: '/get-kabupaten-home/' + provinsiId,
+                        url: '/get-kabupaten/' + provinsiId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -454,7 +454,7 @@
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 if (kabupatenId) {
                     $.ajax({
-                        url: '/get-kecamatan-home/' + kabupatenId,
+                        url: '/get-kecamatan/' + kabupatenId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -472,7 +472,7 @@
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 if (kecamatanId) {
                     $.ajax({
-                        url: '/get-kelurahan-home/' + kecamatanId,
+                        url: '/get-kelurahan/' + kecamatanId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {

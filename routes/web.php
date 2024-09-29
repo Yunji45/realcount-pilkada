@@ -79,9 +79,9 @@ Route::get('/simpatisan/dashboard', [HomeSimpatisanController::class, 'index'])-
 Route::get('/lain-lain/dashboard', [HomeLainyaController::class, 'index'])->name('lain-lain.dashboard');
 
 
-Route::get('/admin/dashboard/perorangan', action: [HomeAdminController::class, 'indexPerorangan'])->name('admin.dashboard.perorangan');
-Route::get('/admin/dashboard/partai', action: [HomeAdminController::class, 'indexPartai'])->name('admin.dashboard.partai');
-Route::get('/admin/dashboard/peta', action: [HomeAdminController::class, 'indexPeta'])->name('admin.dashboard.peta');
+Route::get('/admin/dashboard/perorangan', [HomeAdminController::class, 'indexPerorangan'])->name('admin.dashboard.perorangan');
+Route::get('/admin/dashboard/partai', [HomeAdminController::class, 'indexPartai'])->name('admin.dashboard.partai');
+Route::get('/admin/dashboard/peta', [HomeAdminController::class, 'indexPeta'])->name('admin.dashboard.peta');
 
 
 // Route::get('/', function () {
@@ -124,16 +124,12 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::post('/tps-import', [PollingPlaceController::class, 'import'])->name('tps.import');
     Route::post('/vote-import', [VoteController::class, 'import'])->name('vote.import');
 
-    Route::get('/get-kabupaten-home/{provinsiId}', [HomeAdminController::class, 'getKabupaten'])->name('get.kabupaten');
-    Route::get('/get-kecamatan-home/{kabupatenId}', [HomeAdminController::class, 'getKecamatan'])->name('get.kecamatan');
-    Route::get('/get-kelurahan-home/{kecamatanId}', action: [HomeAdminController::class, 'getKelurahan'])->name('get.kelurahan');
-    Route::get('/get-rw/{kelurahan_id}', action: [HomeAdminController::class, 'getRw'])->name('get-rw');
+    Route::get('/get-rw/{kelurahan_id}', [HomeAdminController::class, 'getRw'])->name('get-rw');
 
     // Route untuk mengembalikan data event dalam bentuk JSON
     Route::get('/getAgenda', [AgendaController::class, 'getAgendas'])->name('getAgenda');
     // Route::get('/map',[MapController::class,'index'])->name('map');
     Route::get('/user-pending', [UserController::class, 'pending'])->name('user.pending');
-
 
     //Profile
     Route::get('/dashboard/profile', [ProfileController::class, 'index'])->name('profile.index');

@@ -30,7 +30,8 @@ class User extends Authenticatable
         'address',
         'photo',
         'ktp',
-        'status'
+        'status',
+        'kelurahan_id',
     ];
 
     /**
@@ -60,5 +61,10 @@ class User extends Authenticatable
     public function kegiatan()
     {
         return $this->hasMany(Kegiatan::class);
+    }
+
+    public function kelurahan()
+    {
+        return $this->belongsTo(Kelurahan::class, 'kelurahan_id');
     }
 }

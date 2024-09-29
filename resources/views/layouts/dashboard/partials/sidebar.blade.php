@@ -36,7 +36,8 @@
                 </li>
             @endrole
             @role('Admin')
-                <li class="nav-item {{ Request::is('admin/dashboard/perorangan*', 'admin/dashboard/partai*', 'admin/dashboard/peta*') ? 'active' : '' }}">
+                <li
+                    class="nav-item {{ Request::is('admin/dashboard/perorangan*', 'admin/dashboard/partai*', 'admin/dashboard/peta*') ? 'active' : '' }}">
                     <a data-bs-toggle="collapse" href="#adminDashboard"
                         class="{{ Request::is('admin/dashboard/perorangan*', 'admin/dashboard/partai*', 'admin/dashboard/peta*') ? '' : 'collapsed' }}"
                         aria-expanded="{{ Request::is('admin/dashboard/perorangan*', 'admin/dashboard/partai*', 'admin/dashboard/peta*') ? 'true' : 'false' }}">
@@ -148,7 +149,7 @@
             @endrole
 
             {{-- <-- SideBar --> --}}
-            @role(['Admin','Super Admin','Pimpinan'])
+            @role(['Admin', 'Super Admin', 'Pimpinan'])
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
@@ -330,7 +331,7 @@
                 </li>
             @endrole
 
-            @role(['Relawan','Koordinator'])
+            @role(['Relawan', 'Koordinator'])
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>

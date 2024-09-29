@@ -12,6 +12,7 @@ class Filed1 extends Model
         'file',
         'polling_place_id'
     ];
+
     public function tps()
     {
         return $this->belongsTo(PollingPlace::class);

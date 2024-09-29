@@ -22,20 +22,20 @@
             padding: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-    
+
         .party-card i {
             width: 20px;
             height: 20px;
             border-radius: 50%;
             margin-right: 10px;
         }
-    
+
         .party-card span {
             font-size: 14px;
             color: #333;
             font-weight: 500;
         }
-    
+
         /* Style untuk legenda */
         .info.legend {
             background-color: white;
@@ -43,7 +43,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-    
+
         .info.legend h4 {
             margin-bottom: 10px;
             font-size: 16px;
@@ -85,7 +85,7 @@
     }
 
     </style>
-    
+
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
@@ -294,7 +294,7 @@
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 if (provinsiId) {
                     $.ajax({
-                        url: '/get-kabupaten-home/' + provinsiId,
+                        url: '/get-kabupaten/' + provinsiId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -313,7 +313,7 @@
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 if (kabupatenId) {
                     $.ajax({
-                        url: '/get-kecamatan-home/' + kabupatenId,
+                        url: '/get-kecamatan/' + kabupatenId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -331,7 +331,7 @@
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 if (kecamatanId) {
                     $.ajax({
-                        url: '/get-kelurahan-home/' + kecamatanId,
+                        url: '/get-kelurahan/' + kecamatanId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {

@@ -387,30 +387,9 @@ class HomeAdminController extends Controller
     }
 
     // Method untuk mendapatkan Kabupaten berdasarkan Provinsi
-    public function getKabupaten($provinsiId)
-    {
-        $kabupaten = Kabupaten::where('provinsi_id', $provinsiId)->get();
-        return response()->json($kabupaten);
-    }
-
-    // Method untuk mendapatkan Kecamatan berdasarkan Kabupaten
-    public function getKecamatan($kabupatenId)
-    {
-        $kecamatan = Kecamatan::where('kabupaten_id', $kabupatenId)->get();
-        return response()->json($kecamatan);
-    }
-
-    // Method untuk mendapatkan Kelurahan berdasarkan Kecamatan
-    public function getKelurahan($kecamatanId)
-    {
-        $kelurahan = Kelurahan::where('kecamatan_id', $kecamatanId)->get();
-        return response()->json($kelurahan);
-    }
-
     public function getRw($kelurahanId)
     {
         $rws = PollingPlace::where('kelurahan_id', $kelurahanId)->select('rw')->distinct()->get();
         return response()->json($rws);
     }
-
 }
