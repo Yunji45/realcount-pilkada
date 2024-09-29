@@ -236,7 +236,7 @@
 
                 <!-- Filter Form -->
                 <form action="{{ route('admin.dashboard') }}" method="GET" class="filter-form">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="provinsi">Provinsi:</label>
                         <select class="form-select" name="provinsi_id" id="provinsi">
                             <option value="">Semua Provinsi</option>
@@ -247,7 +247,7 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <label for="kabupaten">Kabupaten:</label>
