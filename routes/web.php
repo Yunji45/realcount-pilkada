@@ -18,6 +18,7 @@ use App\Http\Controllers\Pimpinan\HomePimpinanController;
 use App\Http\Controllers\Saksi\HomeSaksiController;
 use App\Http\Controllers\Simpatisan\HomeSimpatisanController;
 use App\Http\Controllers\SuperAdmin\HomeSuperAdminController;
+use App\Http\Controllers\Realcount\TPSController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\PartaiController;
@@ -111,6 +112,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/articles' => ArticleController::class,
         '/category_articles' => CategoryArticleController::class,
         '/agenda' => AgendaController::class,
+        '/tps-realcount' => TPSController::class,
     ]);
     Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
 

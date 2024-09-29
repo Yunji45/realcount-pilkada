@@ -1,37 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Realcount;
 
-// use App\Imports\PollingPlaceImport;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\PollingPlace;
 use App\Models\Provinsi;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-// use Maatwebsite\Excel\Facades\Excel;
 
-class PollingPlaceController extends Controller
+class TPSController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $length = $request->input('length', 10); // Default to 10 if no length provided
+        $length = $request->input('length', 10);
         if ($length <= 0) {
-            $length = 10; // Set to 10 if length is zero or negative
+            $length = 10;
         }
-
         $page = ($request->start / $length) + 1;
-
         $tps = PollingPlace::with(['kecamatan', 'kelurahan'])
-            ->select('polling_places.*', 'dpt', 'rw', 'latitude', 'longitude', 'periode', 'status') // Ensure required fields are selected
+            ->select('polling_places.*', 'dpt', 'rw', 'latitude', 'longitude', 'periode', 'status')
+            ->where('status','Aktif')
             ->paginate($length, ['*'], 'page', $page);
-
         if ($request->ajax()) {
             return response()->json([
                 'draw' => intval($request->draw),
@@ -40,52 +33,14 @@ class PollingPlaceController extends Controller
                 'data' => $tps->items(),
             ]);
         }
-
-        $title = 'TPS';
-        return view('dashboard.admin.polling-places.index', compact('tps', 'title'));
+        $title = 'TPS Realcount';
+        return view('dashboard.admin.realcount.tps', compact('tps', 'title'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $provinsi = Provinsi::all();  // Hanya ambil data Provinsi di awal
-        $title = 'Create TPS';
-        $type = 'TPS';
-
-        return view('dashboard.admin.polling-places.create', compact('provinsi', 'title', 'type'));
-    }
-
-    // Method untuk mendapatkan Kabupaten berdasarkan Provinsi
-    public function getKabupaten($provinsiId)
-    {
-        $kabupaten = Kabupaten::where('provinsi_id', $provinsiId)->get();
-        return response()->json($kabupaten);
-    }
-
-    // Method untuk mendapatkan Kecamatan berdasarkan Kabupaten
-    public function getKecamatan($kabupatenId)
-    {
-        $kecamatan = Kecamatan::where('kabupaten_id', $kabupatenId)->get();
-        return response()->json($kecamatan);
-    }
-
-    // Method untuk mendapatkan Kelurahan berdasarkan Kecamatan
-    public function getKelurahan($kecamatanId)
-    {
-        $kelurahan = Kelurahan::where('kecamatan_id', $kecamatanId)->get();
-        return response()->json($kelurahan);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         DB::beginTransaction();
         try {
-            // Validasi input dari form
             $request->validate([
                 'name' => 'required|string|max:255',
                 'provinsi_id' => 'required|exists:provinsis,id',  // Validasi bahwa provinsi_id ada di tabel provinsi
@@ -93,12 +48,9 @@ class PollingPlaceController extends Controller
                 'kecamatan_id' => 'required|exists:kecamatans,id', // Validasi bahwa kecamatan_id ada di tabel kecamatan
                 'kelurahan_id' => 'required|exists:kelurahans,id', // Validasi bahwa kelurahan_id ada di tabel kelurahan
                 'rw' => 'required|string|max:255',
-                'status' => 'required|in:Aktif,Non-aktif',
                 'DPT' => 'required',
                 'periode' => 'required'
             ]);
-
-            // Menyimpan TPS baru ke database
             $tps = PollingPlace::create([
                 'name' => $request->name,
                 'provinsi_id' => $request->provinsi_id,
@@ -110,7 +62,7 @@ class PollingPlaceController extends Controller
                 'end_date' => $request->end_date,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
-                'status' => $request->status,
+                'status' => 'Aktif',
                 'longitude' => $request->longitude,
                 'latitude' => $request->latitude,
                 'DPT' => $request->DPT,
@@ -132,50 +84,26 @@ class PollingPlaceController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-
-            // Logging error untuk debugging (optional)
             Log::error('Error creating polling place: ' . $e->getMessage());
-
-            // Menangani kesalahan dan mengarahkan kembali dengan pesan error
             return redirect()->back()->with('error', 'Failed to create polling place. Error: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PollingPlace $tp)
-    {
-        // Menampilkan detail TPS
-        return view('dashboard.admin.polling-places.show', compact('tp'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(PollingPlace $tp)
     {
         $title = 'Edit TPS';
         $type = 'TPS';
-
-        // Ambil data provinsi, kabupaten, kecamatan, dan kelurahan
         $provinsi = Provinsi::all();
         $kabupaten = Kabupaten::where('provinsi_id', $tp->provinsi_id)->get();
         $kecamatan = Kecamatan::where('kabupaten_id', $tp->kabupaten_id)->get();
         $kelurahan = Kelurahan::where('kecamatan_id', $tp->kecamatan_id)->get();
 
-        // Menampilkan form untuk mengedit TPS
-        return view('dashboard.admin.polling-places.edit', compact('tp', 'title', 'type', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan'));
+        return view('dashboard.admin.realcount.edit', compact('tp', 'title', 'type', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, PollingPlace $tp)
     {
         DB::beginTransaction();
         try {
-            // Validasi input dari form
             $request->validate([
                 'name' => 'sometimes|required|string|max:255',
                 'provinsi_id' => 'sometimes|required|exists:provinsis,id',  // Validasi bahwa provinsi_id ada di tabel provinsi
@@ -190,7 +118,6 @@ class PollingPlaceController extends Controller
                 'status' => 'sometimes|required|in:Aktif,Non-aktif',
             ]);
 
-            // Update TPS yang ada di database
             $data = $request->only([
                 'name',
                 'provinsi_id',
@@ -205,61 +132,14 @@ class PollingPlaceController extends Controller
                 'status',
             ]);
 
-            // Hanya update field yang ada di request
             $tp->update(array_filter($data));
-
-            // Commit transaksi jika berhasil
             DB::commit();
-
-            // Redirect ke halaman detail TPS dengan pesan sukses
             return redirect()->route('tps.show', $tp->id)
                 ->with('success', 'Polling place updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
-
-            // Logging error untuk debugging (optional)
             dd('Error updating polling place: ' . $e->getMessage());
-
-            // Menangani kesalahan dan mengarahkan kembali dengan pesan error
             return redirect()->back()->with('error', 'Failed to update polling place. Please try again.');
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-
-    public function destroy(PollingPlace $tp)
-    {
-        DB::beginTransaction();
-        try {
-            // Hapus partai
-            $tp->delete();
-
-            DB::commit();
-
-            return redirect()->route('polling_places.index')
-                ->with('success', 'Party deleted successfully.');
-        } catch (QueryException $e) {
-            // Rollback jika terjadi error terkait basis data
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Cannot delete this party because it is being used in other records.');
-        } catch (\Exception $e) {
-            // Rollback jika terjadi kesalahan umum
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to delete party. Please try again.');
-        }
-    }
-
-    // public function import()
-    // {
-    //     try {
-    //         Excel::import(new PollingPlaceImport, request()->file('your_file'));
-
-    //         return redirect()->route("tps.index")->with('success', 'TPS Berhasil Di Import!');
-    //     } catch (\Throwable $th) {
-    //         return back()->with("error", $th->getMessage());
-    //     }
-    // }
-
 }
