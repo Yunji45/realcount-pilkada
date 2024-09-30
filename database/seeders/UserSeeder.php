@@ -91,7 +91,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
             'status' => 'Aktif',
-            'nik' => $faker->nik,
+            'nik' => '123456789',
         ]);
         $user->assignRole($superAdminRole);
         //END:Super Admin
@@ -103,7 +103,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
             'status' => 'Aktif',
-            'nik' => $faker->nik,
+            'nik' => '123456789',
         ]);
         $user->assignRole($adminRole);
         //END:Pimpinan
@@ -115,7 +115,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
             'status' => 'Aktif',
-            'nik' => $faker->nik,
+            'nik' => '123456789',
         ]);
         $user->assignRole($adminRole);
         //END:Admin
@@ -127,7 +127,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
             'status' => 'Aktif',
-            'nik' => $faker->nik,
+            'nik' => '123456789',
         ]);
         $user->assignRole($koordinatorRole);
         //END:Koordinator
@@ -139,80 +139,75 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => "Jl. Swakarya",
             'status' => 'Aktif',
-            'nik' => $faker->nik,
+            'nik' => '123456789',
         ]);
         $user->assignRole($saksiRole);
         //END:Saksi
 
-        $pemilihRole = Role::where('name', 'Pemilih')->first();
-        $saksiRole = Role::where('name', 'Saksi')->first();
-        $relawanRole = Role::where('name', 'Relawan RDW')->first();
-        $simpatisanRole = Role::where('name', 'Simpatisan')->first();
-        $lainnyaRole = Role::where('name', 'Lain-lain')->first();
+        // $pemilihRole = Role::where('name', 'Pemilih')->first();
+        // $saksiRole = Role::where('name', 'Saksi')->first();
+        // $relawanRole = Role::where('name', 'Relawan RDW')->first();
+        // $simpatisanRole = Role::where('name', 'Simpatisan')->first();
+        // $lainnyaRole = Role::where('name', 'Lain-lain')->first();
 
-        // Seeder untuk role Pemilih
-        for ($i = 1; $i <= 10; $i++) {
-            $user = User::factory()->create([
-                'name' => $faker->name,
-                'email' => $faker->unique()->safeEmail,
-                'password' => bcrypt('qwerty12'),
-                'address' => $faker->address,
-                'status' => 'Pending',
-                'nik' => $faker->nik,
-            ]);
-            $user->assignRole($pemilihRole);
-        }
+        // for ($i = 1; $i <= 10; $i++) {
+        //     $user = User::factory()->create([
+        //         'name' => $faker->name,
+        //         'email' => $faker->unique()->safeEmail,
+        //         'password' => bcrypt('qwerty12'),
+        //         'address' => $faker->address,
+        //         'status' => 'Pending',
+        //         'nik' => '123456789',
+        //     ]);
+        //     $user->assignRole($pemilihRole);
+        // }
 
-        // Seeder untuk role Saksi
-        for ($i = 1; $i <= 10; $i++) {
-            $user = User::factory()->create([
-                'name' => $faker->name,
-                'email' => $faker->unique()->safeEmail,
-                'password' => bcrypt('qwerty12'),
-                'address' => $faker->address,
-                'status' => 'Aktif',
-                'nik' => $faker->nik,
-            ]);
-            $user->assignRole($saksiRole);
-        }
+        // for ($i = 1; $i <= 10; $i++) {
+        //     $user = User::factory()->create([
+        //         'name' => $faker->name,
+        //         'email' => $faker->unique()->safeEmail,
+        //         'password' => bcrypt('qwerty12'),
+        //         'address' => $faker->address,
+        //         'status' => 'Aktif',
+        //         'nik' => '123456789',
+        //     ]);
+        //     $user->assignRole($saksiRole);
+        // }
 
-        // Seeder untuk role Relawan RDW
-        for ($i = 1; $i <= 10; $i++) {
-            $user = User::factory()->create([
-                'name' => $faker->name,
-                'email' => $faker->unique()->safeEmail,
-                'password' => bcrypt('qwerty12'),
-                'address' => $faker->address,
-                'status' => 'Aktif',
-                'nik' => $faker->nik,
-            ]);
-            $user->assignRole($relawanRole);
-        }
+        // for ($i = 1; $i <= 10; $i++) {
+        //     $user = User::factory()->create([
+        //         'name' => $faker->name,
+        //         'email' => $faker->unique()->safeEmail,
+        //         'password' => bcrypt('qwerty12'),
+        //         'address' => $faker->address,
+        //         'status' => 'Aktif',
+        //         'nik' => '123456789',
+        //     ]);
+        //     $user->assignRole($relawanRole);
+        // }
 
-        // Seeder untuk role Simpatisan
-        for ($i = 1; $i <= 10; $i++) {
-            $user = User::factory()->create([
-                'name' => $faker->name,
-                'email' => $faker->unique()->safeEmail,
-                'password' => bcrypt('qwerty12'),
-                'address' => $faker->address,
-                'status' => 'Aktif',
-                'nik' => $faker->nik,
-            ]);
-            $user->assignRole($simpatisanRole);
-        }
+        // for ($i = 1; $i <= 10; $i++) {
+        //     $user = User::factory()->create([
+        //         'name' => $faker->name,
+        //         'email' => $faker->unique()->safeEmail,
+        //         'password' => bcrypt('qwerty12'),
+        //         'address' => $faker->address,
+        //         'status' => 'Aktif',
+        //         'nik' => '123456789',
+        //     ]);
+        //     $user->assignRole($simpatisanRole);
+        // }
 
-        // Seeder untuk role Lain-lain
-        for ($i = 1; $i <= 10; $i++) {
-            $user = User::factory()->create([
-                'name' => $faker->name,
-                'email' => $faker->unique()->safeEmail,
-                'password' => bcrypt('qwerty12'),
-                'address' => $faker->address,
-                'status' => 'Aktif',
-                'nik' => $faker->nik,
-            ]);
-            $user->assignRole($lainnyaRole);
-        }
+        // for ($i = 1; $i <= 10; $i++) {
+        //     $user = User::factory()->create([
+        //         'name' => $faker->name,
+        //         'email' => $faker->unique()->safeEmail,
+        //         'password' => bcrypt('qwerty12'),
+        //         'address' => $faker->address,
+        //         'status' => 'Aktif',
+        //         'nik' => '123456789',
+        //     ]);
+        //     $user->assignRole($lainnyaRole);
+        // }
     }
 }

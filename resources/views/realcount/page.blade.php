@@ -70,31 +70,41 @@
             <div class="col-sm-6 col-md-3">
                 <div class="card" style="width: 18rem; background-color: #7FFF00;">
                     <div class="card-body">
-                      <h5 class="card-title text-center" style="color: #0e0f0f;">Suara Masuk : 6</h5>
+                      <h5 class="card-title text-center" style="color: #0e0f0f;">Suara Masuk : {{ $vote }}</h5>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3">
                 <div class="card" style="width: 18rem; background-color: #FF00FF;">
                     <div class="card-body">
-                      <h5 class="card-title text-center" style="color: #0e0f0f;">TPS Masuk : 6</h5>
+                      <h5 class="card-title text-center" style="color: #0e0f0f;">TPS Masuk : {{ $tps }}</h5>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3">
                 <div class="card" style="width: 18rem; background-color: #DAA520;">
                     <div class="card-body">
-                        <h5 class="card-title text-center" style="color: #0e0f0f;">Candidate : 8</h5>
+                        <h5 class="card-title text-center" style="color: #0e0f0f;">Candidate : {{ $candidate }}</h5>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3">
                 <div class="card" style="width: 18rem; background-color: #FF4500;">
                     <div class="card-body">
-                      <h5 class="card-title text-center" style="color: #0e0f0f;">Pukul : 18:00 WIB</h5>
+                        <h5 class="card-title text-center" id="time-display" style="color: #0e0f0f;"></h5>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function updateTime() {
+            const options = { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const now = new Date().toLocaleTimeString('id-ID', options);
+            document.getElementById('time-display').textContent = 'Pukul : ' + now + ' WIB';
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+    
 @endsection
