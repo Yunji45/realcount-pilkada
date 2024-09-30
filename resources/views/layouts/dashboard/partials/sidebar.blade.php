@@ -223,8 +223,8 @@
                         <p style="margin-left:16px">TPS Realcount</p>
                     </a>
                 </li>
-                <li class="nav-item {{ Request::is('vote*') ? 'active' : '' }}">
-                    <a href="{{ route('vote.index') }}">
+                <li class="nav-item {{ Request::is('vote-realcount*') ? 'active' : '' }}">
+                    <a href="{{ route('vote-realcount.index') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24"
                             width="24" height="24">
                             <path

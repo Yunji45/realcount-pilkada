@@ -19,6 +19,7 @@ use App\Http\Controllers\Saksi\HomeSaksiController;
 use App\Http\Controllers\Simpatisan\HomeSimpatisanController;
 use App\Http\Controllers\SuperAdmin\HomeSuperAdminController;
 use App\Http\Controllers\Realcount\TPSController;
+use App\Http\Controllers\Realcount\VotingController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\PartaiController;
@@ -67,6 +68,7 @@ Route::get('/get-kabupatens/{provinsi_id}', [VoteController::class, 'getKabupate
 Route::get('/get-kecamatans/{kabupaten_id}', [VoteController::class, 'getKecamatans']);
 Route::get('/get-kelurahans/{kecamatan_id}', [VoteController::class, 'getKelurahans']);
 Route::get('/get-polling-places/{kelurahan_id}', [VoteController::class, 'getPollingPlaces']);
+Route::get('/get-tps-realcount/{kelurahan_id}', [VotingController::class, 'getTpsRealCount']);
 
 // Dashboard Home
 Route::get('/superadmin/dashboard', [HomeSuperAdminController::class, 'index'])->name('superadmin.dashboard');
@@ -113,6 +115,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/category_articles' => CategoryArticleController::class,
         '/agenda' => AgendaController::class,
         '/tps-realcount' => TPSController::class,
+        '/vote-realcount' => VotingController::class,
     ]);
     Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
 
