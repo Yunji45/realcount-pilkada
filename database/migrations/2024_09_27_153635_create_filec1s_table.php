@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('filec1s', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('polling_place_id')->constrained()->restrictOnDelete();
+            $table->foreignId('tps_realcount_id')->constrained()->restrictOnDelete();
             $table->string('file')->nulllable();
             $table->timestamps();
         });
