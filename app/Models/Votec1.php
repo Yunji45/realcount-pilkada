@@ -12,7 +12,7 @@ class Votec1 extends Model
 
     protected $fillable = [
         'candidate_id',
-        'polling_place_id',
+        'tps_realcount_id',
         'real_count',
         'status'
     ];
@@ -22,8 +22,8 @@ class Votec1 extends Model
         return $this->belongsTo(Candidate::class, 'candidate_id');
     }
 
-    public function polling_place()
+    public function tpsrealcount()
     {
-        return $this->belongsTo(PollingPlace::class, 'polling_place_id');
+        return $this->belongsTo(TpsRealcount::class, 'tps_realcount_id');
     }
 }
