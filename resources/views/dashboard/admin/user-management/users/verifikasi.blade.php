@@ -70,7 +70,107 @@
                                             <td>{{ $user->name }}</td>
                                             <td>{{ implode(', ', $user->roles->pluck('name')->toArray()) }}</td>
                                             <td>{{ $user->nik }}</td>
-                                            <td>{{ $user->status }}</td>
+                                            <td>
+                                                <form action="{{ route('user.status', $user->id) }}" method="POST"
+                                                    id="statusForm_{{ $user->id }}">
+                                                    @csrf
+                                                    <div class="custom-select-wrapper">
+                                                        <select name="status" class="custom-select"
+                                                            id="statusSelect_{{ $user->id }}">
+                                                            <option value="Aktif"
+                                                                {{ $user->status == 'Aktif' ? 'selected' : '' }}>Aktif
+                                                            </option>
+                                                            <option value="Pending"
+                                                                {{ $user->status == 'Pending' ? 'selected' : '' }}>Pending
+                                                            </option>
+                                                            <option value="Tidak Aktif"
+                                                                {{ $user->status == 'Tidak Aktif' ? 'selected' : '' }}>
+                                                                Tidak Aktif</option>
+                                                        </select>
+                                                    </div>
+                                                </form>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="confirmModal_{{ $user->id }}"
+                                                    tabindex="-1" role="dialog"
+                                                    aria-labelledby="confirmModalLabel_{{ $user->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="confirmModalLabel_{{ $user->id }}">Konfirmasi
+                                                                    Ubah Status</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Apakah Anda yakin ingin mengubah status menjadi <strong
+                                                                    id="status-name-{{ $user->id }}"></strong>?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Batal</button>
+                                                                <button type="button" class="btn btn-primary"
+                                                                    id="confirmButton_{{ $user->id }}">Ya, Ubah
+                                                                    Status</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Toast Notification -->
+                                                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                                    <div id="statusToast" class="toast" role="alert"
+                                                        aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+                                                        <div class="toast-header">
+                                                            <strong class="me-auto">Notifikasi</strong>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="toast-body">
+                                                            Status user berhasil diperbarui!
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <script>
+                                                    document.getElementById('statusSelect_{{ $user->id }}').addEventListener('change', function() {
+                                                        let selectedOption = this.options[this.selectedIndex];
+                                                        let statusName = selectedOption.text;
+                                                        let statusForm = document.getElementById('statusForm_{{ $user->id }}');
+
+                                                        // Set status name in modal
+                                                        document.getElementById('status-name-{{ $user->id }}').textContent = statusName;
+
+                                                        // Show modal
+                                                        var myModal = new bootstrap.Modal(document.getElementById('confirmModal_{{ $user->id }}'));
+                                                        myModal.show();
+
+                                                        // On confirm button click
+                                                        document.getElementById('confirmButton_{{ $user->id }}').onclick = function() {
+                                                            // Send form using AJAX
+                                                            $.ajax({
+                                                                url: statusForm.action,
+                                                                type: 'POST',
+                                                                data: $(statusForm).serialize(),
+                                                                success: function(response) {
+                                                                    // Close modal
+                                                                    myModal.hide();
+
+                                                                    // Show toast notification
+                                                                    var toastElement = document.getElementById('statusToast');
+                                                                    var toast = new bootstrap.Toast(toastElement);
+                                                                    toast.show();
+                                                                },
+                                                                error: function(xhr) {
+                                                                    alert('Terjadi kesalahan, silakan coba lagi.');
+                                                                }
+                                                            });
+                                                        };
+                                                    });
+                                                </script>
+                                            </td>
 
                                             <td>
                                                 <div class="form-button-action">
@@ -101,7 +201,6 @@
                                                     </form>
                                                 </div>
                                             </td>
-
                                         </tr>
                                     @endforeach
 
@@ -113,4 +212,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Tambahkan jQuery dan Bootstrap CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 @endsection
