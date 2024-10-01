@@ -12,70 +12,20 @@ use Illuminate\Support\Facades\Storage;
 
 class RealcountController extends Controller
 {
-    //tps
-    public function tps(Request $request)
-    {
-        $length = $request->input('length', 10); // Default to 10 if no length provided
-        if ($length <= 0) {
-            $length = 10; // Set to 10 if length is zero or negative
-        }
-
-        $page = ($request->start / $length) + 1;
-
-        $tps = PollingPlace::with(['kecamatan', 'kelurahan'])
-            ->select('polling_places.*', 'dpt', 'rw', 'latitude', 'longitude', 'periode', 'status') // Ensure required fields are selected
-            ->paginate($length, ['*'], 'page', $page);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'draw' => intval($request->draw),
-                'recordsTotal' => $tps->total(),
-                'recordsFiltered' => $tps->total(),
-                'data' => $tps->items(),
-            ]);
-        }
-
-        $title = 'TPS';
-        return view('dashboard.admin.polling-places.index', compact('tps', 'title'));
-    }
     //realcount
     public function realcount()
     {
-        return view('realcount.page');
-    }
-
-    public function StoreVoteRealcount(Request $request)
-    {
-        DB::beginTransaction();
-        try {
-            $request->validate([
-                'candidate_id' => 'required|exists:candidates,id',
-                'polling_place_id' => 'required|exists:polling_places,id',
-                'real_count' => 'nullable|required|string',
-            ]);
-    
-            $fileExists = Filec1::where('polling_place_id', $request->polling_place_id)->exists();
-            if ($fileExists) {
-                return redirect()->back()->with('info','Maaf ,Voting sudah ditutup karna file C1 sudah diterbitkan.');
-            }
-            Votec1::create([
-                'candidate_id' => $request->candidate_id,
-                'polling_place_id' => $request->polling_place_id,
-                'real_count' => $request->real_count,
-                'status' => 'Open'
-            ]);
-            // $votec1 = new Votec1();
-            // $votec1->candidate_id = $request->candidate_id;
-            // $votec1->polling_place_id = $request->polling_place_id;
-            // $votec1->real_count = $request->real_count;
-            // $votec1->status = 'Open';
-            // $votec1->save();
-            DB::commit();
-            return redirect()->back()->with('success','Voting berhasil ditambah.');
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Voting Gagal ditambah.');
-        }
+        $vote = Votec1::sum('real_count');
+        $tps = Votec1::distinct('tps_realcount_id')->count('tps_realcount_id');
+        $candidate = Votec1::distinct('candidate_id')->count('candidate_id');
+        $candidateId = Votec1::select('candidate_id', DB::raw('SUM(real_count) as total_votes'))
+                                ->groupBy('candidate_id')
+                                ->get();
+        // foreach ($candidateId as $candidates){
+        //     $candidatesf[] = $candidates->name;
+        // }
+        // return $candidatesf;
+        return view('realcount.page',compact('vote','tps','candidate','candidateId' ));
     }
 
     //file C1

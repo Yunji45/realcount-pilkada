@@ -10,11 +10,11 @@ class Filec1 extends Model
     use HasFactory;
     protected $fillable = [
         'file',
-        'polling_place_id'
+        'tps_realcount_id'
     ];
 
     public function tps()
     {
-        return $this->belongsTo(PollingPlace::class);
+        return $this->belongsTo(TpsRealcount::class);
     }
 }

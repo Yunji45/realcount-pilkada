@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('votec1s', function (Blueprint $table) {
             $table->id();
             $table->foreignId('candidate_id')->constrained()->restrictOnDelete();
-            $table->foreignId('polling_place_id')->constrained()->restrictOnDelete();
+            $table->foreignId('tps_realcount_id')->constrained()->restrictOnDelete();
             $table->string('real_count')->nullable();
             $table->enum('status', ['Open', 'Locked'])->default('Open');
             $table->timestamps();
