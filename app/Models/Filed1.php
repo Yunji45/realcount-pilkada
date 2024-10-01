@@ -12,8 +12,7 @@ class Filed1 extends Model
         'file',
         'tps_realcount_id'
     ];
-
-    public function tps()
+    public function tpsrealcount()
     {
         return $this->belongsTo(TpsRealcount::class);
     }

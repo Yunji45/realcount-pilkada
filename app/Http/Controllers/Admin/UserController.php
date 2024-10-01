@@ -339,4 +339,17 @@ class UserController extends Controller
         return redirect()->back();
 
     }
+
+    public function status_user(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->status = $request->status;
+
+        $user->save();
+
+        return response()->json(['success' => 'Status User telah diubah.']);
+    }
+
+
 }
