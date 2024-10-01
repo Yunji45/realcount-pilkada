@@ -20,6 +20,8 @@ use App\Http\Controllers\Simpatisan\HomeSimpatisanController;
 use App\Http\Controllers\SuperAdmin\HomeSuperAdminController;
 use App\Http\Controllers\Realcount\TPSController;
 use App\Http\Controllers\Realcount\VotingController;
+use App\Http\Controllers\Realcount\D1Controller;
+use App\Http\Controllers\Realcount\C1Controller;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\PartaiController;
@@ -116,6 +118,8 @@ Route::middleware(['verified', 'auth'])->group(function () {
         '/agenda' => AgendaController::class,
         '/tps-realcount' => TPSController::class,
         '/vote-realcount' => VotingController::class,
+        '/file-c1' => C1Controller::class,
+        '/file-d1' => D1Controller::class,
     ]);
     Route::get('/admin/dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
 

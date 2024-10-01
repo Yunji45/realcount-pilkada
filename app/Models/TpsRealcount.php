@@ -51,12 +51,12 @@ class TpsRealcount extends Model
         return $this->hasMany(Votec1::class, 'tps_realcount_id');
     }
 
-    public function C1()
+    public function fileC1()
     {
         return $this->hasMany(Filec1::class);
     }
 
-    public function D1()
+    public function fileD1()
     {
         return $this->hasMany(Filed1::class);
     }
