@@ -16,26 +16,27 @@ class C1Controller extends Controller
 {
     public function index(Request $request)
     {
-        $title = 'Daftar file C1';
+        $title = 'Daftar File C1';
         $type = 'file c1';
-        $length = $request->input('length', 10);
-        if ($length <= 0) {
-            $length = 10;
-        }
-        $page = ($request->start / $length) + 1;
+        $length = max((int) $request->input('length', 10), 1);
+        $start = (int) $request->input('start', 0);
+        $page = intval($start / $length) + 1;
         $votes = Filec1::with('tpsrealcount.kelurahan', 'tpsrealcount.kecamatan')
             ->paginate($length, ['*'], 'page', $page);
+        $data = $votes->items();
+        foreach ($data as $vote) {
+            $vote->file = Storage::url($vote->file);
+        }
         if ($request->ajax()) {
             return response()->json([
-                'draw' => intval($request->draw),
+                'draw' => intval($request->input('draw', 0)),
                 'recordsTotal' => $votes->total(),
                 'recordsFiltered' => $votes->total(),
                 'data' => $votes->items()
             ]);
         }
-        return view('dashboard.admin.realcount.c1.index',compact('title','type'));
+        return view('dashboard.admin.realcount.c1.index', compact('title', 'type'));
     }
-
     public function create()
     {
         $title = 'Create file C1';
