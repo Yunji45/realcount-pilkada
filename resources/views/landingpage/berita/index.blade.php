@@ -6,6 +6,7 @@
 
 
 @section('content')
+
     <!-- Carousel Start -->
     <div class="container-fluid p-0 mb-5 wow fadeIn" data-wow-delay="0.1s">
         <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -21,7 +22,7 @@
                                         DPC Gerindra Kota Bandung
                                         <br>
                                         <p style="font-size: 25px;font-weight:bold;color:#877E56">Partai Politik yang
-                                            mampu menciptakan Kesejahteraan rakyat</p>
+                                            mampu menciptakan <br>Kesejahteraan rakyat</p>
                                         <p style="font-size: 19px; text-align: justify; color:#877E56; line-height: 1.5;">
                                             Menegakkan Kedaulatan dan Tegaknya<br>
                                             Negara Kesatuan Republik Indonesia yang<br>
@@ -63,6 +64,8 @@
         </div>
     </div>
     <!-- Carousel End -->
+
+
 
     <!-- About Start -->
     <div class="container-xxl py-5">

@@ -34,6 +34,81 @@
     <link href="{{ asset('landing/css/style.css') }}" rel="stylesheet">
 
     <style>
+/* General styling for carousel and container */
+.carousel-item img {
+    width: 100%;
+    height: auto;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Styling for captions and text elements */
+.carousel-caption h5 {
+    font-size: 2rem;
+    color: #877E56;
+    font-weight: bold;
+}
+
+.carousel-caption p {
+    font-size: 1.2rem;
+    color: #877E56;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+/* Hide background image on small screens */
+@media (max-width: 768px) {
+    .carousel-item img {
+        display: none;
+    }
+
+    .carousel-caption {
+        top: 70%;
+    }
+
+    .carousel-caption h5 {
+        font-size: 1.8rem;
+    }
+
+    .carousel-caption p {
+        font-size: 1rem;
+    }
+}
+
+/* Additional fine-tuning for even smaller devices */
+@media (max-width: 576px) {
+    .carousel-caption h5 {
+        font-size: 1.5rem;
+    }
+
+    .carousel-caption p {
+        font-size: 0.9rem;
+        text-align: left;
+    }
+}
+
+/* Larger screen adjustments */
+@media (min-width: 768px) {
+    .carousel-caption h5 {
+        font-size: 3rem;
+    }
+
+    .carousel-caption p {
+        font-size: 1.5rem;
+    }
+}
+
+    </style>
+
+    <style>
         .col-lg-12 h5 {
             color: #000;
             /* Warna teks */
