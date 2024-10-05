@@ -139,6 +139,17 @@ class AgendaController extends Controller
      */
     public function destroy(Agenda $agenda)
     {
-        //
+        try {
+            $agenda->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Agenda berhasil dihapus!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menghapus agenda: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
