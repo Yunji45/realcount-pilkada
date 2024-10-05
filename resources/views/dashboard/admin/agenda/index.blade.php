@@ -73,6 +73,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" id="deleteEventButton" class="btn btn-danger">Hapus Agenda</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Simpan Agenda</button>
                     </div>
@@ -182,6 +183,32 @@
                         'Edit Agenda'; // Ubah judul modal
                     let editEventModal = new bootstrap.Modal(document.getElementById('addEventModal'));
                     editEventModal.show();
+
+                    document.getElementById('deleteEventButton').onclick = function() {
+                        if (confirm('Apakah Anda yakin ingin menghapus agenda ini?')) {
+                            fetch(`/agenda/${info.event.id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    info.event.remove(); // Hapus event dari kalender
+                                    alert('Agenda berhasil dihapus!');
+                                } else {
+                                    alert('Terjadi kesalahan: ' + data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('Terjadi kesalahan saat menghapus agenda.');
+                            });
+                        }
+                    };
                 },
                 eventMouseEnter: function(info) {
                     let tooltip = document.createElement('div');
@@ -253,6 +280,7 @@
                                 'addEventModal'));
                             addEventModal.hide();
                             alert('Agenda berhasil disimpan!');
+                            location.reload();
                         } else {
                             alert('Terjadi kesalahan: ' + data.message);
                         }
