@@ -41,8 +41,8 @@ class TPSController extends Controller
     public function create()
     {
         $provinsi = Provinsi::all();
-        $title = 'Create TPS Realcount';
-        $type = 'TPS';
+        $title = 'TPS Realcount';
+        $type = 'Tambah';
 
         return view('dashboard.admin.realcount.tps.create', compact('provinsi', 'title', 'type'));
     }
@@ -102,8 +102,8 @@ class TPSController extends Controller
     public function show(TpsRealcount $tps_realcount)
     {
         // Menampilkan detail TPS
-        $title = 'Create TPS Realcount';
-        $type = 'TPS';
+        $title = 'TPS Realcount';
+        $type = 'Detail';
         $provinsi = Provinsi::all();
         return view('dashboard.admin.realcount.tps.create', compact('tps_realcount','title','type','provinsi'));
     }
@@ -111,8 +111,8 @@ class TPSController extends Controller
 
     public function edit(TpsRealcount $tps_realcount)
     {
-        $title = 'Edit TPS';
-        $type = 'TPS';
+        $title = 'TPS Realcount';
+        $type = 'Edit';
         $provinsi = Provinsi::all();
         $kabupaten = Kabupaten::where('provinsi_id', $tps_realcount->provinsi_id)->get();
         $kecamatan = Kecamatan::where('kabupaten_id', $tps_realcount->kabupaten_id)->get();

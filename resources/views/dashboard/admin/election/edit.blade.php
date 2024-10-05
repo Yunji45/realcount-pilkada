@@ -1,6 +1,8 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'My Gerindra | {{ $type }} {{ $title }}')
+@section('title')
+    My Gerindra | {{ $type }} {{ $title }}
+@endsection
 
 @section('content')
     <div class="page-inner">
@@ -8,7 +10,7 @@
             <h3 class="fw-bold mb-3">{{ $type }} {{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -53,11 +55,14 @@
                                     <div class="form-group">
                                         <label for="name">Jenis Pemilu</label>
                                         <select class="form-select" name="type" id="type" required>
-                                            <option value="" disabled {{ old('type', $election->type) === '' ? 'selected' : '' }}>
+                                            <option value="" disabled
+                                                {{ old('type', $election->type) === '' ? 'selected' : '' }}>
                                                 Pilih Jenis Pemilu</option>
                                             <option value="Perorang"
-                                                {{ old('type', $election->type) === 'Perorang' ? 'selected' : '' }}>Perorang</option>
-                                            <option value="Partai" {{ old('type', $election->type) === 'Partai' ? 'selected' : '' }}>
+                                                {{ old('type', $election->type) === 'Perorang' ? 'selected' : '' }}>
+                                                Perorang</option>
+                                            <option value="Partai"
+                                                {{ old('type', $election->type) === 'Partai' ? 'selected' : '' }}>
                                                 Partai</option>
                                         </select>
                                     </div>

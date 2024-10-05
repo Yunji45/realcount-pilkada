@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Charts\VotePerorangChart;
 use App\Charts\VotePartaiChart;
@@ -10,14 +10,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Election;
 use App\Models\PollingPlace;
 use App\Models\Provinsi;
-use App\Models\Kabupaten;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
 use App\Models\User;
-use App\Models\Vote;
 use Illuminate\Http\Request;
 
-class HomeAdminController extends Controller
+class HomeController extends Controller
 {
     public function index(Request $request, VotePerorangChart $votePerorang, VotePartaiChart $votePartai, VotePerPollingPlacePerorangChart $votePerTpsPerorang, VotePerPollingPlacePartaiChart $votePerTpsPartai)
     {

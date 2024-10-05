@@ -1,16 +1,16 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-My Gerindra | {{ $title }}
+    My Gerindra | {{ $title }}
 @endsection
 
 @section('content')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables {{ $title }}</h3>
+            <h3 class="fw-bold mb-3">{{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -27,7 +27,7 @@ My Gerindra | {{ $title }}
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Add {{ $title }}</h4>
+                            <h4 class="card-title">Data {{ $title }}</h4>
                             <a href="{{ route('candidate.create') }}" class="btn btn-primary btn-round ms-auto">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
@@ -67,7 +67,7 @@ My Gerindra | {{ $title }}
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>
-                                                <img src="storage/{{ $candidate->photo }}" alt="Candidate" height="100px" >
+                                                <img src="storage/{{ $candidate->photo }}" alt="Candidate" height="100px">
                                             </td>
                                             <td>{{ $candidate->name }}</td>
                                             <td>{{ $candidate->partai->name }}</td>
@@ -78,15 +78,18 @@ My Gerindra | {{ $title }}
                                             <td>
                                                 <div class="form-button-action">
                                                     <!-- Tombol Edit dengan ikon pensil -->
-                                                    <a href="{{ route('candidate.edit', $candidate->id) }}" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                    <a href="{{ route('candidate.edit', $candidate->id) }}"
+                                                        class="btn btn-warning btn-sm" style="margin-right:10px">
                                                         <i class="fas fa-edit"></i> <!-- Ikon Edit -->
                                                     </a>
 
                                                     <!-- Tombol Delete dengan ikon tong sampah -->
-                                                    <form action="{{ route('candidate.destroy', $candidate->id) }}" method="POST" style="display:inline-block;">
+                                                    <form action="{{ route('candidate.destroy', $candidate->id) }}"
+                                                        method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Candidate?')">
+                                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to delete this Candidate?')">
                                                             <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
                                                         </button>
                                                     </form>

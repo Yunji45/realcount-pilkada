@@ -7,10 +7,10 @@
 @section('content')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables {{ $title }}</h3>
+            <h3 class="fw-bold mb-3">{{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Add {{ $title }}</h4>
+                            <h4 class="card-title">Data {{ $title }}</h4>
                             <a href="{{ route('vote.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
@@ -66,7 +66,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>id tps</th>
+                                        <th>ID TPS</th>
                                         <th>Nama Candidat</th>
                                         <th>Nama TPS</th>
                                         <th>Nama Partai</th>
@@ -80,7 +80,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>id tps</th>
+                                        <th>ID TPS</th>
                                         <th>Nama Candidat</th>
                                         <th>Nama TPS</th>
                                         <th>Nama Partai</th>
@@ -210,8 +210,10 @@
     <script>
         $(document).ready(function() {
             // Ambil nilai lengthMenu dan halaman terakhir dari localStorage
-            var selectedLength = localStorage.getItem('selectedLength') || 10; // Default ke 10 jika tidak ada nilai di localStorage
-            var lastPage = localStorage.getItem('lastPage') || 0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
+            var selectedLength = localStorage.getItem('selectedLength') ||
+                10; // Default ke 10 jika tidak ada nilai di localStorage
+            var lastPage = localStorage.getItem('lastPage') ||
+                0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
 
             // Inisialisasi DataTable dengan server-side processing
             var table = $('#tableVote').DataTable({
@@ -222,15 +224,15 @@
                     type: 'GET',
                     data: function(d) {
                         d.start = d.start; // Baris awal (untuk paginasi)
-                        d.length = parseInt(selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
+                        d.length = parseInt(
+                            selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
                         d.draw = d.draw; // Nomor draw
                     },
                     dataSrc: function(json) {
                         return json.data; // Data yang dikembalikan dari server
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
                             // Nomor berurutan yang memperhitungkan halaman
@@ -238,14 +240,30 @@
                             return start + meta.row + 1;
                         }
                     },
-                    { data: 'polling_place_id' },
-                    { data: 'candidate.name' },
-                    { data: 'polling_place.name' },
-                    { data: 'candidate.partai.name' },
-                    { data: 'candidate.election.name' },
-                    { data: 'polling_place.kecamatan.name' },
-                    { data: 'polling_place.kelurahan.name' },
-                    { data: 'vote_count' },
+                    {
+                        data: 'polling_place_id'
+                    },
+                    {
+                        data: 'candidate.name'
+                    },
+                    {
+                        data: 'polling_place.name'
+                    },
+                    {
+                        data: 'candidate.partai.name'
+                    },
+                    {
+                        data: 'candidate.election.name'
+                    },
+                    {
+                        data: 'polling_place.kecamatan.name'
+                    },
+                    {
+                        data: 'polling_place.kelurahan.name'
+                    },
+                    {
+                        data: 'vote_count'
+                    },
                     {
                         data: null,
                         render: function(data, type, row) {
@@ -268,8 +286,11 @@
                 paging: true,
                 pageLength: parseInt(selectedLength), // Panjang halaman dari localStorage
                 lengthMenu: [5, 10, 25, 50, 100], // Pilihan jumlah data yang ditampilkan
-                displayStart: parseInt(lastPage) * selectedLength, // Memulai dari halaman terakhir yang tersimpan
-                order: [[1, 'asc']]
+                displayStart: parseInt(lastPage) *
+                    selectedLength, // Memulai dari halaman terakhir yang tersimpan
+                order: [
+                    [1, 'asc']
+                ]
             });
 
             // Ketika panjang data diubah, simpan ke localStorage dan refresh tabel
@@ -290,8 +311,4 @@
             });
         });
     </script>
-
-
-
-
 @endsection

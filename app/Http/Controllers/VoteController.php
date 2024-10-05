@@ -64,7 +64,7 @@ class VoteController extends Controller
         $pollingPlaces = PollingPlace::all();
         $provinsis = Provinsi::all();
         $title = "Suara";
-        $type = "Tambah Data";
+        $type = "Tambah";
 
         return view('dashboard.admin.vote.create', compact('candidates', 'pollingPlaces', 'title', 'type', 'provinsis'));
         // return $candidates;
@@ -117,7 +117,7 @@ class VoteController extends Controller
             ->get();
         $pollingPlaces = PollingPlace::all();
         $title = "Suara";
-        $type = "Detail Data";
+        $type = "Detail";
 
         return view('dashboard.admin.vote.show', compact('candidates', 'pollingPlaces', 'title', 'type'));
         // return $vote;
@@ -133,7 +133,7 @@ class VoteController extends Controller
         $pollingPlaces = PollingPlace::all();
         $provinsis = Provinsi::all();
         $title = "Suara";
-        $type = "Edit Data";
+        $type = "Edit";
 
         return view('dashboard.admin.vote.edit', compact('candidates', 'pollingPlaces', 'title', 'type', 'vote', 'provinsis'));
         // return $vote;

@@ -1,21 +1,23 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'My Gerindra | Edit TPS')
+@section('title')
+    My Gerindra | {{ $type }} {{ $title }}
+@endsection
 
 @section('content')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-<!-- Leaflet Control Geocoder -->
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <!-- Leaflet Control Geocoder -->
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Edit Data TPS {{ $tps_realcount->name }}</h3>
+            <h3 class="fw-bold mb-3">{{ $type }} {{ $title }} {{ $tps_realcount->name }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -23,7 +25,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('tps.index') }}">TPS</a>
+                    <a href="{{ route('tps.index') }}">{{ $title }}</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -38,9 +40,10 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Form Edit {{ $tps_realcount->name }}</div>
+                            <div class="card-title">Form {{ $type }} {{ $tps_realcount->name }}</div>
                         </div>
-                        <form action="{{ route('tps-realcount.update',$tps_realcount->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('tps-realcount.update', $tps_realcount->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
@@ -48,14 +51,17 @@
                                     <div class="col-md-6 col-lg-6">
                                         <div class="form-group">
                                             <label for="name">Nama TPS</label>
-                                            <input type="text" name="name" class="form-control" id="name" value="{{ $tps_realcount->name }}" />
+                                            <input type="text" name="name" class="form-control" id="name"
+                                                value="{{ $tps_realcount->name }}" />
                                         </div>
                                         <div class="form-group">
                                             <label for="provinsi">Provinsi</label>
                                             <select class="form-select" name="provinsi_id" id="provinsi">
                                                 <option value="">Pilih Provinsi</option>
                                                 @foreach ($provinsi as $prov)
-                                                    <option value="{{ $prov->id }}" {{ $tps_realcount->provinsi_id == $prov->id ? 'selected' : '' }}>{{ $prov->name }}</option>
+                                                    <option value="{{ $prov->id }}"
+                                                        {{ $tps_realcount->provinsi_id == $prov->id ? 'selected' : '' }}>
+                                                        {{ $prov->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -79,11 +85,13 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="rw">RW</label>
-                                            <input type="text" name="rw" class="form-control" id="rw" value="{{ $tps_realcount->rw }}" />
+                                            <input type="text" name="rw" class="form-control" id="rw"
+                                                value="{{ $tps_realcount->rw }}" />
                                         </div>
                                         <div class="form-group">
                                             <label for="DPT">DPT</label>
-                                            <input type="text" name="DPT" class="form-control" id="DPT" value="{{ $tps_realcount->DPT }}" />
+                                            <input type="text" name="DPT" class="form-control" id="DPT"
+                                                value="{{ $tps_realcount->DPT }}" />
                                         </div>
 
                                     </div>
@@ -92,20 +100,27 @@
                                         <div class="form-group">
                                             <label for="status">Status</label>
                                             <select class="form-select" name="status" id="status">
-                                                <option value="Aktif" {{ $tps_realcount->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                                <option value="Non-aktif" {{ $tps_realcount->status == 'Non-aktif' ? 'selected' : '' }}>Nonaktif</option>
+                                                <option value="Aktif"
+                                                    {{ $tps_realcount->status == 'Aktif' ? 'selected' : '' }}>Aktif
+                                                </option>
+                                                <option value="Non-aktif"
+                                                    {{ $tps_realcount->status == 'Non-aktif' ? 'selected' : '' }}>Nonaktif
+                                                </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="periode">Periode</label>
-                                            <input type="date" name="periode" class="form-control" id="periode" value="{{ $tps_realcount->periode }}" />
+                                            <input type="date" name="periode" class="form-control" id="periode"
+                                                value="{{ $tps_realcount->periode }}" />
                                         </div>
 
                                         <div class="form-group">
                                             <label for="location-search">Cari Daerah:</label>
                                             <div id="map" style="height: 400px;"></div>
-                                            <input type="hidden" name="latitude" id="latitude" value="{{ $tps_realcount->latitude }}">
-                                            <input type="hidden" name="longitude" id="longitude" value="{{ $tps_realcount->longitude }}">
+                                            <input type="hidden" name="latitude" id="latitude"
+                                                value="{{ $tps_realcount->latitude }}">
+                                            <input type="hidden" name="longitude" id="longitude"
+                                                value="{{ $tps_realcount->longitude }}">
                                         </div>
                                     </div>
                                 </div>
@@ -198,7 +213,9 @@
     </script>
     <script>
         // Inisialisasi peta
-        var map = L.map('map').setView([{{ $tps_realcount->latitude ?? '-6.200000' }}, {{ $tps_realcount->longitude ?? '106.816666' }}], 13);
+        var map = L.map('map').setView([{{ $tps_realcount->latitude ?? '-6.200000' }},
+            {{ $tps_realcount->longitude ?? '106.816666' }}
+        ], 13);
 
         // Tambahkan layer peta
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -206,7 +223,11 @@
         }).addTo(map);
 
         // Inisialisasi marker
-        var marker = L.marker([{{ $tps_realcount->latitude ?? '-6.200000' }}, {{ $tps_realcount->longitude ?? '106.816666' }}], {draggable: true}).addTo(map);
+        var marker = L.marker([{{ $tps_realcount->latitude ?? '-6.200000' }},
+            {{ $tps_realcount->longitude ?? '106.816666' }}
+        ], {
+            draggable: true
+        }).addTo(map);
 
         // Update koordinat saat marker digeser
         marker.on('dragend', function(e) {

@@ -234,7 +234,7 @@
                 </style>
 
                 <!-- Filter Form -->
-                <form action="{{ route('admin.dashboard.partai') }}" method="GET" class="filter-form">
+                <form action="{{ route('dashboard.partai') }}" method="GET" class="filter-form">
                     {{-- <div class="form-group">
                         <label for="provinsi">Provinsi:</label>
                         <select class="form-select" name="provinsi_id" id="provinsi">
@@ -335,7 +335,7 @@
     <script>
         $(document).ready(function() {
             // ID provinsi Jawa Barat (ubah sesuai dengan database Anda)
-            var jawaBaratId = 9; // Misalnya ID Jawa Barat adalah 32
+            var jawaBaratId = 9; // Misalnya ID Jawa Barat adalah 9
 
             // Fungsi untuk memuat Kabupaten berdasarkan ID Provinsi
             function loadKabupaten(provinsiId) {

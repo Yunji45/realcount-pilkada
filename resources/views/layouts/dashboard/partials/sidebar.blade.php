@@ -24,23 +24,12 @@
     <div class="sidebar-content">
         <ul class="nav nav-secondary">
             {{-- <-- Dashboard --> --}}
-            @role('Super Admin')
-                <li class="nav-item {{ Request::is('superadmin/dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('superadmin.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                </li>
-            @endrole
-            @role('Admin')
+            @role(['Admin', 'Super Admin', 'Pimpinan'])
                 <li
-                    class="nav-item {{ Request::is('admin/dashboard/perorangan*', 'admin/dashboard/partai*', 'admin/dashboard/peta*') ? 'active' : '' }}">
-                    <a data-bs-toggle="collapse" href="#adminDashboard"
-                        class="{{ Request::is('admin/dashboard/perorangan*', 'admin/dashboard/partai*', 'admin/dashboard/peta*') ? '' : 'collapsed' }}"
-                        aria-expanded="{{ Request::is('admin/dashboard/perorangan*', 'admin/dashboard/partai*', 'admin/dashboard/peta*') ? 'true' : 'false' }}">
+                    class="nav-item {{ Request::is('dashboard/perorangan*') || Request::is('dashboard/partai*') || Request::is('dashboard/peta*') ? 'active' : '' }}">
+                    <a data-bs-toggle="collapse" href="#Dashboard"
+                        class="{{ Request::is('dashboard/perorangan*') || Request::is('dashboard/partai*') || Request::is('dashboard/peta*') ? '' : 'collapsed' }}"
+                        aria-expanded="{{ Request::is('dashboard/perorangan*') || Request::is('dashboard/partai*') || Request::is('dashboard/peta*') ? 'true' : 'false' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
                             <path
                                 d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
@@ -48,108 +37,28 @@
                         <p style="margin-left:16px">Dashboard</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ Request::is('admin/dashboard/perorangan*', 'admin/dashboard/partai*', 'admin/dashboard/peta*') ? 'show' : '' }}"
-                        id="adminDashboard">
+                    <div class="collapse {{ Request::is('dashboard/perorangan*') || Request::is('dashboard/partai*') || Request::is('dashboard/peta*') ? 'show' : '' }}"
+                        id="Dashboard">
                         <ul class="nav nav-collapse">
-                            <li class="{{ Request::is('admin/dashboard/perorangan*') ? 'active' : '' }}">
-                                <a href="{{ route('admin.dashboard.perorangan') }}">
+                            <li class="{{ Request::is('dashboard/perorangan*') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.perorangan') }}">
                                     <span class="sub-item">Perorangan</span>
                                 </a>
                             </li>
-                            <li class="{{ Request::is('admin/dashboard/partai*') ? 'active' : '' }}">
-                                <a href="{{ route('admin.dashboard.partai') }}">
+                            <li class="{{ Request::is('dashboard/partai*') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.partai') }}">
                                     <span class="sub-item">Partai</span>
                                 </a>
                             </li>
-                            <li class="{{ Request::is('admin/dashboard/peta*') ? 'active' : '' }}">
-                                <a href="{{ route('admin.dashboard.peta') }}">
+                            <li class="{{ Request::is('dashboard/peta*') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.peta') }}">
                                     <span class="sub-item">Peta</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
-            @endrole
-            @role('Relawan RDW')
-                <li class="nav-item {{ Request::is('relawan/dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('relawan.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                </li>
-            @endrole
-            @role('Saksi')
-                <li class="nav-item {{ Request::is('saksi/dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('saksi.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                </li>
-            @endrole
-            @role('Koordinator')
-                <li class="nav-item {{ Request::is('koordinator/dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('koordinator.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                </li>
-            @endrole
-            @role('Pimpinan')
-                <li class="nav-item {{ Request::is('pimpinan/dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('pimpinan.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                </li>
-            @endrole
-            @role('Pemilih')
-                <li class="nav-item {{ Request::is('pemilih/dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('pemilih.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                </li>
-            @endrole
-            @role('Simpatisan')
-                <li class="nav-item {{ Request::is('simpatisan/dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('simpatisan.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                </li>
-            @endrole
-            @role('Lain-lain')
-                <li class="nav-item {{ Request::is('lain-lain/dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('lain-lain.dashboard') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: currentColor;">
-                            <path
-                                d="M24,19V4c0-1.654-1.346-3-3-3H3C1.346,1,0,2.346,0,4v15H11v2H6v2h12v-2h-5v-2h11ZM16,5h5v2h-5v-2Zm0,4h5v2h-5v-2Zm0,4h5v2h-5v-2Zm-8,2c-2.761,0-5-2.239-5-5,0-2.419,1.718-4.436,4-4.899v5.313l3.754,3.754c-.79,.523-1.736,.832-2.754,.832Zm4.168-2.246l-3.168-3.168V5.101c2.282,.463,4,2.48,4,4.899,0,1.019-.308,1.964-.832,2.754Z" />
-                        </svg>
-                        <p style="margin-left:16px">Dashboard</p>
-                    </a>
-                </li>
-            @endrole
 
-            {{-- <-- SideBar --> --}}
-            @role(['Admin', 'Super Admin', 'Pimpinan'])
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
@@ -161,19 +70,18 @@
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                             style="fill: currentColor;">
                             <path
-                                d="m19,2C19,.895,19.895,0,21,0s2,.895,2,2-.895,2-2,2-2-.895-2-2ZM3,4c1.105,0,2-.895,2-2S4.105,0,3,0,1,.895,1,2s.895,2,2,2Zm20.341,4c.454,0,.76-.444.628-.878-.376-1.228-1.518-2.122-2.869-2.122h-1.169c.041.328.069.661.069,1,0,.692-.097,1.36-.262,2h3.603ZM4.069,5h-1.154C1.533,5,.368,5.935.021,7.208c-.11.403.229.792.647.792h3.594c-.165-.64-.262-1.308-.262-2,0-.339.028-.672.069-1Zm18.931,18.407v.593H6.538l-1.821-1.628c-.917-.858-.96-2.307-.098-3.23.861-.922,2.313-.97,3.235-.109.034.032,1.069.898,2.145,1.784v-9.817c0-1.215,1.083-2.176,2.336-1.973.983.16,1.664,1.083,1.664,2.08v5.355l5.829,2.292c1.913.752,3.171,2.598,3.171,4.653ZM12,0c-3.309,0-6,2.691-6,6,0,1.796.8,3.401,2.054,4.501.124-.984.588-1.897,1.355-2.548.896-.761,2.078-1.088,3.248-.899,1.709.278,3.033,1.711,3.289,3.447,1.254-1.1,2.054-2.705,2.054-4.5,0-3.309-2.691-6-6-6Zm0,6c-1.105,0-2-.895-2-2s.895-2,2-2,2,.895,2,2-.895,2-2,2Z" />
+                                d="m19,2C19,.895,19.895,0,21,0s2,.895,2,2-.895,2-2,2-2-.895-2-2Zm-16,2c1.105,0,2-.895,2-2S4.105,0,3,0,1,.895,1,2s.895,2,2,2Zm20.341,4c.454,0,.76-.444.628-.878-.376-1.228-1.518-2.122-2.869-2.122h-1.169c.041.328.069.661.069,1,0,.692-.097,1.36-.262,2h3.603ZM4.069,5h-1.154C1.533,5,.368,5.935.021,7.208c-.11.403.229.792.647.792h3.594c-.165-.64-.262-1.308-.262-2,0-.339.028-.672.069-1Zm18.931,18.407v.593H6.538l-1.821-1.628c-.917-.858-.96-2.307-.098-3.23.861-.922,2.313-.97,3.235-.109.034.032,1.069.898,2.145,1.784v-9.817c0-1.215,1.083-2.176,2.336-1.973.983.16,1.664,1.083,1.664,2.08v5.355l5.829,2.292c1.913.752,3.171,2.598,3.171,4.653ZM12,0c-3.309,0-6,2.691-6,6,0,1.796.8,3.401,2.054,4.501.124-.984.588-1.897,1.355-2.548.896-.761,2.078-1.088,3.248-.899,1.709.278,3.033,1.711,3.289,3.447,1.254-1.1,2.054-2.705,2.054-4.5,0-3.309-2.691-6-6-6Zm0,6c-1.105,0-2-.895-2-2s.895-2,2-2,2,.895,2,2-.895,2-2,2Z" />
                         </svg>
                         <p style="margin-left:16px">Partai</p>
                     </a>
                 </li>
+
                 <li class="nav-item {{ Request::is('election*') ? 'active' : '' }}">
                     <a href="{{ route('election.index') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24"
-                            width="24" height="24">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path
-                                d="m12,10c2.757,0,5-2.243,5-5S14.757,0,12,0s-5,2.243-5,5,2.243,5,5,5Zm2.413,1.38c2.639.839,4.689,3.011,5.352,5.724.111.454-.232.896-.7.896h-5.352l-1.116-3.897,1.816-2.723Zm-10.179,5.724c.663-2.713,2.713-4.885,5.352-5.724l1.816,2.723-1.116,3.897h-5.352c-.468,0-.81-.442-.7-.896Zm19.766,3.896c0,.552-.448,1-1,1h-1v1c0,.552-.448,1-1,1H3c-.552,0-1-.448-1-1v-1h-1c-.552,0-1-.448-1-1s.448-1,1-1h22c.552,0,1,.448,1,1Z" />
+                                d="M12,10c2.757,0,5-2.243,5-5S14.757,0,12,0s-5,2.243-5,5,2.243,5,5,5Zm2.413,1.38c2.639.839,4.689,3.011,5.352,5.724.111.454-.232.896-.7.896h-5.352l-1.116-3.897,1.816-2.723Zm-10.179,5.724c.663-2.713,2.713-4.885,5.352-5.724l1.816,2.723-1.116,3.897h-5.352c-.468,0-.81-.442-.7-.896Zm19.766,3.896c0,.552-.448,1-1,1h-1v1c0,.552-.448,1-1,1H3c-.552,0-1-.448-1-1v-1h-1c-.552,0-1-.448-1-1s.448-1,1-1h22c.552,0,1,.448,1,1Z" />
                         </svg>
-
                         <p style="margin-left: 16px">Pemilu</p>
                     </a>
                 </li>
@@ -351,7 +259,7 @@
                 </li>
             @endrole
 
-            @role(['Relawan', 'Koordinator'])
+            @role('Koordinator')
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>

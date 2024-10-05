@@ -10,6 +10,7 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 use App\Notifications\UserRegistered;
 use Illuminate\Support\Facades\Redirect;
 use App\Mail\RegistrasiEmail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -39,6 +40,7 @@ class CreateNewUser implements CreatesNewUsers
             'ktp' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file KTP
         ])->validate();
 
+        DB::beginTransaction();
         try {
             // Handle KTP upload
             $ktpPath = null;
@@ -67,6 +69,7 @@ class CreateNewUser implements CreatesNewUsers
             ];
             Mail::to($user->email)->send(new RegistrasiEmail($emailData));
 
+            DB::commit();
 
             // Show success toast
             session()->flash('success', 'User berhasil dibuat.');
@@ -76,7 +79,7 @@ class CreateNewUser implements CreatesNewUsers
         } catch (\Exception $e) {
             // Show error toast in case of failure
             // session()->flash('error', 'Gagal membuat user. ' . $e->getMessage());
-
+            DB::rollBack();
             // return redirect()->back();
             throw $e;
         }

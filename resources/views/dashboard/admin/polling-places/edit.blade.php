@@ -1,21 +1,23 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'My Gerindra | Edit TPS')
+@section('title')
+    My Gerindra | {{ $type }} {{ $title }}
+@endsection
 
 @section('content')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-<!-- Leaflet Control Geocoder -->
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <!-- Leaflet Control Geocoder -->
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Edit Data TPS {{ $tp->name }}</h3>
+            <h3 class="fw-bold mb-3">{{ $type }} Data {{ $title }} {{ $tp->name }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -23,7 +25,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('tps.index') }}">TPS</a>
+                    <a href="{{ route('tps.index') }}">{{ $title }}</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -38,9 +40,9 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Form Edit {{ $tp->name }}</div>
+                            <div class="card-title">Form {{ $type }} {{ $tp->name }}</div>
                         </div>
-                        <form action="{{ route('tps.update',$tp->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('tps.update', $tp->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
@@ -48,14 +50,17 @@
                                     <div class="col-md-6 col-lg-6">
                                         <div class="form-group">
                                             <label for="name">Nama TPS</label>
-                                            <input type="text" name="name" class="form-control" id="name" value="{{ $tp->name }}" />
+                                            <input type="text" name="name" class="form-control" id="name"
+                                                value="{{ $tp->name }}" />
                                         </div>
                                         <div class="form-group">
                                             <label for="provinsi">Provinsi</label>
                                             <select class="form-select" name="provinsi_id" id="provinsi">
                                                 <option value="">Pilih Provinsi</option>
                                                 @foreach ($provinsi as $prov)
-                                                    <option value="{{ $prov->id }}" {{ $tp->provinsi_id == $prov->id ? 'selected' : '' }}>{{ $prov->name }}</option>
+                                                    <option value="{{ $prov->id }}"
+                                                        {{ $tp->provinsi_id == $prov->id ? 'selected' : '' }}>
+                                                        {{ $prov->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -79,11 +84,13 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="rw">RW</label>
-                                            <input type="text" name="rw" class="form-control" id="rw" value="{{ $tp->rw }}" />
+                                            <input type="text" name="rw" class="form-control" id="rw"
+                                                value="{{ $tp->rw }}" />
                                         </div>
                                         <div class="form-group">
                                             <label for="DPT">DPT</label>
-                                            <input type="text" name="DPT" class="form-control" id="DPT" value="{{ $tp->DPT }}" />
+                                            <input type="text" name="DPT" class="form-control" id="DPT"
+                                                value="{{ $tp->DPT }}" />
                                         </div>
 
                                     </div>
@@ -92,20 +99,25 @@
                                         <div class="form-group">
                                             <label for="status">Status</label>
                                             <select class="form-select" name="status" id="status">
-                                                <option value="Aktif" {{ $tp->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                                <option value="Non-aktif" {{ $tp->status == 'Non-aktif' ? 'selected' : '' }}>Nonaktif</option>
+                                                <option value="Aktif" {{ $tp->status == 'Aktif' ? 'selected' : '' }}>Aktif
+                                                </option>
+                                                <option value="Non-aktif"
+                                                    {{ $tp->status == 'Non-aktif' ? 'selected' : '' }}>Nonaktif</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="periode">Periode</label>
-                                            <input type="date" name="periode" class="form-control" id="periode" value="{{ $tp->periode }}" />
+                                            <input type="date" name="periode" class="form-control" id="periode"
+                                                value="{{ $tp->periode }}" />
                                         </div>
 
                                         <div class="form-group">
                                             <label for="location-search">Cari Daerah:</label>
                                             <div id="map" style="height: 400px;"></div>
-                                            <input type="hidden" name="latitude" id="latitude" value="{{ $tp->latitude }}">
-                                            <input type="hidden" name="longitude" id="longitude" value="{{ $tp->longitude }}">
+                                            <input type="hidden" name="latitude" id="latitude"
+                                                value="{{ $tp->latitude }}">
+                                            <input type="hidden" name="longitude" id="longitude"
+                                                value="{{ $tp->longitude }}">
                                         </div>
                                     </div>
                                 </div>
@@ -206,7 +218,9 @@
         }).addTo(map);
 
         // Inisialisasi marker
-        var marker = L.marker([{{ $tp->latitude ?? '-6.200000' }}, {{ $tp->longitude ?? '106.816666' }}], {draggable: true}).addTo(map);
+        var marker = L.marker([{{ $tp->latitude ?? '-6.200000' }}, {{ $tp->longitude ?? '106.816666' }}], {
+            draggable: true
+        }).addTo(map);
 
         // Update koordinat saat marker digeser
         marker.on('dragend', function(e) {

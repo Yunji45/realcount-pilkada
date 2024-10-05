@@ -1,6 +1,8 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'My Gerindra | {{ $title }}')
+@section('title')
+    My Gerindra | {{ $type }} {{ $title }}
+@endsection
 
 @section('content')
     <div class="page-inner">
@@ -8,7 +10,7 @@
             <h3 class="fw-bold mb-3">{{ $type }} {{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -85,7 +87,8 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="file">File</label>
-                                        <input type="file" name="file" class="form-control" id="vote_count" required />
+                                        <input type="file" name="file" class="form-control" id="vote_count"
+                                            required />
                                     </div>
                                 </div>
 
@@ -155,7 +158,7 @@
         </div>
     </div>
     <script>
-        document.getElementById('provinsi_id').addEventListener('change', function () {
+        document.getElementById('provinsi_id').addEventListener('change', function() {
             let provinsi_id = this.value;
             fetch(`/get-kabupatens/${provinsi_id}`)
                 .then(response => response.json())
@@ -163,15 +166,19 @@
                     let kabupatenSelect = document.getElementById('kabupaten_id');
                     kabupatenSelect.innerHTML = '<option value="" selected disabled>Pilih Kabupaten</option>';
                     data.forEach(kabupaten => {
-                        kabupatenSelect.innerHTML += `<option value="${kabupaten.id}">${kabupaten.name}</option>`;
+                        kabupatenSelect.innerHTML +=
+                            `<option value="${kabupaten.id}">${kabupaten.name}</option>`;
                     });
-                    document.getElementById('kecamatan_id').innerHTML = '<option value="" selected disabled>Pilih Kecamatan</option>';
-                    document.getElementById('kelurahan_id').innerHTML = '<option value="" selected disabled>Pilih Kelurahan</option>';
-                    document.getElementById('polling_place_id').innerHTML = '<option value="" selected disabled>Pilih TPS</option>';
+                    document.getElementById('kecamatan_id').innerHTML =
+                        '<option value="" selected disabled>Pilih Kecamatan</option>';
+                    document.getElementById('kelurahan_id').innerHTML =
+                        '<option value="" selected disabled>Pilih Kelurahan</option>';
+                    document.getElementById('polling_place_id').innerHTML =
+                        '<option value="" selected disabled>Pilih TPS</option>';
                 });
         });
 
-        document.getElementById('kabupaten_id').addEventListener('change', function () {
+        document.getElementById('kabupaten_id').addEventListener('change', function() {
             let kabupaten_id = this.value;
             fetch(`/get-kecamatans/${kabupaten_id}`)
                 .then(response => response.json())
@@ -179,14 +186,17 @@
                     let kecamatanSelect = document.getElementById('kecamatan_id');
                     kecamatanSelect.innerHTML = '<option value="" selected disabled>Pilih Kecamatan</option>';
                     data.forEach(kecamatan => {
-                        kecamatanSelect.innerHTML += `<option value="${kecamatan.id}">${kecamatan.name}</option>`;
+                        kecamatanSelect.innerHTML +=
+                            `<option value="${kecamatan.id}">${kecamatan.name}</option>`;
                     });
-                    document.getElementById('kelurahan_id').innerHTML = '<option value="" selected disabled>Pilih Kelurahan</option>';
-                    document.getElementById('polling_place_id').innerHTML = '<option value="" selected disabled>Pilih TPS</option>';
+                    document.getElementById('kelurahan_id').innerHTML =
+                        '<option value="" selected disabled>Pilih Kelurahan</option>';
+                    document.getElementById('polling_place_id').innerHTML =
+                        '<option value="" selected disabled>Pilih TPS</option>';
                 });
         });
 
-        document.getElementById('kecamatan_id').addEventListener('change', function () {
+        document.getElementById('kecamatan_id').addEventListener('change', function() {
             let kecamatan_id = this.value;
             fetch(`/get-kelurahans/${kecamatan_id}`)
                 .then(response => response.json())
@@ -194,13 +204,15 @@
                     let kelurahanSelect = document.getElementById('kelurahan_id');
                     kelurahanSelect.innerHTML = '<option value="" selected disabled>Pilih Kelurahan</option>';
                     data.forEach(kelurahan => {
-                        kelurahanSelect.innerHTML += `<option value="${kelurahan.id}">${kelurahan.name}</option>`;
+                        kelurahanSelect.innerHTML +=
+                            `<option value="${kelurahan.id}">${kelurahan.name}</option>`;
                     });
-                    document.getElementById('polling_place_id').innerHTML = '<option value="" selected disabled>Pilih TPS</option>';
+                    document.getElementById('polling_place_id').innerHTML =
+                        '<option value="" selected disabled>Pilih TPS</option>';
                 });
         });
 
-        document.getElementById('kelurahan_id').addEventListener('change', function () {
+        document.getElementById('kelurahan_id').addEventListener('change', function() {
             let kelurahan_id = this.value;
             fetch(`/get-tps-realcount/${kelurahan_id}`)
                 .then(response => response.json())
@@ -208,7 +220,8 @@
                     let pollingPlaceSelect = document.getElementById('polling_place_id');
                     pollingPlaceSelect.innerHTML = '<option value="" selected disabled>Pilih TPS</option>';
                     data.forEach(pollingPlace => {
-                        pollingPlaceSelect.innerHTML += `<option value="${pollingPlace.id}">${pollingPlace.name}</option>`;
+                        pollingPlaceSelect.innerHTML +=
+                            `<option value="${pollingPlace.id}">${pollingPlace.name}</option>`;
                     });
                 });
         });

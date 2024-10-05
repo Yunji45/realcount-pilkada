@@ -7,10 +7,10 @@ My Gerindra | {{ $title }}
 @section('content')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables {{ $title }}</h3>
+            <h3 class="fw-bold mb-3">{{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -27,7 +27,7 @@ My Gerindra | {{ $title }}
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Add {{ $title }}</h4>
+                            <h4 class="card-title">Data {{ $title }}</h4>
                             <a href="{{ route('partai.create') }}" class="btn btn-primary btn-round ms-auto">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}

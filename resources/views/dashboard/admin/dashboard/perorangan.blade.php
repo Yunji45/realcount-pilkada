@@ -235,7 +235,7 @@
                 </style>
 
                 <!-- Filter Form -->
-                <form action="{{ route('admin.dashboard') }}" method="GET" class="filter-form">
+                <form action="{{ route('dashboard.perorangan') }}" method="GET" class="filter-form">
                     {{-- <div class="form-group">
                         <label for="provinsi">Provinsi:</label>
                         <select class="form-select" name="provinsi_id" id="provinsi">

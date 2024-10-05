@@ -75,7 +75,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="file" id="ktp" name="ktp" accept="image/*" onchange="previewFile()" hidden required>
+                <input type="file" id="ktp" name="ktp" accept="image/*" onchange="previewFile()" hidden
+                    required>
                 <button type="button" class="upload-btn" onclick="document.getElementById('ktp').click();">
                     Upload KTP
                 </button>

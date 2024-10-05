@@ -3,12 +3,12 @@
 @section('title', 'My Gerindra | Create TPS')
 
 @section('content')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-<!-- Leaflet Control Geocoder -->
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <!-- Leaflet Control Geocoder -->
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
     <div class="page-inner">
         <div class="page-header">
@@ -95,7 +95,7 @@
                                         <div class="form-group">
                                             <label for="location-search">Cari Daerah:</label>
                                             <div id="map" style="height: 400px;"></div>
-                                            <input type="hidden" name="latitude" id="latitude" >
+                                            <input type="hidden" name="latitude" id="latitude">
                                             <input type="hidden" name="longitude" id="longitude">
                                         </div>
                                     </div>
@@ -175,7 +175,9 @@
     </script>
     <script>
         // Inisialisasi peta
-        var map = L.map('map').setView([{{ $kegiatan->latitude ?? '-6.200000' }}, {{ $kegiatan->longitude ?? '106.816666' }}], 13);
+        var map = L.map('map').setView([{{ $kegiatan->latitude ?? '-6.200000' }},
+            {{ $kegiatan->longitude ?? '106.816666' }}
+        ], 13);
 
         // Tambahkan layer peta
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -183,7 +185,8 @@
         }).addTo(map);
 
         // Marker awal
-        var marker = L.marker([{{ $kegiatan->latitude ?? '-6.200000' }}, {{ $kegiatan->longitude ?? '106.816666' }}]).addTo(map);
+        var marker = L.marker([{{ $kegiatan->latitude ?? '-6.200000' }}, {{ $kegiatan->longitude ?? '106.816666' }}])
+            .addTo(map);
 
         // Fungsi untuk memperbarui marker dan koordinat
         function updateMarker(lat, lng) {
@@ -193,7 +196,7 @@
         }
 
         // Pindahkan marker berdasarkan klik pada peta
-        map.on('click', function (e) {
+        map.on('click', function(e) {
             var lat = e.latlng.lat;
             var lng = e.latlng.lng;
             updateMarker(lat, lng);
@@ -201,14 +204,14 @@
 
         // Tambahkan Geocoder Control untuk pencarian langsung di dalam peta
         L.Control.geocoder({
-            defaultMarkGeocode: false
-        })
-        .on('markgeocode', function(e) {
-            var latlng = e.geocode.center;
-            map.setView(latlng, 13);
-            updateMarker(latlng.lat, latlng.lng);
-        })
-        .addTo(map);
+                defaultMarkGeocode: false
+            })
+            .on('markgeocode', function(e) {
+                var latlng = e.geocode.center;
+                map.setView(latlng, 13);
+                updateMarker(latlng.lat, latlng.lng);
+            })
+            .addTo(map);
     </script>
     <script>
         document.getElementById('periode').addEventListener('change', function() {

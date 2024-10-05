@@ -16,8 +16,7 @@ class D1Controller extends Controller
 {
     public function index(Request $request)
     {
-        $title = 'Daftar file C1';
-        $type = 'file c1';
+        $title = 'File D1';
         $length = $request->input('length', 10);
         if ($length <= 0) {
             $length = 10;
@@ -33,16 +32,16 @@ class D1Controller extends Controller
                 'data' => $votes->items()
             ]);
         }
-        return view('dashboard.admin.realcount.c1.index',compact('title','type'));
+        return view('dashboard.admin.realcount.c1.index', compact('title', 'type'));
     }
 
     public function create()
     {
-        $title = 'Create file C1';
-        $type = 'file c1';
+        $title = 'File D1';
+        $type = 'Tambah';
         $pollingPlaces = TpsRealcount::all();
         $provinsis = Provinsi::all();
-        return view('dashboard.admin.realcount.c1.create',compact('title','type','pollingPlaces','provinsis'));
+        return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis'));
     }
 
     public function store(Request $request)
@@ -62,9 +61,9 @@ class D1Controller extends Controller
             }
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
-                $path = $file->store('File_C1','public');
+                $path = $file->store('File_C1', 'public');
                 Log::info('File berhasil disimpan.', ['path' => $path]);
-                
+
                 Filed1::create([
                     'tps_realcount_id' => $request->tps_realcount_id,
                     'file' => $path
@@ -80,20 +79,11 @@ class D1Controller extends Controller
         }
     }
 
-    public function show($id)
-    {
+    public function show($id) {}
 
-    }
+    public function edit($id) {}
 
-    public function edit($id)
-    {
-
-    }
-
-    public function update(Request $request, $id)
-    {
-
-    }
+    public function update(Request $request, $id) {}
 
     public function destroy($file_d1)
     {
@@ -108,7 +98,7 @@ class D1Controller extends Controller
             }
             $filed1->delete();
             DB::commit();
-    
+
             Log::info('File C1 berhasil dihapus.', ['id' => $file_d1]);
             return redirect()->route('file-c1.index')->with('success', 'File C1 berhasil dihapus.');
         } catch (\Throwable $th) {
@@ -117,5 +107,4 @@ class D1Controller extends Controller
             return redirect()->back()->with('error', 'Gagal menghapus file.');
         }
     }
-
 }

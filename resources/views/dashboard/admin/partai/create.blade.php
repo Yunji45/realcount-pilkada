@@ -1,6 +1,8 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'My Gerindra | {{ $title }}')
+@section('title')
+    My Gerindra | {{ $title }}
+@endsection
 
 @section('content')
     <div class="page-inner">
@@ -8,7 +10,7 @@
             <h3 class="fw-bold mb-3">{{ $type }} {{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>

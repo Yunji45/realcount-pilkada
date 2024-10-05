@@ -49,7 +49,7 @@ class VotingController extends Controller
         $pollingPlaces = TpsRealcount::all();
         $provinsis = Provinsi::all();
         $title = "Suara Realcount";
-        $type = "Tambah Data";
+        $type = "Tambah";
 
         return view('dashboard.admin.realcount.vote.create', compact('candidates', 'pollingPlaces', 'title', 'type', 'provinsis'));
         // return $candidates;
@@ -74,7 +74,7 @@ class VotingController extends Controller
             if ($tps && $tps->fileC1()->exists()) {
                 return back()->with('error', 'Voting Untuk TPS Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File C1.')->withInput();
             }
-    
+
             $vote_realcount = Votec1::create([
                 'candidate_id' => $request->candidate_id,
                 'tps_realcount_id' => $request->tps_realcount_id,

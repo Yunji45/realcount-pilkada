@@ -51,8 +51,8 @@ class PollingPlaceController extends Controller
     public function create()
     {
         $provinsi = Provinsi::all();  // Hanya ambil data Provinsi di awal
-        $title = 'Create TPS';
-        $type = 'TPS';
+        $title = 'TPS';
+        $type = 'Create';
 
         return view('dashboard.admin.polling-places.create', compact('provinsi', 'title', 'type'));
     }
@@ -155,8 +155,8 @@ class PollingPlaceController extends Controller
      */
     public function edit(PollingPlace $tp)
     {
-        $title = 'Edit TPS';
-        $type = 'TPS';
+        $title = 'TPS';
+        $type = 'Edit';
 
         // Ambil data provinsi, kabupaten, kecamatan, dan kelurahan
         $provinsi = Provinsi::all();

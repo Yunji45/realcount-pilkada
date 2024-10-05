@@ -7,10 +7,10 @@
 @section('content')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables {{ $title }}</h3>
+            <h3 class="fw-bold mb-3">{{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Add {{ $title }}</h4>
+                            <h4 class="card-title">Data {{ $title }}</h4>
                             <a href="{{ route('file-c1.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
@@ -145,7 +145,7 @@
         $(document).ready(function() {
             var selectedLength = parseInt(localStorage.getItem('selectedLength')) || 10; // Default ke 10 jika tidak ada nilai di localStorage
             var lastPage = parseInt(localStorage.getItem('lastPage')) || 0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
-    
+
             var table = $('#tableTps').DataTable({
                 processing: true,
                 serverSide: true,
@@ -202,24 +202,24 @@
                 displayStart: lastPage * selectedLength, // Memulai dari halaman terakhir yang tersimpan
                 order: [[1, 'asc']]
             });
-    
+
             // Ketika panjang data diubah, simpan ke localStorage dan refresh tabel
             $('#tableTps').on('length.dt', function(e, settings, len) {
                 localStorage.setItem('selectedLength', len);
                 table.page.len(len).draw(false); // Reload tabel dengan jumlah baris yang baru
             });
-    
+
             // Simpan halaman terakhir yang diakses ke localStorage setiap kali pagination berubah
             $('#tableTps').on('page.dt', function() {
                 var info = table.page.info();
                 localStorage.setItem('lastPage', info.page);
             });
-    
+
             // Custom search input
             $('#tableSearch').on('keyup', function() {
                 table.search(this.value).draw(); // Pencarian otomatis saat mengetik
             });
         });
     </script>
-    
+
 @endsection
