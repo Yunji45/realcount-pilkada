@@ -117,8 +117,8 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan|Koordina
 
 Route::middleware(['verified', 'auth'])->group(function () {
     Route::resources([
-        '/tps-realcount' => TPSController::class,
-        '/vote-realcount' => VotingController::class,
+        '/realcount-tps' => TPSController::class,
+        '/realcount-vote' => VotingController::class,
         '/file-c1' => C1Controller::class,
         '/file-d1' => D1Controller::class,
     ]);
@@ -141,5 +141,5 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/get-kecamatans/{kabupaten_id}', [VoteController::class, 'getKecamatans']);
     Route::get('/get-kelurahans/{kecamatan_id}', [VoteController::class, 'getKelurahans']);
     Route::get('/get-polling-places/{kelurahan_id}', [VoteController::class, 'getPollingPlaces']);
-    Route::get('/get-tps-realcount/{kelurahan_id}', [VotingController::class, 'getTpsRealCount']);
+    Route::get('/get-realcount-tps/{kelurahan_id}', [VotingController::class, 'getTpsRealCount']);
 });

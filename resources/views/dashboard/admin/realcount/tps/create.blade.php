@@ -42,7 +42,7 @@
                         <div class="card-header">
                             <div class="card-title">Form {{ $title }}</div>
                         </div>
-                        <form action="{{ route('tps-realcount.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('realcount-tps.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                                 <div class="row">

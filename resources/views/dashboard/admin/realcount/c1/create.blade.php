@@ -83,17 +83,8 @@
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <!-- Nama Kandidat -->
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="form-group">
-                                        <label for="file">File</label>
-                                        <input type="file" name="file" class="form-control" id="vote_count"
-                                            required />
-                                    </div>
-                                </div>
-
                                 <!-- Provinsi -->
-                                <div class="col-md-6 col-lg-4">
+                                <div class="col-md-6 col-lg-3">
                                     <div class="form-group">
                                         <label for="provinsi_id">Provinsi</label>
                                         <select name="provinsi_id" class="form-control" id="provinsi_id" required>
@@ -106,7 +97,7 @@
                                 </div>
 
                                 <!-- Kabupaten -->
-                                <div class="col-md-6 col-lg-4">
+                                <div class="col-md-6 col-lg-3">
                                     <div class="form-group">
                                         <label for="kabupaten_id">Kabupaten</label>
                                         <select name="kabupaten_id" class="form-control" id="kabupaten_id" required>
@@ -116,7 +107,7 @@
                                 </div>
 
                                 <!-- Kecamatan -->
-                                <div class="col-md-6 col-lg-4">
+                                <div class="col-md-6 col-lg-2">
                                     <div class="form-group">
                                         <label for="kecamatan_id">Kecamatan</label>
                                         <select name="kecamatan_id" class="form-control" id="kecamatan_id" required>
@@ -126,7 +117,7 @@
                                 </div>
 
                                 <!-- Kelurahan -->
-                                <div class="col-md-6 col-lg-4">
+                                <div class="col-md-6 col-lg-2">
                                     <div class="form-group">
                                         <label for="kelurahan_id">Kelurahan</label>
                                         <select name="kelurahan_id" class="form-control" id="kelurahan_id" required>
@@ -136,7 +127,7 @@
                                 </div>
 
                                 <!-- TPS -->
-                                <div class="col-md-6 col-lg-4">
+                                <div class="col-md-6 col-lg-2">
                                     <div class="form-group">
                                         <label for="polling_place_id">Nama TPS</label>
                                         <select name="tps_realcount_id" class="form-control" id="polling_place_id" required>
@@ -144,6 +135,47 @@
                                         </select>
                                     </div>
                                 </div>
+
+
+                                <!-- Input File -->
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="file">File</label>
+                                        <input type="file" name="file" class="form-control" id="vote_count"
+                                            accept="application/pdf" required />
+                                        <small id="file-info" class="form-text text-muted">Max: 5MB. Only PDF files
+                                            allowed.</small>
+                                        <!-- Tempat Preview -->
+                                        <div id="file-preview" class="mt-3" style="display: none;">
+                                            <iframe id="pdf-preview" width="100%" height="300"
+                                                style="border: 1px solid #ccc;"></iframe>
+                                            <p id="file-name"></p>
+                                            <button type="button" class="btn btn-info btn-sm" id="open-modal">View
+                                                Full</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal untuk Tampilan Full -->
+                                <div id="fileModal" class="modal fade" tabindex="-1" role="dialog"
+                                    aria-labelledby="fileModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="fileModalLabel">File Preview</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <iframe id="pdf-modal-preview" width="100%" height="500"
+                                                    style="border: 1px solid #ccc;"></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
@@ -214,7 +246,7 @@
 
         document.getElementById('kelurahan_id').addEventListener('change', function() {
             let kelurahan_id = this.value;
-            fetch(`/get-tps-realcount/${kelurahan_id}`)
+            fetch(`/get-realcount-tps/${kelurahan_id}`)
                 .then(response => response.json())
                 .then(data => {
                     let pollingPlaceSelect = document.getElementById('polling_place_id');
@@ -224,6 +256,71 @@
                             `<option value="${pollingPlace.id}">${pollingPlace.name}</option>`;
                     });
                 });
+        });
+    </script>
+
+    {{-- Upload PDF --}}
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('vote_count').addEventListener('change', function(e) {
+            const fileInput = e.target;
+            const file = fileInput.files[0];
+            const previewContainer = document.getElementById('file-preview');
+            const pdfPreview = document.getElementById('pdf-preview');
+            const fileNameDisplay = document.getElementById('file-name');
+            const fileSizeLimit = 5 * 1024 * 1024; // 5MB
+
+            // Reset preview dan pesan error
+            previewContainer.style.display = 'none';
+            pdfPreview.src = '';
+            fileNameDisplay.textContent = '';
+
+            // Cek jika file dipilih
+            if (file) {
+                // Cek ukuran file lebih dulu sebelum menampilkan tipe
+                if (file.size > fileSizeLimit) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'File Too Large',
+                        text: 'File size exceeds 5MB. Please select a smaller file.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    fileInput.value = ''; // Clear file input jika tidak valid
+                    return; // Hentikan proses jika file terlalu besar
+                }
+
+                // Cek tipe file
+                if (file.type !== 'application/pdf') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid File Type',
+                        text: 'Please select a valid PDF file.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    fileInput.value = ''; // Clear file input jika bukan PDF
+                    return;
+                }
+
+                // Tampilkan preview file jika valid
+                const fileURL = URL.createObjectURL(file);
+                pdfPreview.src = fileURL;
+                fileNameDisplay.textContent = `File name: ${file.name}`;
+                previewContainer.style.display = 'block';
+
+                // Modal preview
+                document.getElementById('open-modal').onclick = function() {
+                    document.getElementById('pdf-modal-preview').src = fileURL;
+                    $('#fileModal').modal('show');
+                };
+
+                $('.close').click(function() {
+                    $('#fileModal').modal('hide');
+                });
+            }
         });
     </script>
 @endsection

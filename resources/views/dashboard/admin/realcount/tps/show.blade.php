@@ -16,7 +16,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('tps-realcount.index') }}">TPS</a>
+                    <a href="{{ route('realcount-tps.index') }}">TPS</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -56,14 +56,14 @@
                         </div>
                     </div>
                     <div class="card-action">
-                        <a href="{{ route('tps-realcount.edit', $tps_realcount->id) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('tps-realcount.destroy', $tps_realcount->id) }}" method="POST" style="display: inline-block;">
+                        <a href="{{ route('realcount-tps.edit', $tps_realcount->id) }}" class="btn btn-warning">Edit</a>
+                        <form action="{{ route('realcount-tps.destroy', $tps_realcount->id) }}" method="POST" style="display: inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"
                                 onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
-                        <a href="{{ route('tps-realcount.index') }}" class="btn btn-secondary">Back</a>
+                        <a href="{{ route('realcount-tps.index') }}" class="btn btn-secondary">Back</a>
                     </div>
                 </div>
             </div>

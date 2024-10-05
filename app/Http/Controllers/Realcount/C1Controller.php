@@ -52,7 +52,7 @@ class C1Controller extends Controller
         try {
             $request->validate([
                 'tps_realcount_id' => 'required|exists:tps_realcounts,id',
-                'file' => 'required|file|mimes:jpeg,png,pdf|max:2048',
+                'file' => 'required|file|mimes:jpeg,png,pdf|max:5120',
             ]);
             Log::info('Validasi berhasil.', ['tps_realcount_id' => $request->tps_realcount_id]);
 

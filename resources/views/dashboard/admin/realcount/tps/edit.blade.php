@@ -42,7 +42,7 @@
                         <div class="card-header">
                             <div class="card-title">Form {{ $type }} {{ $tps_realcount->name }}</div>
                         </div>
-                        <form action="{{ route('tps-realcount.update', $tps_realcount->id) }}" method="POST"
+                        <form action="{{ route('realcount-tps.update', $tps_realcount->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -127,7 +127,7 @@
                             </div>
                             <div class="card-action">
                                 <button type="submit" class="btn btn-success">Update</button>
-                                <a href="{{ route('tps-realcount.index') }}" class="btn btn-danger">Cancel</a>
+                                <a href="{{ route('realcount-tps.index') }}" class="btn btn-danger">Cancel</a>
                             </div>
                         </form>
                     </div>

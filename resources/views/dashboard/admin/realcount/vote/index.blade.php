@@ -28,7 +28,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Data {{ $title }}</h4>
-                            <a href="{{ route('vote-realcount.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
+                            <a href="{{ route('realcount-vote.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
                             </a>
@@ -218,7 +218,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('vote-realcount.index') }}", // URL untuk request data
+                    url: "{{ route('realcount-vote.index') }}", // URL untuk request data
                     type: 'GET',
                     data: function(d) {
                         d.start = d.start; // Baris awal (untuk paginasi)
@@ -251,10 +251,10 @@
                         render: function(data, type, row) {
                             return `
                                 <div class="form-button-action">
-                                    <a href="/vote-realcount/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                    <a href="/realcount-vote/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="/vote-realcount/${row.id}" method="POST" style="display:inline-block;">
+                                    <form action="/realcount-vote/${row.id}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Vote?')">
