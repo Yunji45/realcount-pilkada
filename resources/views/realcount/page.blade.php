@@ -26,17 +26,21 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title mt-3 text-center">HASIL PERHITUNGAN CEPAT</h4><br>
-                <div class="row row-demo-grid">
-                    <div class="col-sm-6 col-md-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Jumlah Suara</h5>
-                                <p class="card-text text-center">8</p>
+                <div class="row row-demo-grid justify-content-center">
+                    @foreach ($candidateId as $item)
+                    <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
+                        <div class="card" style="width: 100%;">
+                            <img src="{{ Storage::url($item->candidate->photo) }}" class="card-img-top" alt="Logo Partai">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    {{ $item->candidate->name ?? $item->candidate->partai->name ?? 'Tidak Ada Nama' }}
+                                </h5> <!-- Asumsikan Anda memiliki atribut 'name' -->
+                                <p class="card-text">{{ $item->total_votes }} Suara</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3">
+                    @endforeach
+                    {{-- <div class="col-sm-6 col-md-3">
                         <div class="card" style="width: 18rem;">
                             <img src="..." class="card-img-top" alt="...">
                             <div class="card-body">
@@ -62,7 +66,7 @@
                               <p class="card-text text-center">8</p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

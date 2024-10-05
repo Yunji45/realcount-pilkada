@@ -20,11 +20,12 @@ class RealcountController extends Controller
         $candidate = Votec1::distinct('candidate_id')->count('candidate_id');
         $candidateId = Votec1::select('candidate_id', DB::raw('SUM(real_count) as total_votes'))
                                 ->groupBy('candidate_id')
+                                ->with('candidate')
                                 ->get();
         // foreach ($candidateId as $candidates){
         //     $candidatesf[] = $candidates->name;
         // }
-        // return $candidatesf;
+        // return $candidateId;
         return view('realcount.page',compact('vote','tps','candidate','candidateId' ));
     }
 

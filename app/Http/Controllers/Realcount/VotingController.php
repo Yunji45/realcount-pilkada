@@ -70,6 +70,11 @@ class VotingController extends Controller
                 return back()->withErrors($validator)->withInput();
             }
 
+            $tps = TpsRealcount::find($request->tps_realcount_id);
+            if ($tps && $tps->fileC1()->exists()) {
+                return back()->with('error', 'Voting Untuk TPS Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File C1.')->withInput();
+            }
+    
             $vote_realcount = Votec1::create([
                 'candidate_id' => $request->candidate_id,
                 'tps_realcount_id' => $request->tps_realcount_id,

@@ -14,6 +14,6 @@ class Filec1 extends Model
     ];
     public function tpsrealcount()
     {
-        return $this->belongsTo(TpsRealcount::class);
+        return $this->belongsTo(TpsRealcount::class,'tps_realcount_id');
     }
 }

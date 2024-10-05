@@ -140,15 +140,12 @@
         </div>
     </div>
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Ambil nilai lengthMenu dan halaman terakhir dari localStorage
-            var selectedLength = localStorage.getItem('selectedLength') || 10; // Default ke 10 jika tidak ada nilai di localStorage
-            var lastPage = localStorage.getItem('lastPage') || 0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
-
-            // Inisialisasi DataTable dengan server-side processing
+            var selectedLength = parseInt(localStorage.getItem('selectedLength')) || 10; // Default ke 10 jika tidak ada nilai di localStorage
+            var lastPage = parseInt(localStorage.getItem('lastPage')) || 0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
+    
             var table = $('#tableTps').DataTable({
                 processing: true,
                 serverSide: true,
@@ -161,6 +158,7 @@
                         d.draw = d.draw; // Nomor draw
                     },
                     dataSrc: function(json) {
+                        console.log(json); // Cek struktur data yang dikembalikan server
                         return json.data; // Data yang dikembalikan dari server
                     }
                 },
@@ -168,7 +166,6 @@
                     {
                         data: null,
                         render: function(data, type, row, meta) {
-                            // Nomor berurutan yang memperhitungkan halaman
                             var start = table.page.info().start;
                             return start + meta.row + 1;
                         }
@@ -177,15 +174,17 @@
                     { data: 'tpsrealcount.kecamatan.name' },
                     { data: 'tpsrealcount.kelurahan.name' },
                     { data: 'tpsrealcount.rw' },
-                    { data: 'file'},
+                    {
+                        data: 'file',
+                        render: function(data, type, row) {
+                            return `<a href="${data}" target="_blank"><b>Lihat File Disini</b></a>`;
+                        }
+                    },
                     {
                         data: null,
                         render: function(data, type, row) {
                             return `
                                 <div class="form-button-action">
-                                    <a href="/file-c1/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
                                     <form action="/file-c1/${row.id}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
@@ -198,28 +197,29 @@
                     }
                 ],
                 paging: true,
-                pageLength: parseInt(selectedLength), // Panjang halaman dari localStorage
+                pageLength: selectedLength, // Panjang halaman dari localStorage
                 lengthMenu: [5, 10, 25, 50, 100], // Pilihan jumlah data yang ditampilkan
-                displayStart: parseInt(lastPage) * selectedLength, // Memulai dari halaman terakhir yang tersimpan
+                displayStart: lastPage * selectedLength, // Memulai dari halaman terakhir yang tersimpan
                 order: [[1, 'asc']]
             });
-
+    
             // Ketika panjang data diubah, simpan ke localStorage dan refresh tabel
             $('#tableTps').on('length.dt', function(e, settings, len) {
                 localStorage.setItem('selectedLength', len);
                 table.page.len(len).draw(false); // Reload tabel dengan jumlah baris yang baru
             });
-
+    
             // Simpan halaman terakhir yang diakses ke localStorage setiap kali pagination berubah
             $('#tableTps').on('page.dt', function() {
                 var info = table.page.info();
                 localStorage.setItem('lastPage', info.page);
             });
-
+    
             // Custom search input
             $('#tableSearch').on('keyup', function() {
                 table.search(this.value).draw(); // Pencarian otomatis saat mengetik
             });
         });
     </script>
+    
 @endsection
