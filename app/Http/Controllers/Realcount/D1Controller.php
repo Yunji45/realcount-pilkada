@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class D1Controller extends Controller
 {
+    //revisi pada pembagian role berdasarkan role dan dibuat 1 page
     public function index(Request $request)
     {
         $title = 'File D1';
@@ -48,6 +49,7 @@ class D1Controller extends Controller
         return view('dashboard.admin.realcount.d1.create', compact('title', 'type', 'pollingPlaces', 'provinsis'));
     }
 
+    //PR validasi compare PDF antara file 1 dengan file upload
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -93,22 +95,22 @@ class D1Controller extends Controller
     {
         DB::beginTransaction();
         try {
-            $filed1 = Filed1::findOrFail($file_d1);
-            if (Storage::disk('public')->exists($filed1->file)) {
-                Storage::disk('public')->delete($filed1->file);
-                Log::info('File berhasil dihapus dari storage.', ['path' => $filed1->file]);
+            $fileD1 = Filed1::findOrFail($file_d1);
+            if (Storage::disk('public')->exists($fileD1->file)) {
+                Storage::disk('public')->delete($fileD1->file);
+                Log::info('File D1 berhasil dihapus dari storage.', ['path' => $fileD1->file]);
             } else {
-                Log::warning('File tidak ditemukan di storage.', ['path' => $filed1->file]);
+                Log::warning('File D1 tidak ditemukan di storage.', ['path' => $fileD1->file]);
             }
-            $filed1->delete();
+            $fileD1->delete();
             DB::commit();
 
-            Log::info('File D1 berhasil dihapus.', ['id' => $file_d1]);
-            return redirect()->route('file-D1.index')->with('success', 'File D1 berhasil dihapus.');
+            Log::info('File D1 berhasil dihapus dari storage dan database.', ['id' => $file_d1]);
+            return redirect()->route('file-d1.index')->with('success', 'File D1 berhasil dihapus dari storage dan database.');
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error('Gagal menghapus file.', ['error' => $th->getMessage()]);
-            return redirect()->back()->with('error', 'Gagal menghapus file.');
+            return redirect()->back()->with('error', 'Gagal menghapus file D1 karna masalah service controller.');
         }
     }
 }

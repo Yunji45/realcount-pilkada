@@ -105,6 +105,8 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
     Route::get('/getAgenda', [AgendaController::class, 'getAgendas'])->name('getAgenda');
     // Route::get('/map',[MapController::class,'index'])->name('map');
     Route::get('/user-pending', [UserController::class, 'pending'])->name('user.pending');
+    Route::post('/user-verifikasi/{user}', [UserController::class, 'verifikasi'])->name('user.verifikasi');
+    Route::post('/user-status/{id}', [UserController::class, 'status_user'])->name('user.status');
 });
 
 Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan|Koordinator'])->group(function () {

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class C1Controller extends Controller
 {
+    //revisi pada pembagian role berdasarkan role dan dibuat 1 page
     public function index(Request $request)
     {
         $title = 'File C1';
@@ -47,6 +48,7 @@ class C1Controller extends Controller
         return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis'));
     }
 
+    //PR validasi compare PDF antara file 1 dengan file upload
     public function store(Request $request)
     {
         DB::beginTransaction();

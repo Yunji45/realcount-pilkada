@@ -204,13 +204,10 @@
                         render: function(data, type, row) {
                             return `
                                 <div class="form-button-action">
-                                    <a href="/tps-realcount/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="/tps-realcount/${row.id}" method="POST" style="display:inline-block;">
+                                    <form action="/file-d1/${row.id}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this TPS?')">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin ingin menghapus file D1 ?')">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>

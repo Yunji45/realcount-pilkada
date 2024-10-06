@@ -18,7 +18,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('file-c1.index') }}">{{ $type }}</a>
+                    <a href="{{ route('file-d1.index') }}">{{ $type }}</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -34,63 +34,18 @@
                     <div class="card-header">
                         <div class="card-title">Form {{ $type }} {{ $title }}</div>
                     </div>
-                    {{-- <form action="{{ route('vote.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="card-body">
-                            <div class="row">
-                                <!-- Nama Kandidat -->
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="form-group">
-                                        <label for="name">Vote</label>
-                                        <input type="text" name="vote_count" class="form-control" id="vote_count" required />
-                                    </div>
-                                </div>
-
-                                <!-- Partai -->
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="form-group">
-                                        <label for="partai_id">Candidat</label>
-                                        <select name="candidate_id" class="form-control" id="candidate_id" required>
-                                            <option value="" selected disabled>Pilih Candidate</option>
-                                            @foreach ($candidates as $candidate)
-                                                <option value="{{ $candidate->id }}">{{ $candidate->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Pemilu -->
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="form-group">
-                                        <label for="election_id">Nama TPS</label>
-                                        <select name="polling_place_id" class="form-control" id="polling_place_id" required>
-                                            <option value="" selected disabled>Pilih TPS</option>
-                                            @foreach ($pollingPlaces as $polling)
-                                                <option value="{{ $polling->id }}">{{ $polling->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card-action">
-                            <button type="submit" class="btn btn-success">Submit</button>
-                            <a href="{{ route('candidate.index') }}" class="btn btn-danger">Cancel</a>
-                        </div>
-                    </form> --}}
                     <form action="{{ route('file-d1.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="row">
                                 <!-- Nama Kandidat -->
-                                <div class="col-md-6 col-lg-4">
+                                {{-- <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="file">File</label>
                                         <input type="file" name="file" class="form-control" id="vote_count"
                                             required />
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <!-- Provinsi -->
                                 <div class="col-md-6 col-lg-4">
@@ -122,6 +77,43 @@
                                         <select name="kecamatan_id" class="form-control" id="kecamatan_id" required>
                                             <option value="" selected disabled>Pilih Kecamatan</option>
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="file">File</label>
+                                        <input type="file" name="file" class="form-control" id="vote_count"
+                                            accept="application/pdf" required />
+                                        <small id="file-info" class="form-text text-muted">Max: 5MB. Only PDF files
+                                            allowed.</small>
+                                        <!-- Tempat Preview -->
+                                        <div id="file-preview" class="mt-3" style="display: none;">
+                                            <iframe id="pdf-preview" width="100%" height="300"
+                                                style="border: 1px solid #ccc;"></iframe>
+                                            <p id="file-name"></p>
+                                            <button type="button" class="btn btn-info btn-sm" id="open-modal">View
+                                                Full</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="fileModal" class="modal fade" tabindex="-1" role="dialog"
+                                    aria-labelledby="fileModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="fileModalLabel">Preview {{ $title }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <iframe id="pdf-modal-preview" width="100%" height="500"
+                                                    style="border: 1px solid #ccc;"></iframe>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -164,6 +156,56 @@
                         kecamatanSelect.innerHTML += `<option value="${kecamatan.id}">${kecamatan.name}</option>`;
                     });
                 });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('vote_count').addEventListener('change', function(e) {
+            const fileInput = e.target;
+            const file = fileInput.files[0];
+            const previewContainer = document.getElementById('file-preview');
+            const pdfPreview = document.getElementById('pdf-preview');
+            const fileNameDisplay = document.getElementById('file-name');
+            const fileSizeLimit = 5 * 1024 * 1024; // 5MB
+            previewContainer.style.display = 'none';
+            pdfPreview.src = '';
+            fileNameDisplay.textContent = '';
+            if (file) {
+                if (file.size > fileSizeLimit) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'File Too Large',
+                        text: 'File size exceeds 5MB. Please select a smaller file.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    fileInput.value = ''; // Clear file input jika tidak valid
+                    return; // Hentikan proses jika file terlalu besar
+                }
+                if (file.type !== 'application/pdf') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid File Type',
+                        text: 'Please select a valid PDF file.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    fileInput.value = ''; // Clear file input jika bukan PDF
+                    return;
+                }
+                const fileURL = URL.createObjectURL(file);
+                pdfPreview.src = fileURL;
+                fileNameDisplay.textContent = `File name: ${file.name}`;
+                previewContainer.style.display = 'block';
+                document.getElementById('open-modal').onclick = function() {
+                    document.getElementById('pdf-modal-preview').src = fileURL;
+                    $('#fileModal').modal('show');
+                };
+
+                $('.close').click(function() {
+                    $('#fileModal').modal('hide');
+                });
+            }
         });
     </script>
 @endsection
