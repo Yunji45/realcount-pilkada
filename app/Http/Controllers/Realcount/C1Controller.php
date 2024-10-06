@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Realcount;
 
 use App\Http\Controllers\Controller;
 use App\Models\Filec1;
+use App\Models\Filed1;
 use App\Models\Provinsi;
 use App\Models\TpsRealcount;
 use Illuminate\Http\Request;
@@ -60,6 +61,10 @@ class C1Controller extends Controller
             if ($fileExists) {
                 Log::info('File C1 untuk polling place ini sudah diupload.', ['tps_realcount_id' => $request->tps_realcount_id]);
                 return redirect()->back()->with('info', 'File C1 untuk polling place ini sudah diupload.');
+            }
+            $tps = Filed1::find($request->kecamatan_id);
+            if ($tps && $tps->fileC1()->exists()) {
+                return back()->with('error', 'C1 Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File D1.')->withInput();
             }
             if ($request->hasFile('file')) {
                 $file = $request->file('file');

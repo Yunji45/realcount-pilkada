@@ -10,7 +10,7 @@
             <h3 class="fw-bold mb-3">DataTables {{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -28,7 +28,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Add {{ $title }}</h4>
-                            <a href="{{ route('tps-realcount.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
+                            <a href="{{ route('file-d1.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
                                 <i class="fa fa-plus"></i>
                                 {{ $title }}
                             </a>
@@ -66,31 +66,16 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama TPS</th>
                                         <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>DPT</th>
-                                        <th>RW</th>
-                                        <th>Latitude</th>
-                                        <th>Longitude</th>
-                                        <th>Periode</th>
-                                        <th>Status</th>
+                                        <th>Filename</th>
                                         <th style="width: 10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama TPS</th>
                                         <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>DPT</th>
-                                        <th>RW</th>
-                                        <th>Latitude</th>
-                                        <th>Longitude</th>
-                                        <th>Periode</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>Filename</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -185,7 +170,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('tps-realcount.index') }}", // URL untuk request data
+                    url: "{{ route('file-d1.index') }}", // URL untuk request data
                     type: 'GET',
                     data: function(d) {
                         d.start = d.start; // Baris awal (untuk paginasi)
@@ -206,31 +191,13 @@
                         }
                     },
                     {
-                        data: 'name'
-                    },
-                    {
                         data: 'kecamatan.name'
                     },
                     {
-                        data: 'kelurahan.name'
-                    },
-                    {
-                        data: 'dpt'
-                    },
-                    {
-                        data: 'rw'
-                    },
-                    {
-                        data: 'latitude'
-                    },
-                    {
-                        data: 'longitude'
-                    },
-                    {
-                        data: 'periode'
-                    },
-                    {
-                        data: 'status'
+                        data: 'file',
+                        render: function(data, type, row) {
+                            return `<a href="${data}" target="_blank"><b>Lihat File Disini</b></a>`;
+                        }
                     },
                     {
                         data: null,

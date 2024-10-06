@@ -10,10 +10,16 @@ class Filed1 extends Model
     use HasFactory;
     protected $fillable = [
         'file',
-        'tps_realcount_id'
+        'kecamatan_id'
+        // 'tps_realcount_id'
     ];
     public function tpsrealcount()
     {
         return $this->belongsTo(TpsRealcount::class);
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class);
     }
 }

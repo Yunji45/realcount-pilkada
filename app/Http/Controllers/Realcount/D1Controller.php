@@ -22,8 +22,12 @@ class D1Controller extends Controller
             $length = 10;
         }
         $page = ($request->start / $length) + 1;
-        $votes = Filed1::with('tpsrealcount.kelurahan', 'tpsrealcount.kecamatan')
+        $votes = Filed1::with('kecamatan')
             ->paginate($length, ['*'], 'page', $page);
+        $data = $votes->items();
+            foreach ($data as $vote) {
+                $vote->file = Storage::url($vote->file);
+            }
         if ($request->ajax()) {
             return response()->json([
                 'draw' => intval($request->draw),
@@ -32,7 +36,7 @@ class D1Controller extends Controller
                 'data' => $votes->items()
             ]);
         }
-        return view('dashboard.admin.realcount.c1.index', compact('title', 'type'));
+        return view('dashboard.admin.realcount.d1.index', compact('title'));
     }
 
     public function create()
@@ -41,7 +45,7 @@ class D1Controller extends Controller
         $type = 'Tambah';
         $pollingPlaces = TpsRealcount::all();
         $provinsis = Provinsi::all();
-        return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis'));
+        return view('dashboard.admin.realcount.d1.create', compact('title', 'type', 'pollingPlaces', 'provinsis'));
     }
 
     public function store(Request $request)
@@ -49,28 +53,28 @@ class D1Controller extends Controller
         DB::beginTransaction();
         try {
             $request->validate([
-                'tps_realcount_id' => 'required|exists:tps_realcounts,id',
+                'kecamatan_id' => 'required|exists:kecamatans,id',
                 'file' => 'required|file|mimes:jpeg,png,pdf|max:2048',
             ]);
-            Log::info('Validasi berhasil.', ['tps_realcount_id' => $request->tps_realcount_id]);
+            Log::info('Validasi berhasil.', ['kecamatan_id' => $request->kecamatan_id]);
 
-            $fileExists = Filed1::where('tps_realcount_id', $request->tps_realcount_id)->exists();
+            $fileExists = Filed1::where('kecamatan_id', $request->kecamatan_id)->exists();
             if ($fileExists) {
-                Log::info('File C1 untuk polling place ini sudah diupload.', ['tps_realcount_id' => $request->tps_realcount_id]);
-                return redirect()->back()->with('info', 'File C1 untuk polling place ini sudah diupload.');
+                Log::info('File D1 untuk kecamatan ini sudah diupload.', ['kecamatan_id' => $request->kecamatan_id]);
+                return redirect()->back()->with('info', 'File D1 untuk kecamatan ini sudah diupload.');
             }
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
-                $path = $file->store('File_C1', 'public');
+                $path = $file->store('File_D1', 'public');
                 Log::info('File berhasil disimpan.', ['path' => $path]);
 
                 Filed1::create([
-                    'tps_realcount_id' => $request->tps_realcount_id,
+                    'kecamatan_id' => $request->kecamatan_id,
                     'file' => $path
                 ]);
                 DB::commit();
-                Log::info('File C1 berhasil diupload.', ['tps_realcount_id' => $request->tps_realcount_id]);
-                return redirect()->route('file-c1.index')->with('success', 'File C1 berhasil diupload.');
+                Log::info('File D1 berhasil diupload.', ['kecamatan_id' => $request->kecamatan_id]);
+                return redirect()->route('file-d1.index')->with('success', 'File D1 berhasil diupload.');
             }
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -99,8 +103,8 @@ class D1Controller extends Controller
             $filed1->delete();
             DB::commit();
 
-            Log::info('File C1 berhasil dihapus.', ['id' => $file_d1]);
-            return redirect()->route('file-c1.index')->with('success', 'File C1 berhasil dihapus.');
+            Log::info('File D1 berhasil dihapus.', ['id' => $file_d1]);
+            return redirect()->route('file-D1.index')->with('success', 'File D1 berhasil dihapus.');
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error('Gagal menghapus file.', ['error' => $th->getMessage()]);
