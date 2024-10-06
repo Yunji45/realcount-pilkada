@@ -79,7 +79,7 @@
                             <a href="{{ route('candidate.index') }}" class="btn btn-danger">Cancel</a>
                         </div>
                     </form> --}}
-                    <form action="{{ route('vote-realcount.store') }}" method="POST">
+                    <form action="{{ route('realcount-vote.store') }}" method="POST">
                         @csrf
                         <div class="card-body">
                             <div class="row">

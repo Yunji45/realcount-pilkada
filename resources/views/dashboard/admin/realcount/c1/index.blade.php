@@ -140,11 +140,34 @@
         </div>
     </div>
 
+    <!-- Modal untuk Preview File -->
+    <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fileModalLabel">File Preview</h5>
+                    <!-- Tombol close dengan atribut data-dismiss -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="fileIframe" src="" width="100%" height="500px" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            var selectedLength = parseInt(localStorage.getItem('selectedLength')) || 10; // Default ke 10 jika tidak ada nilai di localStorage
-            var lastPage = parseInt(localStorage.getItem('lastPage')) || 0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
+            var selectedLength = parseInt(localStorage.getItem('selectedLength')) ||
+                10; // Default ke 10 jika tidak ada nilai di localStorage
+            var lastPage = parseInt(localStorage.getItem('lastPage')) ||
+                0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
 
             var table = $('#tableTps').DataTable({
                 processing: true,
@@ -154,7 +177,8 @@
                     type: 'GET',
                     data: function(d) {
                         d.start = d.start; // Baris awal (untuk paginasi)
-                        d.length = parseInt(selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
+                        d.length = parseInt(
+                            selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
                         d.draw = d.draw; // Nomor draw
                     },
                     dataSrc: function(json) {
@@ -162,22 +186,29 @@
                         return json.data; // Data yang dikembalikan dari server
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
                             var start = table.page.info().start;
                             return start + meta.row + 1;
                         }
                     },
-                    { data: 'tpsrealcount.name' },
-                    { data: 'tpsrealcount.kecamatan.name' },
-                    { data: 'tpsrealcount.kelurahan.name' },
-                    { data: 'tpsrealcount.rw' },
+                    {
+                        data: 'tpsrealcount.name'
+                    },
+                    {
+                        data: 'tpsrealcount.kecamatan.name'
+                    },
+                    {
+                        data: 'tpsrealcount.kelurahan.name'
+                    },
+                    {
+                        data: 'tpsrealcount.rw'
+                    },
                     {
                         data: 'file',
                         render: function(data, type, row) {
-                            return `<a href="${data}" target="_blank"><b>Lihat File Disini</b></a>`;
+                            return `<a href="#" onclick="showFileModal('${data}')"><b>Lihat File Disini</b></a>`;
                         }
                     },
                     {
@@ -200,7 +231,9 @@
                 pageLength: selectedLength, // Panjang halaman dari localStorage
                 lengthMenu: [5, 10, 25, 50, 100], // Pilihan jumlah data yang ditampilkan
                 displayStart: lastPage * selectedLength, // Memulai dari halaman terakhir yang tersimpan
-                order: [[1, 'asc']]
+                order: [
+                    [1, 'asc']
+                ]
             });
 
             // Ketika panjang data diubah, simpan ke localStorage dan refresh tabel
@@ -222,4 +255,17 @@
         });
     </script>
 
+
+    <script>
+        function showFileModal(fileUrl) {
+            // Set src dari iframe dengan file yang diupload
+            document.getElementById('fileIframe').src = fileUrl;
+            // Tampilkan modal
+            $('#fileModal').modal('show');
+
+            $('.close').click(function() {
+                $('#fileModal').modal('hide');
+            });
+        }
+    </script>
 @endsection
