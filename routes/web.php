@@ -19,6 +19,7 @@ use App\Http\Controllers\Simpatisan\HomeSimpatisanController;
 use App\Http\Controllers\SuperAdmin\HomeSuperAdminController;
 use App\Http\Controllers\Realcount\TPSController;
 use App\Http\Controllers\Realcount\VotingController;
+use App\Http\Controllers\Realcount\VotingUmumController;
 use App\Http\Controllers\Realcount\D1Controller;
 use App\Http\Controllers\Realcount\C1Controller;
 use App\Http\Controllers\HomeController;
@@ -60,7 +61,7 @@ Route::get('/', function () {
 //     dd("Email Berhasil dikirim.");
 // });
 
-
+// Route::get('/vote-umum',[VotingUmumController::class,'createform']);
 Route::get('/home', function () {
     return view('layouts/dashboard/dashboard');
 });
@@ -81,7 +82,6 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
         '/user' => UserController::class,
         '/role' => RoleController::class,
         '/permission' => PermissionController::class,
-
         '/tps' => PollingPlaceController::class,
         '/vote' => VoteController::class,
         '/kegiatan' => KegiatanController::class,
@@ -121,6 +121,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::resources([
         '/realcount-tps' => TPSController::class,
         '/realcount-vote' => VotingController::class,
+        '/voting-umum' => VotingUmumController::class,
         '/file-c1' => C1Controller::class,
         '/file-d1' => D1Controller::class,
     ]);
