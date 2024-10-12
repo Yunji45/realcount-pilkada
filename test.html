@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Text with OCR</title>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist/build/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+</head>
+<body>
+    <h1>Convert PDF (with JPG) to Text using OCR</h1>
+    <input type="file" id="upload" accept="application/pdf" />
+    <div id="output"></div>
+
+    <script>
+        // PDF.js global worker options
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist/build/pdf.worker.min.js';
+
+        // Ketika file PDF di-upload
+        document.getElementById('upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                const fileReader = new FileReader();
+
+                fileReader.onload = function() {
+                    const typedArray = new Uint8Array(this.result);
+
+                    // Menggunakan pdf.js untuk membuka file PDF
+                    pdfjsLib.getDocument(typedArray).promise.then(async function(pdf) {
+                        const page = await pdf.getPage(1);  // Hanya mengambil halaman pertama untuk contoh
+                        const scale = 1.5;  // Menyesuaikan skala gambar
+                        const viewport = page.getViewport({ scale });
+
+                        // Membuat canvas untuk render gambar
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+
+                        // Render halaman PDF ke dalam canvas
+                        const renderTask = page.render(renderContext);
+                        renderTask.promise.then(function () {
+                            // Setelah rendering selesai, ambil gambar dari canvas
+                            const imageData = canvas.toDataURL('image/jpeg');
+
+                            // Jalankan OCR menggunakan Tesseract.js pada gambar yang diambil
+                            Tesseract.recognize(
+                                imageData,
+                                'eng',
+                                {
+                                    logger: function(m) {
+                                        console.log(m);  // Untuk melihat progres OCR
+                                    }
+                                }
+                            ).then(function(result) {
+                                // Tampilkan hasil OCR di halaman
+                                document.getElementById('output').innerText = result.data.text;
+                            }).catch(function(err) {
+                                console.error(err);
+                            });
+                        });
+                    });
+                };
+
+                fileReader.readAsArrayBuffer(file);
+            } else {
+                alert('Please upload a valid PDF file.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Text with OCR</title>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist/build/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+</head>
+<body>
+    <h1>Convert PDF With Tesseract OCR</h1>
+    <input type="file" id="upload" accept="application/pdf" />
+    <div id="output"></div>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist/build/pdf.worker.min.js';
+        document.getElementById('upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const output = document.getElementById('output');
+            output.innerText = '';  // Bersihkan output sebelumnya
+
+            if (file && file.type === 'application/pdf') {
+                const fileReader = new FileReader();
+
+                fileReader.onload = function() {
+                    const typedArray = new Uint8Array(this.result);
+                    pdfjsLib.getDocument(typedArray).promise.then(async function(pdf) {
+                        try {
+                            const page = await pdf.getPage(1); 
+                            const scale = 1.5;  
+                            const viewport = page.getViewport({ scale });
+                            const canvas = document.createElement('canvas');
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+
+                            const renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+                            const renderTask = page.render(renderContext);
+                            renderTask.promise.then(function () {
+                                const imageData = canvas.toDataURL('image/jpeg');
+                                Tesseract.recognize(
+                                    imageData,
+                                    'eng',
+                                    {
+                                        logger: function(m) {
+                                            console.log(m);  // Untuk melihat progres OCR
+                                        }
+                                    }
+                                ).then(function(result) {
+                                    const numbers = result.data.text.match(/\d+/g) || [];
+                                    const ocrResult = {
+                                        numbers: numbers
+                                    };
+                                    output.innerText = JSON.stringify(ocrResult, null, 2);
+                                }).catch(function(err) {
+                                    console.error(err);
+                                    output.innerText = 'Error during OCR processing: ' + err.message;
+                                });
+                            });
+                        } catch (error) {
+                            console.error('Error processing the PDF file:', error);
+                            output.innerText = 'File rusak, tidak dapat diproses.';
+                        }
+                    }).catch(function(error) {
+                        console.error('Error loading PDF file:', error);
+                        output.innerText = 'File rusak, tidak dapat dibuka.';
+                    });
+                };
+
+                fileReader.readAsArrayBuffer(file);
+            } else {
+                alert('Please upload a valid PDF file.');
+            }
+        });
+    </script>
+</body>
+</html>
