@@ -34,7 +34,7 @@
                     <div class="card-header">
                         <div class="card-title">Form {{ $type }} {{ $title }}</div>
                     </div>
-                    <form id="dynamic-form" action="{{ route('realcount-vote.store') }}" method="POST">
+                    <form id="dynamic-form" action="{{ route('voting-umum.store') }}" method="POST">
                         @csrf
                         <div class="card-body">
                             <div class="row" id="candidate-container">
@@ -53,7 +53,7 @@
                                             <label for="candidate_id">Candidat</label>
                                             <select name="candidate_id[]" class="form-control" required>
                                                 <option value="" selected disabled>Pilih Candidate</option>
-                                                @foreach ($candidates as $candidate)
+                                                @foreach ($candidatesWithout as $candidate)
                                                     <option value="{{ $candidate->id }}">{{ $candidate->name }} / {{ $candidate->partai->name }}</option>
                                                 @endforeach
                                             </select>
@@ -64,7 +64,7 @@
                                     <div class="col-md-6 col-lg-4">
                                         <div class="form-group">
                                             <label for="provinsi_id">Provinsi</label>
-                                            <select name="provinsi_id[]" class="form-control" required>
+                                            <select name="provinsi_id[]" class="form-control" id="provinsi_id" required>
                                                 <option value="" selected disabled>Pilih Provinsi</option>
                                                 @foreach ($provinsis as $provinsi)
                                                     <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
@@ -77,7 +77,7 @@
                                     <div class="col-md-6 col-lg-4">
                                         <div class="form-group">
                                             <label for="kabupaten_id">Kabupaten</label>
-                                            <select name="kabupaten_id[]" class="form-control" required>
+                                            <select name="kabupaten_id[]" class="form-control" id="kabupaten_id" required>
                                                 <option value="" selected disabled>Pilih Kabupaten</option>
                                             </select>
                                         </div>
@@ -87,7 +87,7 @@
                                     <div class="col-md-6 col-lg-4">
                                         <div class="form-group">
                                             <label for="kecamatan_id">Kecamatan</label>
-                                            <select name="kecamatan_id[]" class="form-control" required>
+                                            <select name="kecamatan_id[]" class="form-control" id="kecamatan_id" required>
                                                 <option value="" selected disabled>Pilih Kecamatan</option>
                                             </select>
                                         </div>
@@ -97,7 +97,7 @@
                                     <div class="col-md-6 col-lg-4">
                                         <div class="form-group">
                                             <label for="kelurahan_id">Kelurahan</label>
-                                            <select name="kelurahan_id[]" class="form-control" required>
+                                            <select name="kelurahan_id[]" class="form-control" id="kelurahan_id" required>
                                                 <option value="" selected disabled>Pilih Kelurahan</option>
                                             </select>
                                         </div>
@@ -107,21 +107,22 @@
                                     <div class="col-md-6 col-lg-4">
                                         <div class="form-group">
                                             <label for="polling_place_id">Nama TPS</label>
-                                            <select name="tps_realcount_id[]" class="form-control" required>
+                                            <select name="tps_realcount_id[]" class="form-control" id="polling_place_id" required>
                                                 <option value="" selected disabled>Pilih TPS</option>
                                             </select>
                                         </div>
                                     </div>
                     
                                     <div class="col-md-12">
-                                        <button type="button" class="btn btn-danger remove-entry">Hapus</button>
+                                        <button type="button" class="btn btn-danger remove-entry">Hapus Form</button>
+                                        <button type="button" class="btn btn-primary" id="add-candidate">Tambah Form</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     
                         <div class="card-action">
-                            <button type="button" class="btn btn-primary" id="add-candidate">Tambah Kandidat</button>
+                            {{-- <button type="button" class="btn btn-primary" id="add-candidate">Tambah Kandidat</button> --}}
                             <button type="submit" class="btn btn-success">Submit</button>
                             <a href="{{ route('candidate.index') }}" class="btn btn-danger">Cancel</a>
                         </div>
@@ -187,7 +188,7 @@
 
         document.getElementById('kelurahan_id').addEventListener('change', function() {
             let kelurahan_id = this.value;
-            fetch(`/get-tps-realcount/${kelurahan_id}`)
+            fetch(`/get-realcount-tps/${kelurahan_id}`)
                 .then(response => response.json())
                 .then(data => {
                     let pollingPlaceSelect = document.getElementById('polling_place_id');

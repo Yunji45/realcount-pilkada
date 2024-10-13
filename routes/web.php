@@ -88,6 +88,7 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
         '/articles' => ArticleController::class,
         '/category_articles' => CategoryArticleController::class,
         '/agenda' => AgendaController::class,
+        '/voting-umum' => VotingUmumController::class
     ]);
 
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
@@ -121,7 +122,6 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::resources([
         '/realcount-tps' => TPSController::class,
         '/realcount-vote' => VotingController::class,
-        '/voting-umum' => VotingUmumController::class,
         '/file-c1' => C1Controller::class,
         '/file-d1' => D1Controller::class,
     ]);

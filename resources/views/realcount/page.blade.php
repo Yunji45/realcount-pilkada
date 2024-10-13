@@ -40,33 +40,6 @@
                         </div>
                     </div>
                     @endforeach
-                    {{-- <div class="col-sm-6 col-md-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Jumlah Suara</h5>
-                                <p class="card-text text-center">8</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">Jumlah Suara</h5>
-                                <p class="card-text text-center">8</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                              <h5 class="card-title text-center">Jumlah Suara</h5>
-                              <p class="card-text text-center">8</p>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
         </div>
@@ -107,8 +80,14 @@
             const now = new Date().toLocaleTimeString('id-ID', options);
             document.getElementById('time-display').textContent = 'Pukul : ' + now + ' WIB';
         }
+        function autoRefresh() {
+            setTimeout(function(){
+                location.reload();
+            }, 60000); //setiap 1 menit sekali
+        }
         setInterval(updateTime, 1000);
         updateTime();
+        autoRefresh();
     </script>
     
 @endsection

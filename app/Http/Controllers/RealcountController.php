@@ -22,10 +22,6 @@ class RealcountController extends Controller
                                 ->groupBy('candidate_id')
                                 ->with('candidate')
                                 ->get();
-        // foreach ($candidateId as $candidates){
-        //     $candidatesf[] = $candidates->name;
-        // }
-        // return $candidateId;
         return view('realcount.page',compact('vote','tps','candidate','candidateId' ));
     }
 
