@@ -47,7 +47,7 @@ My Gerindra | Data Role
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>
-                                    <th>Description</th> <!-- Atau atribut lain dari Role -->
+                                    <th>Description</th> <!-- Or another attribute from Role -->
                                     <th style="width: 10%">Action</th>
                                 </tr>
                             </thead>
@@ -68,30 +68,30 @@ My Gerindra | Data Role
                                         @if($role->permissions->isEmpty())
                                             <span>No Permissions Assigned</span>
                                         @else
-                                            <ul>
-                                                @foreach($role->permissions as $permission)
-                                                <li>{{ $permission->name }}</li>
-                                                @endforeach
-                                            </ul>
+                                            <div class="permissions-container">
+                                                <ul class="list-group">
+                                                    @foreach($role->permissions as $permission)
+                                                    <li class="list-group-item">{{ $permission->name }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         @endif
                                     </td>
 
                                     <td>
                                         <div class="form-button-action">
-                                            <!-- Tombol Edit dengan ikon pensil berwarna putih -->
                                             <a href="{{ route('role.edit', $role->id) }}"
                                                 class="btn btn-warning btn-sm" style="margin-right:10px">
-                                                <i class="fas fa-edit"></i> <!-- Ikon Edit berwarna putih -->
+                                                <i class="fas fa-edit"></i>
                                             </a>
 
-                                            <!-- Tombol Delete dengan ikon tong sampah -->
                                             <form action="{{ route('role.destroy', $role->id) }}" method="POST"
                                                 style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"
                                                     onclick="return confirm('Are you sure you want to delete this Partai?')">
-                                                    <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                    <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -106,4 +106,24 @@ My Gerindra | Data Role
         </div>
     </div>
 </div>
+
+<style>
+    /* Style for permissions container */
+    .permissions-container {
+        max-height: 150px; /* Set a maximum height */
+        overflow-y: auto; /* Add vertical scroll */
+        margin-top: 5px; /* Add some margin */
+    }
+
+    /* Style for list items */
+    .list-group-item {
+        padding: 5px 10px; /* Reduce padding for better fit */
+        border: none; /* Remove border */
+    }
+
+    /* Optional: Add hover effect */
+    .list-group-item:hover {
+        background-color: #f1f1f1; /* Light grey background on hover */
+    }
+</style>
 @endsection

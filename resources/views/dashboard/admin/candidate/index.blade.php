@@ -26,13 +26,15 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h4 class="card-title">Data {{ $title }}</h4>
-                            <a href="{{ route('candidate.create') }}" class="btn btn-primary btn-round ms-auto">
-                                <i class="fa fa-plus"></i>
-                                {{ $title }}
-                            </a>
-                        </div>
+                        @can('Create Candidate')
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Data {{ $title }}</h4>
+                                <a href="{{ route('candidate.create') }}" class="btn btn-primary btn-round ms-auto">
+                                    <i class="fa fa-plus"></i>
+                                    {{ $title }}
+                                </a>
+                            </div>
+                        @endcan
                     </div>
                     <div class="card-body">
 
@@ -77,22 +79,26 @@
 
                                             <td>
                                                 <div class="form-button-action">
-                                                    <!-- Tombol Edit dengan ikon pensil -->
-                                                    <a href="{{ route('candidate.edit', $candidate->id) }}"
-                                                        class="btn btn-warning btn-sm" style="margin-right:10px">
-                                                        <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                    </a>
+                                                    @can('Edit Candidate')
+                                                        <!-- Tombol Edit dengan ikon pensil -->
+                                                        <a href="{{ route('candidate.edit', $candidate->id) }}"
+                                                            class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
+                                                        </a>
+                                                    @endcan
 
-                                                    <!-- Tombol Delete dengan ikon tong sampah -->
-                                                    <form action="{{ route('candidate.destroy', $candidate->id) }}"
-                                                        method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this Candidate?')">
-                                                            <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
-                                                        </button>
-                                                    </form>
+                                                    @can('Delete Candidate')
+                                                        <!-- Tombol Delete dengan ikon tong sampah -->
+                                                        <form action="{{ route('candidate.destroy', $candidate->id) }}"
+                                                            method="POST" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Are you sure you want to delete this Candidate?')">
+                                                                <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                            </button>
+                                                        </form>
+                                                    @endcan
                                                 </div>
                                             </td>
 

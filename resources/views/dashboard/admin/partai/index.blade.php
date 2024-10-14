@@ -25,6 +25,7 @@ My Gerindra | {{ $title }}
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
+                    @can('Create Partai')
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Data {{ $title }}</h4>
@@ -34,6 +35,8 @@ My Gerindra | {{ $title }}
                             </a>
                         </div>
                     </div>
+                    @endcan
+
                     <div class="card-body">
 
                         <div class="table-responsive">
@@ -75,11 +78,14 @@ My Gerindra | {{ $title }}
                                             </td>
                                             <td>
                                                 <div class="form-button-action">
+                                                    @can('Edit Partai')
                                                     <!-- Tombol Edit dengan ikon pensil berwarna putih -->
                                                     <a href="{{ route('partai.edit', $partai->id) }}" class="btn btn-warning btn-sm" style="margin-right:10px">
                                                         <i class="fas fa-edit"></i> <!-- Ikon Edit berwarna putih -->
                                                     </a>
+                                                    @endcan
 
+                                                    @can('Delete Partai')
                                                     <!-- Tombol Delete dengan ikon tong sampah -->
                                                     <form action="{{ route('partai.destroy', $partai->id) }}" method="POST" style="display:inline-block;">
                                                         @csrf
@@ -88,6 +94,8 @@ My Gerindra | {{ $title }}
                                                             <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
                                                         </button>
                                                     </form>
+                                                    @endcan
+
                                                 </div>
                                             </td>
 

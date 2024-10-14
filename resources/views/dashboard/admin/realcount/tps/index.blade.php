@@ -26,6 +26,8 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
+                        @can('Create TPS Realcount')
+
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Data {{ $title }}</h4>
                             <a href="{{ route('realcount-tps.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
@@ -34,6 +36,7 @@
                             </a>
 
                         </div>
+                        @endcan
                         {{-- <a href="" class="btn btn-danger btn-round ms-auto mt-3" data-bs-toggle="modal"
                             data-bs-target="#kt_customers_export_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -239,9 +242,14 @@
                         render: function(data, type, row) {
                             return `
                                 <div class="form-button-action">
+                                    @can('Edit TPS Realcount')
+
                                     <a href="/realcount-tps/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    @endcan
+                                    @can('Delete TPS Realcount')
+
                                     <form action="/realcount-tps/${row.id}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
@@ -249,6 +257,7 @@
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
+                                    @endcan
                                 </div>`;
                         }
                     }

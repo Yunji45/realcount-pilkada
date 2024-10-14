@@ -26,14 +26,15 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h4 class="card-title">Data {{ $title }}</h4>
-                            <a href="{{ route('vote.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
-                                <i class="fa fa-plus"></i>
-                                {{ $title }}
-                            </a>
-
-                        </div>
+                        @can('Create Vote')
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Data {{ $title }}</h4>
+                                <a href="{{ route('vote.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
+                                    <i class="fa fa-plus"></i>
+                                    {{ $title }}
+                                </a>
+                            </div>
+                        @endcan
                         {{-- <a href="" class="btn btn-danger btn-round ms-auto mt-3" data-bs-toggle="modal"
                             data-bs-target="#kt_customers_export_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -269,9 +270,12 @@
                         render: function(data, type, row) {
                             return `
                                 <div class="form-button-action">
+                                    @can('Edit Vote')
                                     <a href="/vote/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    @endcan
+                                    @can('Delete Vote')
                                     <form action="/vote/${row.id}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
@@ -279,6 +283,7 @@
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
+                                    @endcan
                                 </div>`;
                         }
                     }

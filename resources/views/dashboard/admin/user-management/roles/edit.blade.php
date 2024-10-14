@@ -52,21 +52,36 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group">
-                                    <label for="permissions">Permissions</label>
-                                    <div class="form-check">
-                                        @foreach($permission as $perm)
-                                            <div>
-                                                <input type="checkbox" class="form-check-input" id="perm-{{ $perm->id }}" name="permission[]" value="{{ $perm->id }}"
-                                                {{ in_array($perm->id, $rolePermissions) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="perm-{{ $perm->id }}">{{ $perm->name }}</label>
-                                            </div>
-                                        @endforeach
+                            </div>
+
+                            <div class="form-group" style="margin-left: 1.3%">
+                                <label for="permissions">Permissions</label>
+                                <div class="form-check">
+                                    <!-- Select All Checkbox -->
+                                    <div>
+                                        <input type="checkbox" id="select-all" class="form-check-input">
+                                        <label class="form-check-label" for="select-all">Select All</label>
                                     </div>
-                                    @error('permission')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                    <!-- Scrollable Permissions List -->
+                                    <div class="permission-container" style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                                        <div class="row">
+                                            @foreach($permission->chunk(10) as $chunk)
+                                                <div class="col-md-6">
+                                                    @foreach($chunk as $perm)
+                                                        <div>
+                                                            <input type="checkbox" class="form-check-input permission-checkbox" id="perm-{{ $perm->id }}" name="permission[]" value="{{ $perm->id }}"
+                                                            {{ in_array($perm->id, $rolePermissions) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="perm-{{ $perm->id }}">{{ $perm->name }}</label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>
+                                @error('permission')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -79,4 +94,25 @@
         </div>
     </div>
 </div>
+
+<!-- Include jQuery for Select All functionality -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Select all permissions
+        $('#select-all').on('change', function() {
+            $('.permission-checkbox').prop('checked', this.checked);
+        });
+
+        // If all permissions are selected, the "Select All" checkbox should be checked
+        $('.permission-checkbox').on('change', function() {
+            if ($('.permission-checkbox:checked').length === $('.permission-checkbox').length) {
+                $('#select-all').prop('checked', true);
+            } else {
+                $('#select-all').prop('checked', false);
+            }
+        });
+    });
+</script>
 @endsection

@@ -25,15 +25,17 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h4 class="card-title">Data {{ $title }}</h4>
-                            <a href="{{ route('election.create') }}" class="btn btn-primary btn-round ms-auto">
-                                <i class="fa fa-plus"></i>
-                                {{ $title }}
-                            </a>
+                    @can('Create Election')
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Data {{ $title }}</h4>
+                                <a href="{{ route('election.create') }}" class="btn btn-primary btn-round ms-auto">
+                                    <i class="fa fa-plus"></i>
+                                    {{ $title }}
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    @endcan
                     <div class="card-body">
 
                         <div class="table-responsive">
@@ -66,22 +68,26 @@
 
                                             <td>
                                                 <div class="form-button-action">
-                                                    <!-- Tombol Edit dengan ikon pensil -->
-                                                    <a href="{{ route('election.edit', $election->id) }}"
-                                                        class="btn btn-warning btn-sm" style="margin-right:10px">
-                                                        <i class="fas fa-edit"></i> <!-- Ikon Edit -->
-                                                    </a>
+                                                    @can('Edit Election')
+                                                        <!-- Tombol Edit dengan ikon pensil -->
+                                                        <a href="{{ route('election.edit', $election->id) }}"
+                                                            class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
+                                                        </a>
+                                                    @endcan
+                                                    @can('Delete Election')
+                                                        <!-- Tombol Delete dengan ikon tong sampah -->
+                                                        <form action="{{ route('election.destroy', $election->id) }}"
+                                                            method="POST" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Are you sure you want to delete this Election?')">
+                                                                <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
+                                                            </button>
+                                                        </form>
+                                                    @endcan
 
-                                                    <!-- Tombol Delete dengan ikon tong sampah -->
-                                                    <form action="{{ route('election.destroy', $election->id) }}"
-                                                        method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this Election?')">
-                                                            <i class="fas fa-trash-alt"></i> <!-- Ikon Delete -->
-                                                        </button>
-                                                    </form>
                                                 </div>
                                             </td>
 

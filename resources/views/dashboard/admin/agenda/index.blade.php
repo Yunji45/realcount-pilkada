@@ -26,13 +26,15 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h4 class="card-title">Add {{ $title }}</h4>
-                            <button type="button" class="btn btn-primary btn-round ms-auto" id="addAgendaButton"
-                                data-bs-toggle="modal" data-bs-target="#addEventModal">
-                                <i class="fa fa-plus"></i> {{ $title }}
-                            </button>
-                        </div>
+                        @can('Create Agenda')
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h4 class="card-title">Add {{ $title }}</h4>
+                                <button type="button" class="btn btn-primary btn-round ms-auto" id="addAgendaButton"
+                                    data-bs-toggle="modal" data-bs-target="#addEventModal">
+                                    <i class="fa fa-plus"></i> {{ $title }}
+                                </button>
+                            </div>
+                        @endcan
 
                     </div>
                     <div class="card-body">
@@ -187,26 +189,28 @@
                     document.getElementById('deleteEventButton').onclick = function() {
                         if (confirm('Apakah Anda yakin ingin menghapus agenda ini?')) {
                             fetch(`/agenda/${info.event.id}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    info.event.remove(); // Hapus event dari kalender
-                                    alert('Agenda berhasil dihapus!');
-                                } else {
-                                    alert('Terjadi kesalahan: ' + data.message);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                alert('Terjadi kesalahan saat menghapus agenda.');
-                            });
+                                    method: 'DELETE',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').getAttribute(
+                                            'content'),
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        info.event.remove(); // Hapus event dari kalender
+                                        alert('Agenda berhasil dihapus!');
+                                    } else {
+                                        alert('Terjadi kesalahan: ' + data.message);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('Terjadi kesalahan saat menghapus agenda.');
+                                });
                         }
                     };
                 },

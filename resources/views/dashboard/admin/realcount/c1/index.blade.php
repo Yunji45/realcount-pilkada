@@ -26,6 +26,8 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
+                        @can('Create Register Data C1')
+
                         <div class="d-flex align-items-center">
                             <h4 class="card-title">Data {{ $title }}</h4>
                             <a href="{{ route('file-c1.create') }}" class="btn btn-primary btn-round ms-auto mt-3">
@@ -34,6 +36,7 @@
                             </a>
 
                         </div>
+                        @endcan
                     </div>
                     <div class="card-body">
 
@@ -216,6 +219,7 @@
                         render: function(data, type, row) {
                             return `
                                 <div class="form-button-action">
+                                    @can('Delete Register Data C1')
                                     <form action="/file-c1/${row.id}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
@@ -223,6 +227,7 @@
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
+                                    @endcan
                                 </div>`;
                         }
                     }
