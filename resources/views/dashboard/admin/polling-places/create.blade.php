@@ -183,6 +183,7 @@
             });
         });
     </script>
+
     <script>
         // Inisialisasi peta
         var map = L.map('map').setView([{{ $kegiatan->latitude ?? '-6.200000' }},

@@ -84,7 +84,7 @@ class TPSController extends Controller
             DB::commit();
 
             // Redirect ke halaman index dengan pesan sukses
-            return redirect()->route('tps-realcount.index')
+            return redirect()->route('realcount-tps.index')
                 ->with('success', 'Polling place created successfully.');
             // return response()->json([
             //     'success' => true,
@@ -99,28 +99,28 @@ class TPSController extends Controller
         }
     }
 
-    public function show(TpsRealcount $tps_realcount)
+    public function show(TpsRealcount $realcount_tp)
     {
         // Menampilkan detail TPS
         $title = 'TPS Realcount';
         $type = 'Detail';
         $provinsi = Provinsi::all();
-        return view('dashboard.admin.realcount.tps.create', compact('tps_realcount','title','type','provinsi'));
+        return view('dashboard.admin.realcount.tps.show', compact('realcount_tp','title','type','provinsi'));
     }
 
 
-    public function edit(TpsRealcount $tps_realcount)
+    public function edit(TpsRealcount $realcount_tp)
     {
         $title = 'TPS Realcount';
         $type = 'Edit';
         $provinsi = Provinsi::all();
-        $kabupaten = Kabupaten::where('provinsi_id', $tps_realcount->provinsi_id)->get();
-        $kecamatan = Kecamatan::where('kabupaten_id', $tps_realcount->kabupaten_id)->get();
-        $kelurahan = Kelurahan::where('kecamatan_id', $tps_realcount->kecamatan_id)->get();
+        $kabupaten = Kabupaten::where('provinsi_id', $realcount_tp->provinsi_id)->get();
+        $kecamatan = Kecamatan::where('kabupaten_id', $realcount_tp->kabupaten_id)->get();
+        $kelurahan = Kelurahan::where('kecamatan_id', $realcount_tp->kecamatan_id)->get();
 
-        return view('dashboard.admin.realcount.tps.edit', compact('tps_realcount', 'title', 'type', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan'));
+        return view('dashboard.admin.realcount.tps.edit', compact('realcount_tp', 'title', 'type', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan'));
     }
-    public function update(Request $request, TpsRealcount $tps_realcount)
+    public function update(Request $request, TpsRealcount $realcount_tp)
     {
         DB::beginTransaction();
         try {
@@ -152,9 +152,9 @@ class TPSController extends Controller
                 'status',
             ]);
 
-            $tps_realcount->update(array_filter($data));
+            $realcount_tp->update(array_filter($data));
             DB::commit();
-            return redirect()->route('tps-realcount.index')
+            return redirect()->route('realcount-tps.index')
                 ->with('success', 'Polling place updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -163,13 +163,13 @@ class TPSController extends Controller
         }
     }
 
-    public function destroy(TpsRealcount $tps_realcount)
+    public function destroy(TpsRealcount $realcount_tp)
     {
         DB::beginTransaction();
         try {
-            $tps_realcount->delete();
+            $realcount_tp->delete();
             DB::commit();
-            return redirect()->route('tps-realcount.index')
+            return redirect()->route('realcount-tps.index')
                 ->with('success', 'Party deleted successfully.');
         } catch (QueryException $e) {
             DB::rollBack();

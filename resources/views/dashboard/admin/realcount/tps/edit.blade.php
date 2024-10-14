@@ -14,7 +14,7 @@
 
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">{{ $type }} {{ $title }} {{ $tps_realcount->name }}</h3>
+            <h3 class="fw-bold mb-3">{{ $type }} {{ $title }} {{ $realcount_tp->name }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                     <a href="{{ route('dashboard.perorangan') }}">
@@ -31,7 +31,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">{{ $tps_realcount->name }}</a>
+                    <a href="#">{{ $realcount_tp->name }}</a>
                 </li>
             </ul>
         </div>
@@ -40,9 +40,9 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Form {{ $type }} {{ $tps_realcount->name }}</div>
+                            <div class="card-title">Form {{ $type }} {{ $realcount_tp->name }}</div>
                         </div>
-                        <form action="{{ route('realcount-tps.update', $tps_realcount->id) }}" method="POST"
+                        <form action="{{ route('realcount-tps.update', $realcount_tp->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -52,7 +52,7 @@
                                         <div class="form-group">
                                             <label for="name">Nama TPS</label>
                                             <input type="text" name="name" class="form-control" id="name"
-                                                value="{{ $tps_realcount->name }}" />
+                                                value="{{ $realcount_tp->name }}" />
                                         </div>
                                         <div class="form-group">
                                             <label for="provinsi">Provinsi</label>
@@ -60,7 +60,7 @@
                                                 <option value="">Pilih Provinsi</option>
                                                 @foreach ($provinsi as $prov)
                                                     <option value="{{ $prov->id }}"
-                                                        {{ $tps_realcount->provinsi_id == $prov->id ? 'selected' : '' }}>
+                                                        {{ $realcount_tp->provinsi_id == $prov->id ? 'selected' : '' }}>
                                                         {{ $prov->name }}</option>
                                                 @endforeach
                                             </select>
@@ -86,12 +86,12 @@
                                         <div class="form-group">
                                             <label for="rw">RW</label>
                                             <input type="text" name="rw" class="form-control" id="rw"
-                                                value="{{ $tps_realcount->rw }}" />
+                                                value="{{ $realcount_tp->rw }}" />
                                         </div>
                                         <div class="form-group">
                                             <label for="DPT">DPT</label>
                                             <input type="text" name="DPT" class="form-control" id="DPT"
-                                                value="{{ $tps_realcount->DPT }}" />
+                                                value="{{ $realcount_tp->DPT }}" />
                                         </div>
 
                                     </div>
@@ -101,26 +101,26 @@
                                             <label for="status">Status</label>
                                             <select class="form-select" name="status" id="status">
                                                 <option value="Aktif"
-                                                    {{ $tps_realcount->status == 'Aktif' ? 'selected' : '' }}>Aktif
+                                                    {{ $realcount_tp->status == 'Aktif' ? 'selected' : '' }}>Aktif
                                                 </option>
                                                 <option value="Non-aktif"
-                                                    {{ $tps_realcount->status == 'Non-aktif' ? 'selected' : '' }}>Nonaktif
+                                                    {{ $realcount_tp->status == 'Non-aktif' ? 'selected' : '' }}>Nonaktif
                                                 </option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="periode">Periode</label>
                                             <input type="date" name="periode" class="form-control" id="periode"
-                                                value="{{ $tps_realcount->periode }}" />
+                                                value="{{ $realcount_tp->periode }}" />
                                         </div>
 
                                         <div class="form-group">
                                             <label for="location-search">Cari Daerah:</label>
                                             <div id="map" style="height: 400px;"></div>
                                             <input type="hidden" name="latitude" id="latitude"
-                                                value="{{ $tps_realcount->latitude }}">
+                                                value="{{ $realcount_tp->latitude }}">
                                             <input type="hidden" name="longitude" id="longitude"
-                                                value="{{ $tps_realcount->longitude }}">
+                                                value="{{ $realcount_tp->longitude }}">
                                         </div>
                                     </div>
                                 </div>
@@ -140,9 +140,9 @@
     <script>
         $(document).ready(function() {
             // Load Kabupaten, Kecamatan, and Kelurahan on page load based on selected values
-            var selectedKabupaten = "{{ $tps_realcount->kabupaten_id }}";
-            var selectedKecamatan = "{{ $tps_realcount->kecamatan_id }}";
-            var selectedKelurahan = "{{ $tps_realcount->kelurahan_id }}";
+            var selectedKabupaten = "{{ $realcount_tp->kabupaten_id }}";
+            var selectedKecamatan = "{{ $realcount_tp->kecamatan_id }}";
+            var selectedKelurahan = "{{ $realcount_tp->kelurahan_id }}";
 
             $('#provinsi').change(function() {
                 var provinsiId = $(this).val();
@@ -213,8 +213,8 @@
     </script>
     <script>
         // Inisialisasi peta
-        var map = L.map('map').setView([{{ $tps_realcount->latitude ?? '-6.200000' }},
-            {{ $tps_realcount->longitude ?? '106.816666' }}
+        var map = L.map('map').setView([{{ $realcount_tp->latitude ?? '-6.200000' }},
+            {{ $realcount_tp->longitude ?? '106.816666' }}
         ], 13);
 
         // Tambahkan layer peta
@@ -223,8 +223,8 @@
         }).addTo(map);
 
         // Inisialisasi marker
-        var marker = L.marker([{{ $tps_realcount->latitude ?? '-6.200000' }},
-            {{ $tps_realcount->longitude ?? '106.816666' }}
+        var marker = L.marker([{{ $realcount_tp->latitude ?? '-6.200000' }},
+            {{ $realcount_tp->longitude ?? '106.816666' }}
         ], {
             draggable: true
         }).addTo(map);

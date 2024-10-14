@@ -91,10 +91,13 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
         '/voting-umum' => VotingUmumController::class
     ]);
 
+    // Route untuk mengambil kelurahan berdasarkan kecamatan
     Route::get('/get-kabupaten/{provinsiId}', [PollingPlaceController::class, 'getKabupaten'])->name('get.kabupaten');
     Route::get('/get-kecamatan/{kabupatenId}', [PollingPlaceController::class, 'getKecamatan'])->name('get.kecamatan');
     Route::get('/get-kelurahan/{kecamatanId}', [PollingPlaceController::class, 'getKelurahan'])->name('get.kelurahan');
-    Route::get('/get-rw/{kelurahan_id}', [HomeController::class, 'getRw'])->name('get-rw');
+    Route::get('/get-rw/{kelurahanId}', [HomeController::class, 'getRw'])->name('get-rw');
+    Route::get('/get-polling-places/{kelurahanId}', [VoteController::class, 'getPollingPlaces']);
+    Route::get('/get-realcount-tps/{kelurahanId}', [VotingController::class, 'getTpsRealCount']);
 
     Route::get('/category/{category}', [ArticleController::class, 'showByCategory'])->name('category.show');
     Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
@@ -138,11 +141,4 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/map', [DaerahController::class, 'map'])->name('map');
     Route::get('/berita/all', [ArticleController::class, 'showLandingPageAll'])->name('berita.all');
     Route::get('/berita/{id}', [ArticleController::class, 'showDetail'])->name('berita.detail');
-
-    // Route untuk mengambil kelurahan berdasarkan kecamatan
-    Route::get('/get-kabupatens/{provinsi_id}', [VoteController::class, 'getKabupatens']);
-    Route::get('/get-kecamatans/{kabupaten_id}', [VoteController::class, 'getKecamatans']);
-    Route::get('/get-kelurahans/{kecamatan_id}', [VoteController::class, 'getKelurahans']);
-    Route::get('/get-polling-places/{kelurahan_id}', [VoteController::class, 'getPollingPlaces']);
-    Route::get('/get-realcount-tps/{kelurahan_id}', [VotingController::class, 'getTpsRealCount']);
 });

@@ -160,9 +160,9 @@ class VotingController extends Controller
         }
     }
 
-    public function getTpsRealcount($kelurahan_id)
+    public function getTpsRealcount($kelurahanId)
     {
-        $pollingPlaces = TpsRealcount::where('kelurahan_id', $kelurahan_id)->get();
+        $pollingPlaces = TpsRealcount::where('kelurahan_id', $kelurahanId)->get();
         return response()->json($pollingPlaces);
     }
 

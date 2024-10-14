@@ -112,7 +112,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="provinsi_id">Provinsi</label>
-                                        <select name="provinsi_id" class="form-control" id="provinsi_id">
+                                        <select name="provinsi_id" class="form-control" id="provinsi">
                                             <option value="" selected disabled>Pilih Provinsi</option>
                                             @foreach ($provinsis as $provinsi)
                                                 <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
@@ -125,7 +125,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="kabupaten_id">Kabupaten</label>
-                                        <select name="kabupaten_id" class="form-control" id="kabupaten_id">
+                                        <select name="kabupaten_id" class="form-control" id="kabupaten">
                                             <option value="" selected disabled>Pilih Kabupaten</option>
                                         </select>
                                     </div>
@@ -135,7 +135,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="kecamatan_id">Kecamatan</label>
-                                        <select name="kecamatan_id" class="form-control" id="kecamatan_id">
+                                        <select name="kecamatan_id" class="form-control" id="kecamatan">
                                             <option value="" selected disabled>Pilih Kecamatan</option>
                                         </select>
                                     </div>
@@ -145,7 +145,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="kelurahan_id">Kelurahan</label>
-                                        <select name="kelurahan_id" class="form-control" id="kelurahan_id">
+                                        <select name="kelurahan_id" class="form-control" id="kelurahan">
                                             <option value="" selected disabled>Pilih Kelurahan</option>
                                         </select>
                                     </div>
@@ -155,7 +155,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="polling_place_id">Nama TPS</label>
-                                        <select name="polling_place_id" class="form-control" id="polling_place_id">
+                                        <select name="polling_place_id" class="form-control" id="polling_place">
                                             <option value="" selected disabled>Pilih TPS</option>
                                         </select>
                                     </div>
@@ -174,97 +174,84 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Load Kabupaten on Provinsi change
-        document.getElementById('provinsi_id').addEventListener('change', function() {
-            let provinsi_id = this.value;
-            loadKabupaten(provinsi_id);
-        });
-
-        // Load Kecamatan on Kabupaten change
-        document.getElementById('kabupaten_id').addEventListener('change', function() {
-            let kabupaten_id = this.value;
-            loadKecamatan(kabupaten_id);
-        });
-
-        // Load Kelurahan on Kecamatan change
-        document.getElementById('kecamatan_id').addEventListener('change', function() {
-            let kecamatan_id = this.value;
-            loadKelurahan(kecamatan_id);
-        });
-
-        // Load Polling Place on Kelurahan change
-        document.getElementById('kelurahan_id').addEventListener('change', function() {
-            let kelurahan_id = this.value;
-            loadPollingPlace(kelurahan_id);
-        });
-
-        document.getElementById('provinsi_id').addEventListener('change', function() {
-            let provinsi_id = this.value;
-            fetch(`/get-kabupatens/${provinsi_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    let kabupatenSelect = document.getElementById('kabupaten_id');
-                    kabupatenSelect.innerHTML = '<option value="" selected disabled>Pilih Kabupaten</option>';
-                    data.forEach(kabupaten => {
-                        kabupatenSelect.innerHTML +=
-                            `<option value="${kabupaten.id}">${kabupaten.name}</option>`;
+        $(document).ready(function() {
+            $('#provinsi').change(function() {
+                var provinsiId = $(this).val();
+                $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
+                $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (provinsiId) {
+                    $.ajax({
+                        url: '/get-kabupaten/' + provinsiId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kabupaten').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
                     });
-                    document.getElementById('kecamatan_id').innerHTML =
-                        '<option value="" selected disabled>Pilih Kecamatan</option>';
-                    document.getElementById('kelurahan_id').innerHTML =
-                        '<option value="" selected disabled>Pilih Kelurahan</option>';
-                    document.getElementById('polling_place_id').innerHTML =
-                        '<option value="" selected disabled>Pilih TPS</option>';
-                });
-        });
+                }
+            });
 
-        document.getElementById('kabupaten_id').addEventListener('change', function() {
-            let kabupaten_id = this.value;
-            fetch(`/get-kecamatans/${kabupaten_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    let kecamatanSelect = document.getElementById('kecamatan_id');
-                    kecamatanSelect.innerHTML = '<option value="" selected disabled>Pilih Kecamatan</option>';
-                    data.forEach(kecamatan => {
-                        kecamatanSelect.innerHTML +=
-                            `<option value="${kecamatan.id}">${kecamatan.name}</option>`;
+            $('#kabupaten').change(function() {
+                var kabupatenId = $(this).val();
+                $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (kabupatenId) {
+                    $.ajax({
+                        url: '/get-kecamatan/' + kabupatenId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kecamatan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
                     });
-                    document.getElementById('kelurahan_id').innerHTML =
-                        '<option value="" selected disabled>Pilih Kelurahan</option>';
-                    document.getElementById('polling_place_id').innerHTML =
-                        '<option value="" selected disabled>Pilih TPS</option>';
-                });
-        });
+                }
+            });
 
-        document.getElementById('kecamatan_id').addEventListener('change', function() {
-            let kecamatan_id = this.value;
-            fetch(`/get-kelurahans/${kecamatan_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    let kelurahanSelect = document.getElementById('kelurahan_id');
-                    kelurahanSelect.innerHTML = '<option value="" selected disabled>Pilih Kelurahan</option>';
-                    data.forEach(kelurahan => {
-                        kelurahanSelect.innerHTML +=
-                            `<option value="${kelurahan.id}">${kelurahan.name}</option>`;
+            $('#kecamatan').change(function() {
+                var kecamatanId = $(this).val();
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (kecamatanId) {
+                    $.ajax({
+                        url: '/get-kelurahan/' + kecamatanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kelurahan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
                     });
-                    document.getElementById('polling_place_id').innerHTML =
-                        '<option value="" selected disabled>Pilih TPS</option>';
-                });
-        });
+                }
+            });
 
-        document.getElementById('kelurahan_id').addEventListener('change', function() {
-            let kelurahan_id = this.value;
-            fetch(`/get-polling-places/${kelurahan_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    let pollingPlaceSelect = document.getElementById('polling_place_id');
-                    pollingPlaceSelect.innerHTML = '<option value="" selected disabled>Pilih TPS</option>';
-                    data.forEach(pollingPlace => {
-                        pollingPlaceSelect.innerHTML +=
-                            `<option value="${pollingPlace.id}">${pollingPlace.name}</option>`;
+            $('#kelurahan').change(function() {
+                var kelurahanId = $(this).val();
+                $('#polling_place').empty().append('<option value="">Pilih TPS</option>');
+                if (kelurahanId) {
+                    $.ajax({
+                        url: '/get-polling-places/' + kelurahanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#polling_place').append('<option value="' + value
+                                    .id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
                     });
-                });
+                }
+            });
         });
     </script>
 @endsection

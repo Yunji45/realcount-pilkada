@@ -1,7 +1,7 @@
 @extends('layouts.auth.app')
 
 @section('title')
-    Pilkada | Reset Password
+    My Gerindra | Reset Password
 @endsection
 
 @section('content')

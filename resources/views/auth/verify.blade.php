@@ -1,7 +1,7 @@
 @extends('layouts.auth.app')
 
 @section('title')
-    Pilkada | Verifikasi Email
+    My Gerindra | Verifikasi Email
 @endsection
 
 @section('content')

@@ -1,7 +1,7 @@
 @extends('layouts.auth.app')
 
 @section('title')
-    Pilkada | Lupa Password
+    My Gerindra | Lupa Password
 @endsection
 
 @section('content')

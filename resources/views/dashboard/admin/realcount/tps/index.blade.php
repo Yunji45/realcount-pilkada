@@ -177,8 +177,10 @@
     <script>
         $(document).ready(function() {
             // Ambil nilai lengthMenu dan halaman terakhir dari localStorage
-            var selectedLength = localStorage.getItem('selectedLength') || 10; // Default ke 10 jika tidak ada nilai di localStorage
-            var lastPage = localStorage.getItem('lastPage') || 0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
+            var selectedLength = localStorage.getItem('selectedLength') ||
+            10; // Default ke 10 jika tidak ada nilai di localStorage
+            var lastPage = localStorage.getItem('lastPage') ||
+            0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
 
             // Inisialisasi DataTable dengan server-side processing
             var table = $('#tableTps').DataTable({
@@ -189,15 +191,15 @@
                     type: 'GET',
                     data: function(d) {
                         d.start = d.start; // Baris awal (untuk paginasi)
-                        d.length = parseInt(selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
+                        d.length = parseInt(
+                        selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
                         d.draw = d.draw; // Nomor draw
                     },
                     dataSrc: function(json) {
                         return json.data; // Data yang dikembalikan dari server
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
                             // Nomor berurutan yang memperhitungkan halaman
@@ -254,8 +256,11 @@
                 paging: true,
                 pageLength: parseInt(selectedLength), // Panjang halaman dari localStorage
                 lengthMenu: [5, 10, 25, 50, 100], // Pilihan jumlah data yang ditampilkan
-                displayStart: parseInt(lastPage) * selectedLength, // Memulai dari halaman terakhir yang tersimpan
-                order: [[1, 'asc']]
+                displayStart: parseInt(lastPage) *
+                selectedLength, // Memulai dari halaman terakhir yang tersimpan
+                order: [
+                    [1, 'asc']
+                ]
             });
 
             // Ketika panjang data diubah, simpan ke localStorage dan refresh tabel

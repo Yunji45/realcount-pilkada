@@ -1,7 +1,7 @@
 @extends('layouts.auth.app')
 
 @section('title')
-    Pilkada | Login
+    My Gerindra | Login
 @endsection
 
 @section('content')

@@ -197,30 +197,10 @@ class VoteController extends Controller
         }
     }
 
-    public function getKabupatens($provinsi_id)
-    {
-        $kabupatens = Kabupaten::where('provinsi_id', $provinsi_id)->get();
-        return response()->json($kabupatens);
-    }
-
-    // Mendapatkan kecamatan berdasarkan kabupaten (AJAX)
-    public function getKecamatans($kabupaten_id)
-    {
-        $kecamatans = Kecamatan::where('kabupaten_id', $kabupaten_id)->get();
-        return response()->json($kecamatans);
-    }
-
-    // Mendapatkan kelurahan berdasarkan kecamatan (AJAX)
-    public function getKelurahans($kecamatan_id)
-    {
-        $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
-        return response()->json($kelurahans);
-    }
-
     // Mendapatkan polling places berdasarkan kelurahan (AJAX)
-    public function getPollingPlaces($kelurahan_id)
+    public function getPollingPlaces($kelurahanId)
     {
-        $pollingPlaces = PollingPlace::where('kelurahan_id', $kelurahan_id)->get();
+        $pollingPlaces = PollingPlace::where('kelurahan_id', $kelurahanId)->get();
         return response()->json($pollingPlaces);
     }
 
