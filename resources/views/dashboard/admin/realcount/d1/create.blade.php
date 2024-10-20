@@ -51,7 +51,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="provinsi_id">Provinsi</label>
-                                        <select name="provinsi_id" class="form-control" id="provinsi_id" required>
+                                        <select name="provinsi_id" class="form-control" id="provinsi" required>
                                             <option value="" selected disabled>Pilih Provinsi</option>
                                             @foreach ($provinsis as $provinsi)
                                                 <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
@@ -64,7 +64,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="kabupaten_id">Kabupaten</label>
-                                        <select name="kabupaten_id" class="form-control" id="kabupaten_id" required>
+                                        <select name="kabupaten_id" class="form-control" id="kabupaten" required>
                                             <option value="" selected disabled>Pilih Kabupaten</option>
                                         </select>
                                     </div>
@@ -74,7 +74,7 @@
                                 <div class="col-md-6 col-lg-4">
                                     <div class="form-group">
                                         <label for="kecamatan_id">Kecamatan</label>
-                                        <select name="kecamatan_id" class="form-control" id="kecamatan_id" required>
+                                        <select name="kecamatan_id" class="form-control" id="kecamatan" required>
                                             <option value="" selected disabled>Pilih Kecamatan</option>
                                         </select>
                                     </div>
@@ -121,7 +121,7 @@
 
                         <div class="card-action">
                             <button type="submit" class="btn btn-success">Submit</button>
-                            <a href="{{ route('candidate.index') }}" class="btn btn-danger">Cancel</a>
+                            <a href="{{ route('file-d1.index') }}" class="btn btn-danger">Cancel</a>
                         </div>
                     </form>
 
@@ -129,35 +129,51 @@
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.getElementById('provinsi_id').addEventListener('change', function () {
-            let provinsi_id = this.value;
-            fetch(`/get-kabupatens/${provinsi_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    let kabupatenSelect = document.getElementById('kabupaten_id');
-                    kabupatenSelect.innerHTML = '<option value="" selected disabled>Pilih Kabupaten</option>';
-                    data.forEach(kabupaten => {
-                        kabupatenSelect.innerHTML += `<option value="${kabupaten.id}">${kabupaten.name}</option>`;
+        $(document).ready(function() {
+            $('#provinsi').change(function() {
+                var provinsiId = $(this).val();
+                $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
+                $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (provinsiId) {
+                    $.ajax({
+                        url: '/get-kabupaten/' + provinsiId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kabupaten').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
                     });
-                    // Reset kecamatan dropdown
-                    document.getElementById('kecamatan_id').innerHTML = '<option value="" selected disabled>Pilih Kecamatan</option>';
-                });
-        });
-    
-        document.getElementById('kabupaten_id').addEventListener('change', function () {
-            let kabupaten_id = this.value;
-            fetch(`/get-kecamatans/${kabupaten_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    let kecamatanSelect = document.getElementById('kecamatan_id');
-                    kecamatanSelect.innerHTML = '<option value="" selected disabled>Pilih Kecamatan</option>';
-                    data.forEach(kecamatan => {
-                        kecamatanSelect.innerHTML += `<option value="${kecamatan.id}">${kecamatan.name}</option>`;
+                }
+            });
+
+            $('#kabupaten').change(function() {
+                var kabupatenId = $(this).val();
+                $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (kabupatenId) {
+                    $.ajax({
+                        url: '/get-kecamatan/' + kabupatenId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kecamatan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
                     });
-                });
+                }
+            });
         });
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.getElementById('vote_count').addEventListener('change', function(e) {

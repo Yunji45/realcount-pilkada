@@ -80,7 +80,6 @@
                         </li>
                     @endrole
 
-
                     @can('View Partai')
                         <li class="nav-item {{ Request::is('partai*') ? 'active' : '' }}">
                             <a href="{{ route('partai.index') }}">
@@ -199,8 +198,8 @@
                     @endcan
 
                     @can('View Daftar Data D1')
-                        <li class="nav-item ">
-                            <a href="">
+                        <li class="nav-item {{ Request::is('file-d1*') ? 'active' : '' }}">
+                            <a href="{{ route('file-d1.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1"
                                     viewBox="0 0 24 24" width="24" height="24">
                                     <path

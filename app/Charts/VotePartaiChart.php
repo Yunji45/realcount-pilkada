@@ -53,7 +53,7 @@ class VotePartaiChart
         // Prepare data for chart
         $labels = $votes->map(function ($vote) use ($totalVotes) {
             $percentage = $totalVotes > 0 ? round(($vote->total_votes / $totalVotes) * 100, 2) : 0;
-            return $vote->partai_name . ' (' . $percentage . '%)';
+            return $vote->partai_name . ' (' . $vote->total_votes . ' suara - ' . $percentage . '%)';
         })->toArray();
 
         $data = $votes->pluck('total_votes')->toArray(); // Extract total votes for data
@@ -63,9 +63,7 @@ class VotePartaiChart
             ->addData($data)
             ->setLabels($labels)
             ->setColors($colors) // Set colors based on the 'color' field from the partai table
-            ->setWidth('400')
-            ->setHeight('400');
+            ->setWidth('500')
+            ->setHeight('500');
     }
-
-
 }

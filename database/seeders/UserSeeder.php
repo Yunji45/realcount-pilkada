@@ -140,7 +140,17 @@ class UserSeeder extends Seeder
         $pimpinanRole->givePermissionTo('Delete User');
         $pimpinanRole->givePermissionTo('Show User');
 
-        $koordinatorRole = Role::create(['name' => 'Koordinator']);
+        $adminRole = Role::create(['name' => 'Admin']);
+
+        $adminRole->givePermissionTo('View User Management');
+        $adminRole->givePermissionTo('Create User');
+        $adminRole->givePermissionTo('Edit User');
+        $adminRole->givePermissionTo('Delete User');
+        $adminRole->givePermissionTo('Show User');
+
+        $koordinatorKecamatanRole = Role::create(['name' => 'Koordinator Kecamatan']);
+        $koordinatorKelurahanRole = Role::create(['name' => 'Koordinator Kelurahan']);
+        $koordinatorRWRole = Role::create(['name' => 'Koordinator RW']);
 
         // Pemilih, Saksi, Relawan, Simpatisan, Lain-lain: Assign limited permissions
         $pemilihRole = Role::create(['name' => 'Pemilih']);
@@ -166,7 +176,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => 'Jl. Swakarya',
             'status' => 'Aktif',
-            'nik' => '123456789',
+            'nik' => $faker->nik,
         ]);
         $user->assignRole($superAdminRole);
         //END: Super Admin
@@ -178,7 +188,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => 'Jl. Swakarya',
             'status' => 'Aktif',
-            'nik' => '123456789',
+            'nik' => $faker->nik,
         ]);
         $user->assignRole($pimpinanRole);
         //END: Pimpinan
@@ -190,22 +200,46 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => 'Jl. Swakarya',
             'status' => 'Aktif',
-            'nik' => '123456789',
+            'nik' => $faker->nik,
         ]);
         $user->assignRole($adminRole);
         //END: Admin
 
-        //START: Koordinator
+        //START:Koordinator Kecamatan
         $user = User::factory()->create([
-            'name' => 'Koordinator',
-            'email' => 'koordinator@gmail.com',
+            'name' => 'Koordinator Kecamatan',
+            'email' => 'koordinatorkecamatan@gmail.com',
             'password' => bcrypt('qwerty12'),
             'address' => 'Jl. Swakarya',
             'status' => 'Aktif',
-            'nik' => '123456789',
+            'nik' => $faker->nik,
         ]);
-        $user->assignRole($koordinatorRole);
-        //END: Koordinator
+        $user->assignRole($koordinatorKecamatanRole);
+        //END:Koordinator Kecamatan
+
+        //START:Koordinator Kelurahan
+        $user = User::factory()->create([
+            'name' => 'Koordinator Kelurahan',
+            'email' => 'koordinatorkelurahan@gmail.com',
+            'password' => bcrypt('qwerty12'),
+            'address' => "Jl. Swakarya",
+            'status' => 'Aktif',
+            'nik' => $faker->nik,
+        ]);
+        $user->assignRole($koordinatorKelurahanRole);
+        //END:Koordinator Kelurahan
+
+        //START:Koordinator RW
+        $user = User::factory()->create([
+            'name' => 'Koordinator RW',
+            'email' => 'koordinatorrw@gmail.com',
+            'password' => bcrypt('qwerty12'),
+            'address' => "Jl. Swakarya",
+            'status' => 'Aktif',
+            'nik' => $faker->nik,
+        ]);
+        $user->assignRole($koordinatorRWRole);
+        //END:Koordinator RW
 
         //START: Saksi
         $user = User::factory()->create([
@@ -214,7 +248,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('qwerty12'),
             'address' => 'Jl. Swakarya',
             'status' => 'Aktif',
-            'nik' => '123456789',
+            'nik' => $faker->nik,
         ]);
         $user->assignRole($saksiRole);
         //END: Saksi

@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('status', ['Aktif', 'Pending', 'Tidak Aktif'])->default('Aktif');
-            $table->foreignId('kelurahan_id')->constrained()->restrictOnDelete();
+            // $table->foreignId('kelurahan_id')->constrained()->restrictOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });
