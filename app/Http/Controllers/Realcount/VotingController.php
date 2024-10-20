@@ -57,43 +57,46 @@ class VotingController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'candidate_id' => ['required', 'exists:candidates,id'],
+            'tps_realcount_id' => ['required', 'exists:polling_places,id'],
+            'real_count' => ['required', 'string', 'max:255'],
+        ]);
+
+        // Jika validasi gagal, langsung kembalikan dengan error
+        if ($validator->fails()) {
+            Log::warning('Validation failed.', ['errors' => $validator->errors()]);
+            return back()->withErrors($validator)->withInput();
+        }
+
+        // Mulai transaksi setelah validasi berhasil
         DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [
-                'candidate_id' => ['required', 'exists:candidates,id'],
-                'tps_realcount_id' => ['required', 'exists:polling_places,id'],
-                'real_count' => ['required', 'string', 'max:255'],
-            ]);
-
-            if ($validator->fails()) {
-                Log::warning('Validation failed.', ['errors' => $validator->errors()]);
-                return back()->withErrors($validator)->withInput();
-            }
-
+            // Cek apakah TPS sudah upload file C1
             $tps = TpsRealcount::find($request->tps_realcount_id);
             if ($tps && $tps->fileC1()->exists()) {
-                return back()->with('error', 'Voting Untuk TPS Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File C1.')->withInput();
+                return back()->with('error', 'Voting untuk TPS tersebut sudah tidak bisa dilakukan karena sudah upload file C1.')->withInput();
             }
 
+            // Buat vote realcount
             $vote_realcount = Votec1::create([
                 'candidate_id' => $request->candidate_id,
                 'tps_realcount_id' => $request->tps_realcount_id,
                 'real_count' => $request->real_count,
                 'status' => 'Open'
             ]);
+
             Log::info('Vote realcount created successfully.', ['vote_realcount' => $vote_realcount]);
+
+            // Commit transaksi setelah semua berhasil
             DB::commit();
-            // return response()->json([
-            //     'success' => true,
-            //     'message' => 'Polling place created successfully.',
-            //     'data' => $vote_realcount
-            // ], 201); // 201 = Created
 
             return redirect()->route('vote-realcount.index')->with('success', 'Vote cast successfully');
         } catch (\Exception $e) {
+            // Rollback jika ada kesalahan
             DB::rollBack();
             Log::error('Error occurred while storing vote realcount.', ['exception' => $e->getMessage()]);
-            return back()->with('error', 'Vote casting failed');
+            return back()->with('error', 'Vote casting failed')->withInput();
         }
     }
 
@@ -165,5 +168,4 @@ class VotingController extends Controller
         $pollingPlaces = TpsRealcount::where('kelurahan_id', $kelurahanId)->get();
         return response()->json($pollingPlaces);
     }
-
 }

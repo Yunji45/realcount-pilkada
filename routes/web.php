@@ -29,6 +29,7 @@ use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\RealcountController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Mail\PostMail;
@@ -141,6 +142,9 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/map', [DaerahController::class, 'map'])->name('map');
     Route::get('/berita/all', [ArticleController::class, 'showLandingPageAll'])->name('berita.all');
     Route::get('/berita/{id}', [ArticleController::class, 'showDetail'])->name('berita.detail');
+
+    Route::get('/pdf', [PDFController::class, 'index'])->name('pdf');
+    Route::post('/upload-pdf', [PDFController::class, 'upload'])->name('pdf.upload');
 });
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
 
