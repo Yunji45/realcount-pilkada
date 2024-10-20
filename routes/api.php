@@ -32,13 +32,21 @@ Route::get('kecamatan/{id}', [WilayahController::class, 'show_kecamatan'])->name
 
 Route::get('kelurahan', [WilayahController::class, 'index_kelurahan'])->name('kelurahan.index');
 Route::get('kelurahan/{id}', [WilayahController::class, 'show_kelurahan'])->name('kelurahan.show');
-Route::get('map',[MapController::class,'index'])->name('map');
-Route::get('color-partai',[MapController::class,'getcolor'])->name('color');
-Route::get('filter-partai',[MapController::class,'filter'])->name('filter');
+// Route::get('map',[MapController::class,'index'])->name('map');
+// Route::get('color-partai',[MapController::class,'getcolor'])->name('color');
+// Route::get('filter-partai',[MapController::class,'filter'])->name('filter');
 
 //chart
 route::get('chart-vote',[ChartController::class, 'getVotesPerPartaiElection'])->name('chart');
 Route::get('/votes-per-election', [ChartController::class, 'getVotesByElection']);
 Route::get('/elections', [ChartController::class, 'getElections']);
+
+// Route::middleware(['verified', 'auth'])->group(function () {
+//     Route::get('map',[MapController::class,'index'])->name('map');
+//     Route::get('color-partai',[MapController::class,'getcolor'])->name('color');
+//     Route::get('filter-partai',[MapController::class,'filter'])->name('filter');
+
+// });
+
 
 

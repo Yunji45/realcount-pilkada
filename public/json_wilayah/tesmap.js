@@ -3,7 +3,7 @@ const map = L.map('map').setView([-6.9320011, 107.5733367], 12);
 
 const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; <a href="http://portofolio-ihya.netlify.app">Ihya Natik W</a>'
+    attribution: '&copy; <a href="http://portofolio-ihya.netlify.app">DPC Gerindra</a>'
 }).addTo(map);
 
 // Kontrol informasi
@@ -101,7 +101,7 @@ function onEachFeature(feature, layer) {
 }
 
 // Ambil data dari API dan tambahkan ke peta
-fetch('http://localhost:8000/api/map')
+fetch('https://dpcgerindrakotabandung.com/api/map')
     .then(response => response.json())
     .then(data => {
         const geojsonData = {
@@ -146,7 +146,7 @@ fetch('http://localhost:8000/api/map')
 const partiesColors = [];
 
 // Ambil data dari API untuk warna partai
-fetch('http://localhost:8000/api/color-partai')
+fetch('https://dpcgerindrakotabandung.com/api/color-partai')
     .then(response => response.json())
     .then(data => {
         data.forEach(party => {

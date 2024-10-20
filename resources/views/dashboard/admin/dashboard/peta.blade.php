@@ -308,51 +308,39 @@
                         }
                     }
                 </style>
-
-                <!-- Filter Form -->
-                <form action="{{ route('dashboard.peta') }}" method="GET" class="filter-form">
-                    {{-- <div class="form-group">
-                        <label for="provinsi">Provinsi:</label>
-                        <select class="form-select" name="provinsi_id" id="provinsi">
-                            <option value="">Semua Provinsi</option>
-                            @foreach ($provinsis as $provinsi)
-                                <option value="{{ $provinsi->id }}"
-                                    {{ request('provinsi_id') == $provinsi->id || $provinsi->name == 'Jawa Barat' ? 'selected' : '' }}>
-                                    {{ $provinsi->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div> --}}
-
+                <form id="filter-form" action="{{ route('dashboard.peta') }}" method="GET" class="filter-form">
                     <div class="form-group">
                         <label for="kabupaten">Kabupaten:</label>
                         <select class="form-select" name="kabupaten_id" id="kabupaten">
                             <option value="">Pilih Kabupaten</option>
+                            <!-- Add options dynamically here -->
                         </select>
                     </div>
-
+                
                     <div class="form-group">
                         <label for="kecamatan">Kecamatan:</label>
                         <select class="form-select" name="kecamatan_id" id="kecamatan">
                             <option value="">Pilih Kecamatan</option>
+                            <!-- Add options dynamically here -->
                         </select>
                     </div>
-
+                
                     <div class="form-group">
                         <label for="kelurahan">Kelurahan:</label>
                         <select class="form-select" name="kelurahan_id" id="kelurahan">
                             <option value="">Pilih Kelurahan</option>
-
+                            <!-- Add options dynamically here -->
                         </select>
                     </div>
-
+                
                     <div class="form-group" id="rw-group">
                         <label for="rw">RW:</label>
                         <select class="form-select" name="rw_id" id="rw">
                             <option value="">Pilih RW</option>
+                            <!-- Add options dynamically here -->
                         </select>
                     </div>
-
+                
                     <div class="form-group">
                         <label for="election">Pemilu:</label>
                         <select class="form-select" name="election_id" id="election">
@@ -365,9 +353,10 @@
                             @endforeach
                         </select>
                     </div>
-
+                
                     <button type="submit" class="btn btn-primary mt-4">Filter</button>
                 </form>
+                
             </div>
         </div>
 
