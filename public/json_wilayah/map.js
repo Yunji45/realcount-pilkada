@@ -101,7 +101,7 @@ function onEachFeature(feature, layer) {
 }
 
 // Ambil data dari API dan tambahkan ke peta
-fetch('https://dpcgerindrakotabandung.com/api/map')
+fetch('http://localhost:8000/api/map')
     .then(response => response.json())
     .then(data => {
         const geojsonData = {
@@ -146,7 +146,7 @@ fetch('https://dpcgerindrakotabandung.com/api/map')
 const partiesColors = [];
 
 // Ambil data dari API untuk warna partai
-fetch('https://dpcgerindrakotabandung.com/api/color-partai')
+fetch('http://localhost:8000/api/color-partai')
     .then(response => response.json())
     .then(data => {
         data.forEach(party => {

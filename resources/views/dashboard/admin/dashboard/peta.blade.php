@@ -268,6 +268,108 @@
                 </div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Filter TPS (Partai)</div>
+                <!-- Filter Form -->
+                <style>
+                    .filter-form {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 1rem;
+                        align-items: center;
+                    }
+
+                    .form-group {
+                        margin: 0;
+                        flex: 1;
+                    }
+
+                    .form-select {
+                        width: 100%;
+                    }
+
+                    /* Responsive Chart */
+                    .chart-container {
+                        position: relative;
+                        width: 100%;
+                        height: auto;
+                        overflow-x: auto;
+                    }
+
+                    /* Ensure that chart fits within the card */
+                    @media (max-width: 768px) {
+                        .card {
+                            width: 100%;
+                        }
+
+                        .chart-container canvas {
+                            max-width: 100%;
+                        }
+                    }
+                </style>
+
+                <!-- Filter Form -->
+                <form action="{{ route('dashboard.peta') }}" method="GET" class="filter-form">
+                    {{-- <div class="form-group">
+                        <label for="provinsi">Provinsi:</label>
+                        <select class="form-select" name="provinsi_id" id="provinsi">
+                            <option value="">Semua Provinsi</option>
+                            @foreach ($provinsis as $provinsi)
+                                <option value="{{ $provinsi->id }}"
+                                    {{ request('provinsi_id') == $provinsi->id || $provinsi->name == 'Jawa Barat' ? 'selected' : '' }}>
+                                    {{ $provinsi->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div> --}}
+
+                    <div class="form-group">
+                        <label for="kabupaten">Kabupaten:</label>
+                        <select class="form-select" name="kabupaten_id" id="kabupaten">
+                            <option value="">Pilih Kabupaten</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kecamatan">Kecamatan:</label>
+                        <select class="form-select" name="kecamatan_id" id="kecamatan">
+                            <option value="">Pilih Kecamatan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kelurahan">Kelurahan:</label>
+                        <select class="form-select" name="kelurahan_id" id="kelurahan">
+                            <option value="">Pilih Kelurahan</option>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="rw-group">
+                        <label for="rw">RW:</label>
+                        <select class="form-select" name="rw_id" id="rw">
+                            <option value="">Pilih RW</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="election">Pemilu:</label>
+                        <select class="form-select" name="election_id" id="election">
+                            <option value="">Pilih Pemilu</option>
+                            @foreach ($electionsPartais as $electionPartai)
+                                <option value="{{ $electionPartai->id }}"
+                                    {{ request('election_id') == $electionPartai->id ? 'selected' : '' }}>
+                                    {{ $electionPartai->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-4">Filter</button>
+                </form>
+            </div>
+        </div>
 
         <div class="col-md-12">
             <div class="card">
@@ -284,14 +386,18 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {{-- <script>
-        // AJAX for loading dynamic data
+    <script>
         $(document).ready(function() {
-            $('#provinsi').change(function() {
-                var provinsiId = $(this).val();
+            // ID provinsi Jawa Barat (ubah sesuai dengan database Anda)
+            var jawaBaratId = 9; // Misalnya ID Jawa Barat adalah 9
+
+            // Fungsi untuk memuat Kabupaten berdasarkan ID Provinsi
+            function loadKabupaten(provinsiId) {
                 $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
                 $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
+
                 if (provinsiId) {
                     $.ajax({
                         url: '/get-kabupaten/' + provinsiId,
@@ -299,18 +405,42 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kabupaten').append('<option value="' + value.id +
-                                    '">' + value.name + '</option>');
+                                $('#kabupaten').append('<option value="' + value.id + '">' + value.name + '</option>');
                             });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching Kabupaten data:', error);
                         }
                     });
                 }
+            }
+
+            // Set Provinsi secara otomatis ke Jawa Barat dan load Kabupaten
+            var provinsiSelect = $('#provinsi');
+            var provinsiId = provinsiSelect.val(); // Ambil nilai saat ini di dropdown provinsi
+
+            if (!provinsiId) {
+                // Jika provinsi belum dipilih, otomatis set ke Jawa Barat
+                provinsiSelect.val(jawaBaratId).trigger('change');
+                loadKabupaten(jawaBaratId); // Panggil fungsi untuk load Kabupaten berdasarkan Jawa Barat
+            } else if (provinsiId == jawaBaratId) {
+                // Jika Provinsi sudah dipilih Jawa Barat, langsung load Kabupaten
+                loadKabupaten(jawaBaratId);
+            }
+
+            // Handle Provinsi change secara manual
+            $('#provinsi').change(function() {
+                var selectedProvinsiId = $(this).val();
+                loadKabupaten(selectedProvinsiId);
             });
 
+            // Handle Kabupaten change
             $('#kabupaten').change(function() {
                 var kabupatenId = $(this).val();
                 $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
+
                 if (kabupatenId) {
                     $.ajax({
                         url: '/get-kecamatan/' + kabupatenId,
@@ -318,17 +448,19 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kecamatan').append('<option value="' + value.id +
-                                    '">' + value.name + '</option>');
+                                $('#kecamatan').append('<option value="' + value.id + '">' + value.name + '</option>');
                             });
                         }
                     });
                 }
             });
 
+            // Handle Kecamatan change
             $('#kecamatan').change(function() {
                 var kecamatanId = $(this).val();
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
+
                 if (kecamatanId) {
                     $.ajax({
                         url: '/get-kelurahan/' + kecamatanId,
@@ -336,15 +468,37 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kelurahan').append('<option value="' + value.id +
-                                    '">' + value.name + '</option>');
+                                $('#kelurahan').append('<option value="' + value.id + '">' + value.name + '</option>');
                             });
                         }
                     });
                 }
             });
+
+            // Handle Kelurahan change and fetch RW data
+            $('#kelurahan').change(function() {
+                var kelurahanId = $(this).val();
+                $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear previous RW options
+
+                if (kelurahanId) {
+                    // Fetch RW data via AJAX
+                    $.ajax({
+                        url: '/get-rw/' + kelurahanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#rw').append('<option value="' + value.rw + '">' + value.rw + '</option>');
+                            });
+                        },
+                        error: function(error) {
+                            console.error('Error fetching RW data:', error);
+                        }
+                    });
+                }
+            });
         });
-    </script> --}}
+    </script>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>

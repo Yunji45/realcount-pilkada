@@ -130,7 +130,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     ]);
 
     //Landing Page
-    Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
+    // Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
     //Profile
     Route::get('/dashboard/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -142,3 +142,5 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/berita/all', [ArticleController::class, 'showLandingPageAll'])->name('berita.all');
     Route::get('/berita/{id}', [ArticleController::class, 'showDetail'])->name('berita.detail');
 });
+Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
+
