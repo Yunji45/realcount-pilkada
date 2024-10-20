@@ -141,6 +141,11 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/map', [DaerahController::class, 'map'])->name('map');
     Route::get('/berita/all', [ArticleController::class, 'showLandingPageAll'])->name('berita.all');
     Route::get('/berita/{id}', [ArticleController::class, 'showDetail'])->name('berita.detail');
+
+    Route::get('map',[MapController::class,'index'])->name('map');
+    Route::get('color-partai',[MapController::class,'getcolor'])->name('color');
+    Route::get('filter-partai',[MapController::class,'filter'])->name('filter');
+
 });
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
 
