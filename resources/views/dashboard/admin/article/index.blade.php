@@ -37,33 +37,47 @@
                         </div>
                     @endcan
                     <div class="card-body">
-
                         <div class="table-responsive">
-                            <table id="add-row" class="display table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Title</th>
-                                        <th>Image</th>
-                                        <th>Kategori</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Title</th>
-                                        <th>Image</th>
-                                        <th>Kategori</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    @foreach ($articles as $article)
-                                        @if ($articles->isEmpty())
-                                            <p>No articles available.</p>
-                                        @else
+                            <form id="mass-delete-form" action="{{ route('article.massDelete') }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+
+                                @can('Delete Article')
+                                    <!-- Tombol untuk hapus massal -->
+                                    <button type="button" class="btn btn-danger btn-sm mb-4" style="margin-left:10px"
+                                        id="deleteSelected">
+                                        Delete Selected &nbsp;&nbsp;<i class="fas fa-trash-alt"></i>
+                                    </button>
+                                @endcan
+                                <table id="add-row" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            @can('Delete Article')
+                                                <th><input type="checkbox" id="select-all"></th>
+                                            @endcan
+                                            <th>ID</th>
+                                            <th>Title</th>
+                                            <th>Image</th>
+                                            <th>Kategori</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Title</th>
+                                            <th>Image</th>
+                                            <th>Kategori</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        @foreach ($articles as $article)
                                             <tr>
+                                                @can('Delete Article')
+                                                    <td><input type="checkbox" name="ids[]" value="{{ $article->id }}"
+                                                            class="select-item"></td>
+                                                @endcan
                                                 <td>{{ $article->id }}</td>
                                                 <td>{{ $article->title }}</td>
                                                 <td>
@@ -102,12 +116,63 @@
                                                     @endcan
                                                 </td>
                                             </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
                     </div>
+
+                    <script>
+                        // Select all checkboxes functionality
+                        document.getElementById('select-all').addEventListener('click', function(event) {
+                            const checkboxes = document.querySelectorAll('.select-item');
+                            checkboxes.forEach(checkbox => checkbox.checked = event.target.checked);
+                        });
+
+                        // Optional: to synchronize header and footer select-all checkboxes
+                        document.getElementById('select-all-footer').addEventListener('click', function(event) {
+                            const checkboxes = document.querySelectorAll('.select-item');
+                            checkboxes.forEach(checkbox => checkbox.checked = event.target.checked);
+                        });
+                    </script>
+
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        document.getElementById('deleteSelected').addEventListener('click', function(event) {
+                            event.preventDefault(); // Mencegah form submit otomatis
+
+                            var form = document.getElementById('mass-delete-form'); // Ambil form mass delete
+                            var checkedBoxes = document.querySelectorAll('.select-item:checked'); // Checkbox yang dipilih
+
+                            if (checkedBoxes.length === 0) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'No Elections Selected',
+                                    text: 'Please select at least one election to delete.',
+                                    confirmButtonText: 'OK'
+                                });
+                                return;
+                            }
+
+                            // SweetAlert2 konfirmasi
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    form.submit(); // Lanjutkan submit form jika konfirmasi diterima
+                                }
+                            });
+                        });
+                    </script>
+
+
                 </div>
             </div>
         </div>

@@ -73,7 +73,6 @@ Route::middleware(['verified', 'auth', 'role:Koordinator'])->name('koordinator.'
     Route::resources([]);
 });
 // END: KOORDINATOR
-
 Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->group(function () {
     Route::get('/dashboard/perorangan', [HomeController::class, 'indexPerorangan'])->name('dashboard.perorangan');
     Route::get('/dashboard/partai', [HomeController::class, 'indexPartai'])->name('dashboard.partai');
@@ -148,4 +147,17 @@ Route::middleware(['verified', 'auth'])->group(function () {
 
 });
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
+
+//Funsi Delete Selection
+Route::post('/users/massdelete', [UserController::class, 'massDelete'])->name('users.massDelete');
+Route::post('/permissions/massdelete', [PermissionController::class, 'massDelete'])->name('permissions.massDelete');
+Route::post('/partai/massdelete', [PartaiController::class, 'massDelete'])->name('partai.massDelete');
+Route::post('/tps/massDelete', [PollingPlaceController::class, 'massDelete'])->name('tps.massDelete');
+Route::post('/votes/massDelete', [VoteController::class, 'massDelete'])->name('vote.massDelete');
+
+Route::delete('roles/massdelete', [RoleController::class, 'massDelete'])->name('role.massDelete');
+Route::delete('/article/massDelete', [ArticleController::class, 'massDelete'])->name('article.massDelete');
+Route::delete('/category_article/massDelete', [CategoryArticleController::class, 'massDelete'])->name('category_article.massDelete');
+Route::delete('/elections/massdelete', [ElectionController::class, 'massDelete'])->name('election.massDelete');
+Route::delete('/candidates/massDelete', [CandidateController::class, 'massDelete'])->name('candidates.massDelete');
 

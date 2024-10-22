@@ -147,9 +147,9 @@
                 @endif
 
                 @if (Auth::user()->can('View TPS Realcount') ||
-                        Auth::user()->can('View Suara Realcount') ||
-                        Auth::user()->can('View Daftar Data C1') ||
-                        Auth::user()->can('View Daftar Data D1'))
+                        Auth::user()->can('View Vote Realcount') ||
+                        Auth::user()->can('View Register Data C1') ||
+                        Auth::user()->can('View Register Data D1'))
                     @role(['Admin', 'Super Admin', 'Pimpinan'])
                         <li class="nav-section">
                             <span class="sidebar-mini-icon">
@@ -171,7 +171,7 @@
                         </li>
                     @endcan
 
-                    @can('View Suara Realcount')
+                    @can('View Vote Realcount')
                         <li class="nav-item {{ Request::is('realcount-vote*') ? 'active' : '' }}">
                             <a href="{{ route('realcount-vote.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1"
@@ -184,7 +184,7 @@
                         </li>
                     @endcan
 
-                    @can('View Daftar Data C1')
+                    @can('View Register Data C1')
                         <li class="nav-item {{ Request::is('file-c1.index*') ? 'active' : '' }}">
                             <a href="{{ route('file-c1.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1"
@@ -197,7 +197,7 @@
                         </li>
                     @endcan
 
-                    @can('View Daftar Data D1')
+                    @can('View Register Data D1')
                         <li class="nav-item {{ Request::is('file-d1*') ? 'active' : '' }}">
                             <a href="{{ route('file-d1.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1"

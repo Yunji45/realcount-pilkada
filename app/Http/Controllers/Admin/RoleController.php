@@ -120,4 +120,19 @@ class RoleController extends Controller
             return back()->with('success', 'Role deleted failed');
         }
     }
+
+    public function massDelete(Request $request)
+    {
+        $selectedIds = $request->input('selected_ids');
+
+        if (!empty($selectedIds)) {
+            Role::whereIn('id', $selectedIds)->delete();
+            return redirect()->route('role.index')->with('success', 'Selected roles have been deleted.');
+        }
+
+        return redirect()->route('role.index')->with('error', 'No roles selected for deletion.');
+    }
+
+
+
 }

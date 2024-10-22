@@ -133,5 +133,13 @@ class ArticleController extends Controller
         return view('landingpage.berita.detail', compact('article', 'trendingArticles'));
     }
 
-
+    public function massDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+        if (!empty($ids)) {
+            Article::whereIn('id', $ids)->delete();
+            return redirect()->route('articles.index')->with('success', 'Selected articles have been deleted.');
+        }
+        return redirect()->route('articles.index')->with('error', 'No articles selected.');
+    }
 }

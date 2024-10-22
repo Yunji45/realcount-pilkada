@@ -152,4 +152,15 @@ class ElectionController extends Controller
         }
     }
 
+    public function massDelete(Request $request)
+{
+    $ids = $request->input('ids');
+    if (!empty($ids)) {
+        Election::whereIn('id', $ids)->delete();
+        return redirect()->route('election.index')->with('success', 'Selected elections have been deleted.');
+    }
+    return redirect()->route('election.index')->with('error', 'No elections selected.');
+}
+
+
 }

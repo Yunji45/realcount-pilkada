@@ -251,6 +251,28 @@ class PollingPlaceController extends Controller
         }
     }
 
+    public function massDelete(Request $request)
+    {
+        $ids = $request->selected_ids;
+
+        if ($ids) {
+            try {
+                PollingPlace::whereIn('id', $ids)->delete();
+                return response()->json(['message' => 'Selected TPS deleted successfully.']);
+            } catch (\Illuminate\Database\QueryException $e) {
+                if ($e->getCode() == 23000) { // Integrity constraint violation
+                    return response()->json([
+                        'message' => 'Some TPS cannot be deleted because they are associated with other records.'
+                    ], 400);
+                }
+                return response()->json(['message' => 'An unexpected error occurred.'], 500);
+            }
+        }
+
+        return response()->json(['message' => 'No TPS selected for deletion.'], 400);
+    }
+
+
     // public function import()
     // {
     //     try {

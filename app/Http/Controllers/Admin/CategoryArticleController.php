@@ -13,7 +13,7 @@ class CategoryArticleController extends Controller
     {
         $articles = CategoryArticle::all();
         $title = 'Category Artikel';
-        return view('dashboard.admin.category-article.index', compact('articles','title'));
+        return view('dashboard.admin.category-article.index', compact('articles', 'title'));
     }
 
     // Menampilkan form untuk membuat artikel baru
@@ -21,7 +21,7 @@ class CategoryArticleController extends Controller
     {
         $title = 'Category Artikel';
         $type = "Tambah Data";
-        return view('dashboard.admin.category-article.create', compact('title','type'));
+        return view('dashboard.admin.category-article.create', compact('title', 'type'));
     }
 
     // Menyimpan artikel baru ke database
@@ -72,9 +72,21 @@ class CategoryArticleController extends Controller
     }
 
 
-    public function showLandingPage() {
+    public function showLandingPage()
+    {
         $articles = CategoryArticle::latest()->take(6)->get(); // Mengambil 6 artikel terbaru
         return view('landingpage.app', compact('articles'));
     }
-}
 
+    // Menghapus artikel secara massal
+    public function massDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+        if (!empty($ids)) {
+            CategoryArticle::whereIn('id', $ids)->delete();
+            return redirect()->route('category_articles.index')->with('success', 'Selected category articles have been deleted.');
+        }
+        return redirect()->route('category_articles.index')->with('error', 'No category articles selected.');
+    }
+
+}
