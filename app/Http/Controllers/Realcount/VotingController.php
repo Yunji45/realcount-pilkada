@@ -89,7 +89,7 @@ class VotingController extends Controller
             //     'data' => $vote_realcount
             // ], 201); // 201 = Created
 
-            return redirect()->route('vote-realcount.index')->with('success', 'Vote cast successfully');
+            return redirect()->route('realcount-vote.index')->with('success', 'Vote cast successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error occurred while storing vote realcount.', ['exception' => $e->getMessage()]);
