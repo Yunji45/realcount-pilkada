@@ -30,8 +30,15 @@ class VotePerorangChart
         // Group the results by the candidate's name
         $votes = $query->groupBy('candidates.name')->get();
 
+        // Calculate the total number of votes
+        $totalVotes = $votes->sum('total_votes');
+
         // Prepare data for chart
-        $labels = $votes->pluck('candidate_name')->toArray(); // Extract names for labels
+        $labels = $votes->map(function ($vote) use ($totalVotes) {
+            $percentage = $totalVotes > 0 ? round(($vote->total_votes / $totalVotes) * 100, 2) : 0;
+            return $vote->candidate_name . ' (' . $vote->total_votes . ' suara - ' . $percentage . '%)';
+        })->toArray();
+
         $data = $votes->pluck('total_votes')->toArray(); // Extract total votes for data
 
         // Build and return the pie chart
@@ -41,5 +48,4 @@ class VotePerorangChart
             ->setWidth('400')
             ->setHeight('400');
     }
-
 }

@@ -16,7 +16,7 @@ class PermissionController extends Controller
         $type = 'User Management';
         $permissions = Permission::all();
 
-        return view('dashboard.admin.user-management.permissions.index', compact('permissions','title','type'));
+        return view('dashboard.admin.user-management.permissions.index', compact('permissions', 'title', 'type'));
     }
 
     public function create()
@@ -24,7 +24,7 @@ class PermissionController extends Controller
         $title = 'Create Permissions';
         $type = 'User Management';
         $permission = Permission::pluck('name', 'name')->all();
-        return view('dashboard.admin.user-management.permissions.create', compact('permission','title','type'));
+        return view('dashboard.admin.user-management.permissions.create', compact('permission', 'title', 'type'));
     }
 
     public function store(Request $request)
@@ -59,7 +59,7 @@ class PermissionController extends Controller
         $type = 'User Management';
         $permission = Permission::find($id);
 
-        return view('dashboard.admin.user-management.permissions.edit', compact('permission','title','type'));
+        return view('dashboard.admin.user-management.permissions.edit', compact('permission', 'title', 'type'));
     }
 
     public function update(Request $request, $id)
@@ -105,4 +105,26 @@ class PermissionController extends Controller
             return back()->with('error', 'Permission deleted successfully');
         }
     }
+
+    public function massDelete(Request $request)
+    {
+        $ids = $request->input('selected_ids'); // Fetch selected IDs
+
+        if ($ids) {
+            try {
+                // Delete Permissions by selected IDs
+                Permission::whereIn('id', $ids)->delete();
+                return redirect()->back()->with('success', 'Selected permissions deleted successfully.');
+            } catch (\Illuminate\Database\QueryException $e) {
+                if ($e->getCode() == 23000) { // Integrity constraint violation
+                    return redirect()->back()->with('error', 'Some permissions cannot be deleted because they are associated with other records.');
+                }
+                // Handle other exceptions if necessary
+                return redirect()->back()->with('error', 'An unexpected error occurred while deleting permissions.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'No permissions selected for deletion.');
+    }
+
 }

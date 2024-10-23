@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -24,7 +23,8 @@ return new class extends Migration
             $table->enum('gender', ['Pria', 'Wanita'])->default('Pria');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('status',['Aktif','Pending','Tidak Aktif'])->default('Aktif');
+            $table->enum('status', ['Aktif', 'Pending', 'Tidak Aktif'])->default('Aktif');
+            // $table->foreignId('kelurahan_id')->constrained()->restrictOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

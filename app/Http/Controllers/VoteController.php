@@ -65,7 +65,7 @@ class VoteController extends Controller
         $pollingPlaces = PollingPlace::all();
         $provinsis = Provinsi::all();
         $title = "Suara";
-        $type = "Tambah Data";
+        $type = "Tambah";
 
         return view('dashboard.admin.vote.create', compact('candidates', 'pollingPlaces', 'title', 'type', 'provinsis'));
         // return $candidates;
@@ -118,7 +118,7 @@ class VoteController extends Controller
             ->get();
         $pollingPlaces = PollingPlace::all();
         $title = "Suara";
-        $type = "Detail Data";
+        $type = "Detail";
 
         return view('dashboard.admin.vote.show', compact('candidates', 'pollingPlaces', 'title', 'type'));
         // return $vote;
@@ -134,7 +134,7 @@ class VoteController extends Controller
         $pollingPlaces = PollingPlace::all();
         $provinsis = Provinsi::all();
         $title = "Suara";
-        $type = "Edit Data";
+        $type = "Edit";
 
         return view('dashboard.admin.vote.edit', compact('candidates', 'pollingPlaces', 'title', 'type', 'vote', 'provinsis'));
         // return $vote;
@@ -179,7 +179,6 @@ class VoteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-
     public function destroy(Vote $vote)
     {
         DB::beginTransaction();
@@ -198,30 +197,34 @@ class VoteController extends Controller
         }
     }
 
-    public function getKabupatens($provinsi_id)
+    public function massDelete(Request $request)
     {
-        $kabupatens = Kabupaten::where('provinsi_id', $provinsi_id)->get();
-        return response()->json($kabupatens);
+        $voteIds = $request->input('selected_ids'); // Ambil array ID dari request
+
+        if (empty($voteIds)) {
+            return redirect()->back()->with('error', 'No votes selected for deletion.');
+        }
+
+        DB::beginTransaction();
+        try {
+            Vote::whereIn('id', $voteIds)->delete(); // Hapus vote berdasarkan ID yang dipilih
+
+            DB::commit();
+            return redirect()->route('vote.index')->with('success', 'Selected votes have been deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error deleting votes.');
+        }
     }
 
-    // Mendapatkan kecamatan berdasarkan kabupaten (AJAX)
-    public function getKecamatans($kabupaten_id)
-    {
-        $kecamatans = Kecamatan::where('kabupaten_id', $kabupaten_id)->get();
-        return response()->json($kecamatans);
-    }
 
-    // Mendapatkan kelurahan berdasarkan kecamatan (AJAX)
-    public function getKelurahans($kecamatan_id)
-    {
-        $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
-        return response()->json($kelurahans);
-    }
+
+
 
     // Mendapatkan polling places berdasarkan kelurahan (AJAX)
-    public function getPollingPlaces($kelurahan_id)
+    public function getPollingPlaces($kelurahanId)
     {
-        $pollingPlaces = PollingPlace::where('kelurahan_id', $kelurahan_id)->get();
+        $pollingPlaces = PollingPlace::where('kelurahan_id', $kelurahanId)->get();
         return response()->json($pollingPlaces);
     }
 

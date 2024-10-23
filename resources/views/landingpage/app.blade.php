@@ -34,6 +34,80 @@
     <link href="{{ asset('landing/css/style.css') }}" rel="stylesheet">
 
     <style>
+        /* General styling for carousel and container */
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Styling for captions and text elements */
+        .carousel-caption h5 {
+            font-size: 2rem;
+            color: #877E56;
+            font-weight: bold;
+        }
+
+        .carousel-caption p {
+            font-size: 1.2rem;
+            color: #877E56;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        /* Hide background image on small screens */
+        @media (max-width: 768px) {
+            .carousel-item img {
+                display: none;
+            }
+
+            .carousel-caption {
+                top: 70%;
+            }
+
+            .carousel-caption h5 {
+                font-size: 1.8rem;
+            }
+
+            .carousel-caption p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Additional fine-tuning for even smaller devices */
+        @media (max-width: 576px) {
+            .carousel-caption h5 {
+                font-size: 1.5rem;
+            }
+
+            .carousel-caption p {
+                font-size: 0.9rem;
+                text-align: left;
+            }
+        }
+
+        /* Larger screen adjustments */
+        @media (min-width: 768px) {
+            .carousel-caption h5 {
+                font-size: 3rem;
+            }
+
+            .carousel-caption p {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+
+    <style>
         .col-lg-12 h5 {
             color: #000;
             /* Warna teks */
@@ -160,8 +234,22 @@
                     <a href="#container" class="nav-item nav-link">Profile</a>
                     <a href="{{ route('berita.all') }}" class="nav-item nav-link">Berita</a>
                     <a href="#footer" class="nav-item nav-link">Kontak</a>
-                    <a href="/login" class="nav-item nav-link btn-custom"
-                        style="color: white;font-weight: bold;">Login</a>
+                    @auth
+                        @if (Auth::user()->hasAnyRole('Admin', 'Super Admin', 'Pimpinan'))
+                            <a href="/dashboard/perorangan" class="nav-item nav-link btn-custom"
+                                style="color: white;font-weight: bold;">
+                                Dashboard
+                            </a>
+                        @elseif(Auth::user()->hasRole('Koordinator'))
+                            <a href="/partai" class="nav-item nav-link btn-custom" style="color: white;font-weight: bold;">
+                                Dashboard
+                            </a>
+                        @else
+                        @endif
+                    @else
+                        <a href="/login" class="nav-item nav-link btn-custom"
+                            style="color: white;font-weight: bold;">Login</a>
+                    @endauth
 
                 </div>
                 <div class="d-none d-lg-flex ms-2">

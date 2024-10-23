@@ -1,7 +1,7 @@
 @extends('layouts.auth.app')
 
 @section('title')
-    Pilkada | Konfirmasi Password
+    My Gerindra | Konfirmasi Password
 @endsection
 
 @section('content')

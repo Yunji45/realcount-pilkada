@@ -1,6 +1,8 @@
 @extends('layouts.dashboard.app')
 
-@section('title', 'My Gerindra | {{ $title }}')
+@section('title')
+    My Gerindra | {{ $title }}
+@endsection
 
 @section('content')
     <div class="page-inner">
@@ -8,7 +10,7 @@
             <h3 class="fw-bold mb-3">{{ $type }} {{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('dashboard.perorangan') }}">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -60,7 +62,8 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="start_date">Tanggal Mulai</label>
-                                        <input type="date" name="start_date" class="form-control" id="start_date" required />
+                                        <input type="date" name="start_date" class="form-control" id="start_date"
+                                            required />
                                     </div>
                                 </div>
 
@@ -68,7 +71,8 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="end_date">Tanggal Selesai</label>
-                                        <input type="date" name="end_date" class="form-control" id="end_date" required />
+                                        <input type="date" name="end_date" class="form-control" id="end_date"
+                                            required />
                                     </div>
                                 </div>
                             </div>

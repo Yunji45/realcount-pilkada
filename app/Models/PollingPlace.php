@@ -48,4 +48,20 @@ class PollingPlace extends Model
     {
         return $this->hasMany(Vote::class, 'polling_place_id');
     }
+
+    public function vote_c1()
+    {
+        return $this->hasMany(Votec1::class, 'polling_place_id');
+    }
+
+    public function C1()
+    {
+        return $this->hasMany(Filec1::class);
+    }
+
+    public function D1()
+    {
+        return $this->hasMany(Filed1::class);
+    }
+
 }

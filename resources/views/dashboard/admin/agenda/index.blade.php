@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.app')
 
 @section('title')
-My Gerindra | Agenda
+    My Gerindra | Agenda
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@ My Gerindra | Agenda
             <h3 class="fw-bold mb-3">DataTables {{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -26,13 +26,16 @@ My Gerindra | Agenda
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h4 class="card-title">Add {{ $title }}</h4>
-                            <a href="#" class="btn btn-primary btn-round ms-auto" id="addAgendaButton">
-                                <i class="fa fa-plus"></i>
-                                {{ $title }}
-                            </a>
-                        </div>
+                        @can('Create Agenda')
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h4 class="card-title">Add {{ $title }}</h4>
+                                <button type="button" class="btn btn-primary btn-round ms-auto" id="addAgendaButton"
+                                    data-bs-toggle="modal" data-bs-target="#addEventModal">
+                                    <i class="fa fa-plus"></i> {{ $title }}
+                                </button>
+                            </div>
+                        @endcan
+
                     </div>
                     <div class="card-body">
                         <div id="calendar"></div>
@@ -72,6 +75,7 @@ My Gerindra | Agenda
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" id="deleteEventButton" class="btn btn-danger">Hapus Agenda</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Simpan Agenda</button>
                     </div>
@@ -80,11 +84,64 @@ My Gerindra | Agenda
         </div>
     </div>
 
-
-
     <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.11/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.11/index.global.min.js'></script>
+
+    <style>
+        /* Ubah warna latar belakang event */
+        .fc-event {
+            background-color: #007bff;
+            /* Ubah dengan warna lebih lembut */
+            color: white;
+            /* Warna teks event */
+        }
+
+        /* Ubah warna hover saat event di hover */
+        .fc-event:hover {
+            background-color: #0056b3;
+            /* Warna lebih gelap saat hover */
+        }
+
+        /* Ubah warna grid kalender */
+        .fc-daygrid-day {
+            border: 1px solid #ddd;
+            /* Border grid */
+        }
+
+        /* Ubah warna header (bulan/tanggal) */
+        .fc-toolbar-title {
+            color: #333;
+            /* Warna teks judul kalender */
+        }
+
+        /* Ubah warna tombol navigasi (prev, next, today) */
+        .fc-button {
+            background-color: #6c757d;
+            /* Warna tombol */
+            color: white;
+            border: none;
+        }
+
+        /* Ubah warna tombol saat dihover */
+        .fc-button:hover {
+            background-color: #5a6268;
+            /* Warna lebih gelap saat hover */
+        }
+
+        /* Ubah warna hari yang dipilih */
+        .fc-daygrid-day.fc-day-today {
+            background-color: #ffc107;
+            /* Warna untuk hari ini */
+            color: white;
+        }
+
+        /* Ubah warna ketika seleksi hari di bulan */
+        .fc-highlight {
+            background-color: #e2e6ea;
+            /* Warna seleksi */
+        }
+    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -105,7 +162,7 @@ My Gerindra | Agenda
                     document.getElementById('addEventForm').reset();
                     document.getElementById('eventId').value = ''; // Kosongkan ID event
                     document.getElementById('addEventModalLabel').innerText =
-                    'Tambah Agenda'; // Ubah judul modal
+                        'Tambah Agenda'; // Ubah judul modal
                     document.getElementById('eventStart').value = info.startStr + 'T00:00';
                     document.getElementById('eventEnd').value = info.endStr ? info.endStr.slice(0, 16) :
                         '';
@@ -125,9 +182,37 @@ My Gerindra | Agenda
                         .toISOString().slice(0, 16) : '';
 
                     document.getElementById('addEventModalLabel').innerText =
-                    'Edit Agenda'; // Ubah judul modal
+                        'Edit Agenda'; // Ubah judul modal
                     let editEventModal = new bootstrap.Modal(document.getElementById('addEventModal'));
                     editEventModal.show();
+
+                    document.getElementById('deleteEventButton').onclick = function() {
+                        if (confirm('Apakah Anda yakin ingin menghapus agenda ini?')) {
+                            fetch(`/agenda/${info.event.id}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').getAttribute(
+                                            'content'),
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        info.event.remove(); // Hapus event dari kalender
+                                        alert('Agenda berhasil dihapus!');
+                                    } else {
+                                        alert('Terjadi kesalahan: ' + data.message);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('Terjadi kesalahan saat menghapus agenda.');
+                                });
+                        }
+                    };
                 },
                 eventMouseEnter: function(info) {
                     let tooltip = document.createElement('div');
@@ -158,7 +243,7 @@ My Gerindra | Agenda
                 let formData = new FormData(form);
                 let eventId = formData.get('id'); // Ambil ID event jika sedang mengedit
                 let url = eventId ? `/agenda/${eventId}` :
-                '{{ route('agenda.store') }}'; // Tentukan URL berdasarkan add/edit
+                    '{{ route('agenda.store') }}'; // Tentukan URL berdasarkan add/edit
                 let method = eventId ? 'PUT' : 'POST'; // Gunakan PUT untuk edit, POST untuk add
 
                 fetch(url, {
@@ -199,6 +284,7 @@ My Gerindra | Agenda
                                 'addEventModal'));
                             addEventModal.hide();
                             alert('Agenda berhasil disimpan!');
+                            location.reload();
                         } else {
                             alert('Terjadi kesalahan: ' + data.message);
                         }

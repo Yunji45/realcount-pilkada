@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +13,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\RegistrasiEmail;
 use App\Mail\VerifikasiEmail;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
+use App\Models\Provinsi;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -41,7 +44,7 @@ class UserController extends Controller
             $query->where('status', $status);
         }
         $users = $query->get();
-        return view('dashboard.admin.user-management.users.index', compact('users','title','type','roles'));
+        return view('dashboard.admin.user-management.users.index', compact('users', 'title', 'type', 'roles'));
     }
 
     public function pending()
@@ -50,22 +53,42 @@ class UserController extends Controller
         $type = 'User Management Pending';
         // $users = User::where('status', 'Pending')->get();
         $users = User::where('status', 'Pending')
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('dashboard.admin.user-management.users.verifikasi', compact('title', 'type', 'users'));
-
     }
 
 
-    public function create(Request $request)
+    public function create()
     {
         $title = 'Create User';
         $type = 'User Management';
-        // $roles = Role::pluck('name', 'name')->all();
         $roles = Role::all();
+        $provinsis = Provinsi::all();
 
-        return view('dashboard.admin.user-management.users.create', compact('roles','title','type'));
+        return view('dashboard.admin.user-management.users.create', compact('roles', 'title', 'type', 'provinsis'));
+    }
+
+    // Method untuk mendapatkan Kabupaten berdasarkan Provinsi
+    public function getKabupaten($provinsiId)
+    {
+        $kabupaten = Kabupaten::where('provinsi_id', $provinsiId)->get();
+        return response()->json($kabupaten);
+    }
+
+    // Method untuk mendapatkan Kecamatan berdasarkan Kabupaten
+    public function getKecamatan($kabupatenId)
+    {
+        $kecamatan = Kecamatan::where('kabupaten_id', $kabupatenId)->get();
+        return response()->json($kecamatan);
+    }
+
+    // Method untuk mendapatkan Kelurahan berdasarkan Kecamatan
+    public function getKelurahan($kecamatanId)
+    {
+        $kelurahan = Kelurahan::where('kecamatan_id', $kecamatanId)->get();
+        return response()->json($kelurahan);
     }
 
     public function store(Request $request)
@@ -79,29 +102,27 @@ class UserController extends Controller
                 'date_of_birth' => ['required', 'date'],
                 'gender' => ['required', 'string'],
                 'password' => ['required'],
-                'photo' => ['required', 'image', 'max:2048', 'mimes:jpg,png,jpeg'],
-            ], [
-                'password.confirmed' => 'The password confirmation does not match.',
-                'photo.image' => 'The photo must be an image.',
-                'photo.mimes' => 'Foto harus berupa file dengan tipe: jpg, png, jpeg.',
-                'photo.max' => 'Ukuran foto tidak boleh lebih besar dari 2048 kilobyte.',
+                'photo' => ['nullable', 'image', 'max:2048', 'mimes:jpg,png,jpeg'],
+                'kelurahan_id' => ['nullable', 'exists:kelurahans,id'],
             ]);
 
             if ($validator->fails()) {
                 return back()->withErrors($validator)->withInput();
             }
 
-            $file1 = $request->file('photo');
-            $pathPublic1 = null;
+            // Pengecekan apakah koordinator sudah ada di kelurahan
+            $existingKoordinator = User::whereHas('roles', function ($q) {
+                $q->where('name', 'koordinator');
+            })->where('kelurahan_id', $request->kelurahan_id)->first();
 
-            // if (!empty($file1)) {
-            //     $nama_file = time() . "_" . $file1->getClientOriginalName();
-            //     $nama_folder = 'file/photo_profiles';
-            //     $file1->move($nama_folder, $nama_file);
-            //     $pathPublic1 = $nama_folder . "/" . $nama_file;
-            // }
-            if ($file1 && $file1->isValid()) {
-                $pathPublic1 = $file1->store('file/photo_profiles', 'public');
+            if ($existingKoordinator) {
+                return back()->with(['error' => 'Koordinator sudah ada di kelurahan ini.'])->withInput();
+            }
+
+            // Proses upload file jika ada
+            $pathPublic1 = null;
+            if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+                $pathPublic1 = $request->file('photo')->store('file/photo_profiles', 'public');
             }
 
             $user = User::create([
@@ -112,33 +133,22 @@ class UserController extends Controller
                 'gender' => $request->gender,
                 'password' => Hash::make($request->password),
                 'photo' => $pathPublic1,
+                'kelurahan_id' => $request->kelurahan_id,
                 'address' => $request->address,
                 'status' => 'Aktif'
             ]);
 
             $user->assignRole($request->input('roles'));
-            $emailData = [
-                'name' => $user->name,
-                'email' => $user->email,
-            ];
-            Mail::to($user->email)->send(new RegistrasiEmail($emailData));
+            // Mail::to($user->email)->send(new RegistrasiEmail([
+            //     'name' => $user->name,
+            //     'email' => $user->email,
+            // ]));
 
             DB::commit();
-            // return response()->json([
-            //     'success' => true,
-            //     'message' => 'User created successfully',
-            //     'data' => $user,
-            // ], 201);
-
-            return redirect('/user')->with('success', 'User created successfully');
+            return redirect()->route('user.index')->with('success', 'User created successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
-            // return response()->json([
-            //     'success' => false,
-            //     'message' => 'User creation failed',
-            //     'error' => $th->getMessage(),
-            // ], 500);
-
+            dd($th->getMessage());
             return back()->with(['error' => 'User creation failed.']);
         }
     }
@@ -151,7 +161,7 @@ class UserController extends Controller
         $roles = Role::all();
         $userRole = $user->roles->pluck('name', 'name')->all();
 
-        return view('dashboard.admin.user-management.users.edit', compact('user', 'roles', 'userRole','title','type'));
+        return view('dashboard.admin.user-management.users.edit', compact('user', 'roles', 'userRole', 'title', 'type'));
     }
 
     // public function update(Request $request, User $user)
@@ -252,19 +262,9 @@ class UserController extends Controller
             $file = $request->file('photo');
             $path = $user->photo;
 
-            // if ($file && $file->isValid()) {
-            //     $nama_file = time() . "-" . $file->getClientOriginalName();
-            //     $folder = 'file/photo_profiles';
-            //     $file->move($folder, $nama_file);
-            //     $path = $folder . "/" . $nama_file;
-
-            //     if ($user->photo && file_exists(public_path($user->photo))) {
-            //         File::delete(public_path($user->photo));
-            //     }
-            // }
             if ($file && $file->isValid()) {
                 $path = $file->store('file/photo_profiles', 'public');
-                    if ($user->photo && Storage::disk('public')->exists($user->photo)) {
+                if ($user->photo && Storage::disk('public')->exists($user->photo)) {
                     Storage::disk('public')->delete($user->photo);
                 }
             }
@@ -339,4 +339,38 @@ class UserController extends Controller
         return redirect()->back();
 
     }
+
+    public function status_user(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->status = $request->status;
+
+        $user->save();
+
+        return response()->json(['success' => 'Status User telah diubah.']);
+    }
+
+    public function massDelete(Request $request)
+    {
+        $ids = $request->input('selected_ids'); // Fetch selected IDs
+
+        if ($ids) {
+            try {
+                // Delete Partai by selected IDs
+                User::whereIn('id', $ids)->delete();
+                return redirect()->back()->with('success', 'Selected users deleted successfully.');
+            } catch (\Illuminate\Database\QueryException $e) {
+                if ($e->getCode() == 23000) { // Integrity constraint violation
+                    return redirect()->back()->with('error', 'Some users cannot be deleted because they are associated with other records.');
+                }
+                // Handle other exceptions if necessary
+                return redirect()->back()->with('error', 'An unexpected error occurred while deleting users.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'No users selected for deletion.');
+    }
+
+
 }

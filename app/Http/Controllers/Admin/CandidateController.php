@@ -197,4 +197,25 @@ class CandidateController extends Controller
             return back()->with('error', 'An unexpected error occurred.');
         }
     }
+
+    public function massDelete(Request $request)
+    {
+        $ids = $request->selected_ids;
+
+        if ($ids) {
+            try {
+                Candidate::whereIn('id', $ids)->delete();
+                return redirect()->back()->with('success', 'Selected candidates deleted successfully.');
+            } catch (\Illuminate\Database\QueryException $e) {
+                if ($e->getCode() == 23000) { // Integrity constraint violation
+                    return redirect()->back()->with('error', 'Some candidates cannot be deleted because they are associated with voting records.');
+                }
+                // Handle other exceptions if necessary
+                return redirect()->back()->with('error', 'An unexpected error occurred while deleting candidates.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'No candidates selected for deletion.');
+    }
+
 }

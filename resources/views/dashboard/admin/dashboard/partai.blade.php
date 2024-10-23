@@ -234,19 +234,19 @@
                 </style>
 
                 <!-- Filter Form -->
-                <form action="{{ route('admin.dashboard.partai') }}" method="GET" class="filter-form">
-                    <div class="form-group">
+                <form action="{{ route('dashboard.partai') }}" method="GET" class="filter-form">
+                    {{-- <div class="form-group">
                         <label for="provinsi">Provinsi:</label>
                         <select class="form-select" name="provinsi_id" id="provinsi">
                             <option value="">Semua Provinsi</option>
                             @foreach ($provinsis as $provinsi)
                                 <option value="{{ $provinsi->id }}"
-                                    {{ request('provinsi_id') == $provinsi->id ? 'selected' : '' }}>
+                                    {{ request('provinsi_id') == $provinsi->id || $provinsi->name == 'Jawa Barat' ? 'selected' : '' }}>
                                     {{ $provinsi->name }}
                                 </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <label for="kabupaten">Kabupaten:</label>
@@ -333,28 +333,51 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // AJAX for loading dynamic data
         $(document).ready(function() {
-            // Handle Provinsi change
-            $('#provinsi').change(function() {
-                var provinsiId = $(this).val();
+            // ID provinsi Jawa Barat (ubah sesuai dengan database Anda)
+            var jawaBaratId = 9; // Misalnya ID Jawa Barat adalah 9
+
+            // Fungsi untuk memuat Kabupaten berdasarkan ID Provinsi
+            function loadKabupaten(provinsiId) {
                 $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
                 $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
+
                 if (provinsiId) {
                     $.ajax({
-                        url: '/get-kabupaten-home/' + provinsiId,
+                        url: '/get-kabupaten/' + provinsiId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kabupaten').append('<option value="' + value.id +
-                                    '">' + value.name + '</option>');
+                                $('#kabupaten').append('<option value="' + value.id + '">' + value.name + '</option>');
                             });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching Kabupaten data:', error);
                         }
                     });
                 }
+            }
+
+            // Set Provinsi secara otomatis ke Jawa Barat dan load Kabupaten
+            var provinsiSelect = $('#provinsi');
+            var provinsiId = provinsiSelect.val(); // Ambil nilai saat ini di dropdown provinsi
+
+            if (!provinsiId) {
+                // Jika provinsi belum dipilih, otomatis set ke Jawa Barat
+                provinsiSelect.val(jawaBaratId).trigger('change');
+                loadKabupaten(jawaBaratId); // Panggil fungsi untuk load Kabupaten berdasarkan Jawa Barat
+            } else if (provinsiId == jawaBaratId) {
+                // Jika Provinsi sudah dipilih Jawa Barat, langsung load Kabupaten
+                loadKabupaten(jawaBaratId);
+            }
+
+            // Handle Provinsi change secara manual
+            $('#provinsi').change(function() {
+                var selectedProvinsiId = $(this).val();
+                loadKabupaten(selectedProvinsiId);
             });
 
             // Handle Kabupaten change
@@ -363,15 +386,15 @@
                 $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
+
                 if (kabupatenId) {
                     $.ajax({
-                        url: '/get-kecamatan-home/' + kabupatenId,
+                        url: '/get-kecamatan/' + kabupatenId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kecamatan').append('<option value="' + value.id +
-                                    '">' + value.name + '</option>');
+                                $('#kecamatan').append('<option value="' + value.id + '">' + value.name + '</option>');
                             });
                         }
                     });
@@ -383,15 +406,15 @@
                 var kecamatanId = $(this).val();
                 $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
                 $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear RW options
+
                 if (kecamatanId) {
                     $.ajax({
-                        url: '/get-kelurahan-home/' + kecamatanId,
+                        url: '/get-kelurahan/' + kecamatanId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kelurahan').append('<option value="' + value.id +
-                                    '">' + value.name + '</option>');
+                                $('#kelurahan').append('<option value="' + value.id + '">' + value.name + '</option>');
                             });
                         }
                     });
@@ -401,8 +424,7 @@
             // Handle Kelurahan change and fetch RW data
             $('#kelurahan').change(function() {
                 var kelurahanId = $(this).val();
-                var rwSelect = $('#rw');
-                rwSelect.empty().append('<option value="">Pilih RW</option>'); // Clear previous RW options
+                $('#rw').empty().append('<option value="">Pilih RW</option>'); // Clear previous RW options
 
                 if (kelurahanId) {
                     // Fetch RW data via AJAX
@@ -412,8 +434,7 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                rwSelect.append('<option value="' + value.rw + '">' +
-                                    value.rw + '</option>');
+                                $('#rw').append('<option value="' + value.rw + '">' + value.rw + '</option>');
                             });
                         },
                         error: function(error) {
@@ -424,9 +445,6 @@
             });
         });
     </script>
-
-
-
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>

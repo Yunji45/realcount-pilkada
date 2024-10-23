@@ -46,7 +46,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         // Register view
         Fortify::registerView(function () {
-            $roles = Role::whereNotIn('name', ['Super Admin', 'Admin'])
+            $roles = Role::whereNotIn('name', ['Super Admin', 'Admin', 'Pimpinan'])
                          ->pluck('name', 'name')->all();
 
             return view('auth.register', compact('roles'));

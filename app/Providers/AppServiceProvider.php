@@ -25,7 +25,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::authenticateUsing(function (Request $request) {
-            $user = User::where('email', $request->email)->first();
+            // $user = User::where('email', $request->email)->first();
+            $user = User::where('nik', $request->nik)->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
                 if ($user->status !== 'Aktif') {
