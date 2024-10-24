@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\Candidate;
 use App\Models\TpsRealcount;
+use App\Models\filec1;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -69,12 +70,26 @@ class VotingController extends Controller
                 Log::warning('Validation failed.', ['errors' => $validator->errors()]);
                 return back()->withErrors($validator)->withInput();
             }
-
-            $tps = TpsRealcount::find($request->tps_realcount_id);
-            if ($tps && $tps->fileC1()->exists()) {
-                return back()->with('error', 'Voting Untuk TPS Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File C1.')->withInput();
+            $existingVote = Votec1::where('candidate_id', $request->candidate_id)->first();
+            if ($existingVote) {
+                return back()->with('error', 'Kandidat ini sudah memiliki suara dan tidak dapat memberikan suara lagi.')->withInput();
+            }    
+            // $tps = TpsRealcount::find($request->tps_realcount_id);
+            // if ($tps && $tps->fileC1()->exists()) {
+            //     return back()->with('error', 'Voting Untuk TPS Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File C1.')->withInput();
+            // }
+            $hasFileC1 = filec1::where('election_id', $request->election_id)
+                                ->where('tps_realcount_id', $request->tps_realcount_id)
+                                ->whereHas('tpsrealcount', function ($query) use ($request) {
+                                    $query->where('id', $request->tps_realcount_id);
+                                })
+                                ->whereHas('candidate', function ($query) use ($request) {
+                                    $query->where('id', $request->candidate_id);
+                                })
+                                ->exists();
+            if ($hasFileC1) {
+                return back()->with('error', 'Voting Kandidat ini sudah memiliki file C1 untuk pemilihan dan TPS tersebut.')->withInput();
             }
-
             $vote_realcount = Votec1::create([
                 'candidate_id' => $request->candidate_id,
                 'tps_realcount_id' => $request->tps_realcount_id,
