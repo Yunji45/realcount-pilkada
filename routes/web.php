@@ -19,7 +19,7 @@ use App\Http\Controllers\Simpatisan\HomeSimpatisanController;
 use App\Http\Controllers\SuperAdmin\HomeSuperAdminController;
 use App\Http\Controllers\Realcount\TPSController;
 use App\Http\Controllers\Realcount\VotingController;
-use App\Http\Controllers\Realcount\VotingUmumController;
+// use App\Http\Controllers\Realcount\VotingUmumController;
 use App\Http\Controllers\Realcount\D1Controller;
 use App\Http\Controllers\Realcount\C1Controller;
 use App\Http\Controllers\HomeController;
@@ -87,7 +87,7 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
         '/articles' => ArticleController::class,
         '/category_articles' => CategoryArticleController::class,
         '/agenda' => AgendaController::class,
-        '/voting-umum' => VotingUmumController::class
+        // '/voting-umum' => VotingUmumController::class
     ]);
 
     // Route untuk mengambil kelurahan berdasarkan kecamatan
