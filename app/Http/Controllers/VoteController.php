@@ -178,7 +178,6 @@ class VoteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-
     public function destroy(Vote $vote)
     {
         DB::beginTransaction();
@@ -196,6 +195,30 @@ class VoteController extends Controller
             return back()->with('error', 'An unexpected error occurred.');
         }
     }
+
+    public function massDelete(Request $request)
+    {
+        $voteIds = $request->input('selected_ids'); // Ambil array ID dari request
+
+        if (empty($voteIds)) {
+            return redirect()->back()->with('error', 'No votes selected for deletion.');
+        }
+
+        DB::beginTransaction();
+        try {
+            Vote::whereIn('id', $voteIds)->delete(); // Hapus vote berdasarkan ID yang dipilih
+
+            DB::commit();
+            return redirect()->route('vote.index')->with('success', 'Selected votes have been deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error deleting votes.');
+        }
+    }
+
+
+
+
 
     // Mendapatkan polling places berdasarkan kelurahan (AJAX)
     public function getPollingPlaces($kelurahanId)

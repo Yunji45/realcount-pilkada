@@ -351,5 +351,26 @@ class UserController extends Controller
         return response()->json(['success' => 'Status User telah diubah.']);
     }
 
+    public function massDelete(Request $request)
+    {
+        $ids = $request->input('selected_ids'); // Fetch selected IDs
+
+        if ($ids) {
+            try {
+                // Delete Partai by selected IDs
+                User::whereIn('id', $ids)->delete();
+                return redirect()->back()->with('success', 'Selected users deleted successfully.');
+            } catch (\Illuminate\Database\QueryException $e) {
+                if ($e->getCode() == 23000) { // Integrity constraint violation
+                    return redirect()->back()->with('error', 'Some users cannot be deleted because they are associated with other records.');
+                }
+                // Handle other exceptions if necessary
+                return redirect()->back()->with('error', 'An unexpected error occurred while deleting users.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'No users selected for deletion.');
+    }
+
 
 }

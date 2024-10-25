@@ -3,7 +3,7 @@ const map = L.map('map').setView([-6.9320011, 107.5733367], 12);
 
 const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; <a href="http://portofolio-ihya.netlify.app">Ihya Natik W</a>'
+    attribution: '&copy; <a href="https://dpcgerindrakotabandung.com">DPC Gerindra</a>'
 }).addTo(map);
 
 // Kontrol informasi
@@ -100,70 +100,95 @@ function onEachFeature(feature, layer) {
     });
 }
 
-// Ambil data dari API dan tambahkan ke peta
-fetch('http://localhost:8000/api/map')
-    .then(response => response.json())
-    .then(data => {
-        const geojsonData = {
-            "type": "FeatureCollection",
-            "features": data.map(item => {
-                const longitude = parseFloat(item.longitude);
-                const latitude = parseFloat(item.latitude);
-                if (isNaN(longitude) || isNaN(latitude)) {
-                    console.warn(`Invalid coordinates for kelurahan: ${item.kelurahan_name}`);
-                    return null; 
-                }
-                return {
-                    "type": "Feature",
-                    "properties": {
-                        "kelurahan_name": item.kelurahan_name,
-                        "kecamatan_name": item.kecamatan_name,
-                        "kabupaten_name": item.kabupaten_name,
-                        "provinsi_name": item.provinsi_name,
-                        "total_dpt": item.total_dpt,
-                        "parties": item.parties,
-                        "rw": item.rw,
-                    },
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [longitude, latitude]
+// Fungsi untuk memuat data geojson berdasarkan filter
+function loadMapData(filters = {}) {
+    let url = 'https://dpcgerindrakotabandung.com/filter-partai?';
+
+    // Tambahkan filter yang dipilih ke URL
+    if (filters.kabupaten_id) {
+        url += `kabupaten_id=${filters.kabupaten_id}&`;
+    }
+    if (filters.kecamatan_id) {
+        url += `kecamatan_id=${filters.kecamatan_id}&`;
+    }
+    if (filters.kelurahan_id) {
+        url += `kelurahan_id=${filters.kelurahan_id}&`;
+    }
+    if (filters.rw_id) {
+        url += `rw_id=${filters.rw_id}&`;
+    }
+    if (filters.election_id) {
+        url += `election_id=${filters.election_id}&`;
+    }
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const geojsonData = {
+                "type": "FeatureCollection",
+                "features": data.map(item => {
+                    const longitude = parseFloat(item.longitude);
+                    const latitude = parseFloat(item.latitude);
+                    if (isNaN(longitude) || isNaN(latitude)) {
+                        console.warn(`Invalid coordinates for kelurahan: ${item.kelurahan_name}`);
+                        return null; 
                     }
-                };
-            }).filter(item => item !== null)
-        };
-        geojson = L.geoJson(geojsonData, {
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, style(feature));
-            },
-            onEachFeature: onEachFeature
-        }).addTo(map);
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
+                    return {
+                        "type": "Feature",
+                        "properties": {
+                            "kelurahan_name": item.kelurahan_name,
+                            "kecamatan_name": item.kecamatan_name,
+                            "kabupaten_name": item.kabupaten_name,
+                            "provinsi_name": item.provinsi_name,
+                            "total_dpt": item.total_dpt,
+                            "parties": item.parties,
+                            "rw": item.rw,
+                        },
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [longitude, latitude]
+                        }
+                    };
+                }).filter(item => item !== null)
+            };
 
-// Ambil warna partai dari API
-const partiesColors = [];
+            if (geojson) {
+                geojson.clearLayers(); // Bersihkan layer lama sebelum menambahkan yang baru
+            }
 
-// Ambil data dari API untuk warna partai
-fetch('http://localhost:8000/api/color-partai')
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(party => {
-            partiesColors.push({
-                name: party.name,
-                color: party.color
-            });
+            geojson = L.geoJson(geojsonData, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, style(feature));
+                },
+                onEachFeature: onEachFeature
+            }).addTo(map);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
         });
+}
 
-        // Panggil fungsi untuk membuat legenda
-        createLegend(partiesColors);
-    })
-    .catch(error => {
-        console.error('Error fetching party colors:', error);
-    });
+// Ambil event submit dari form filter
+document.getElementById('filter-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // Mencegah form dikirim secara default
 
-// Fungsi untuk membuat legenda berdasarkan partiesColors
+    // Ambil nilai filter dari form
+    const filters = {
+        kabupaten_id: document.getElementById('kabupaten').value,
+        kecamatan_id: document.getElementById('kecamatan').value,
+        kelurahan_id: document.getElementById('kelurahan').value,
+        rw_id: document.getElementById('rw').value,
+        election_id: document.getElementById('election').value,
+    };
+
+    // Muat ulang data peta berdasarkan filter yang dipilih
+    loadMapData(filters);
+});
+
+// Inisialisasi peta pertama kali dengan data default
+loadMapData();
+
+// Fungsi untuk membuat legenda berdasarkan warna partai
 function createLegend(colors) {
     const legend = L.control({ position: 'bottomright' });
 
@@ -185,6 +210,22 @@ function createLegend(colors) {
 
     legend.addTo(map);
 }
+
+// Ambil warna partai dari API
+fetch('https://dpcgerindrakotabandung.com/color-partai')
+    .then(response => response.json())
+    .then(data => {
+        const partiesColors = data.map(party => ({
+            name: party.name,
+            color: party.color
+        }));
+
+        // Panggil fungsi untuk membuat legenda
+        createLegend(partiesColors);
+    })
+    .catch(error => {
+        console.error('Error fetching party colors:', error);
+    });
 
 // Tambahkan kontrol pencarian ke peta
 const geocoder = L.Control.Geocoder.nominatim();

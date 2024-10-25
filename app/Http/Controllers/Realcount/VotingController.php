@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\Candidate;
 use App\Models\TpsRealcount;
+use App\Models\filec1;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -72,13 +73,36 @@ class VotingController extends Controller
         // Mulai transaksi setelah validasi berhasil
         DB::beginTransaction();
         try {
-            // Cek apakah TPS sudah upload file C1
-            $tps = TpsRealcount::find($request->tps_realcount_id);
-            if ($tps && $tps->fileC1()->exists()) {
-                return back()->with('error', 'Voting untuk TPS tersebut sudah tidak bisa dilakukan karena sudah upload file C1.')->withInput();
-            }
+            $validator = Validator::make($request->all(), [
+                'candidate_id' => ['required', 'exists:candidates,id'],
+                'tps_realcount_id' => ['required', 'exists:polling_places,id'],
+                'real_count' => ['required', 'string', 'max:255'],
+            ]);
 
-            // Buat vote realcount
+            if ($validator->fails()) {
+                Log::warning('Validation failed.', ['errors' => $validator->errors()]);
+                return back()->withErrors($validator)->withInput();
+            }
+            $existingVote = Votec1::where('candidate_id', $request->candidate_id)->first();
+            if ($existingVote) {
+                return back()->with('error', 'Kandidat ini sudah memiliki suara dan tidak dapat memberikan suara lagi.')->withInput();
+            }
+            // $tps = TpsRealcount::find($request->tps_realcount_id);
+            // if ($tps && $tps->fileC1()->exists()) {
+            //     return back()->with('error', 'Voting Untuk TPS Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File C1.')->withInput();
+            // }
+            $hasFileC1 = filec1::where('election_id', $request->election_id)
+                                ->where('tps_realcount_id', $request->tps_realcount_id)
+                                ->whereHas('tpsrealcount', function ($query) use ($request) {
+                                    $query->where('id', $request->tps_realcount_id);
+                                })
+                                ->whereHas('candidate', function ($query) use ($request) {
+                                    $query->where('id', $request->candidate_id);
+                                })
+                                ->exists();
+            if ($hasFileC1) {
+                return back()->with('error', 'Voting Kandidat ini sudah memiliki file C1 untuk pemilihan dan TPS tersebut.')->withInput();
+            }
             $vote_realcount = Votec1::create([
                 'candidate_id' => $request->candidate_id,
                 'tps_realcount_id' => $request->tps_realcount_id,
@@ -91,7 +115,7 @@ class VotingController extends Controller
             // Commit transaksi setelah semua berhasil
             DB::commit();
 
-            return redirect()->route('vote-realcount.index')->with('success', 'Vote cast successfully');
+            return redirect()->route('realcount-vote.index')->with('success', 'Vote cast successfully');
         } catch (\Exception $e) {
             // Rollback jika ada kesalahan
             DB::rollBack();

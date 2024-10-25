@@ -19,7 +19,7 @@ use App\Http\Controllers\Simpatisan\HomeSimpatisanController;
 use App\Http\Controllers\SuperAdmin\HomeSuperAdminController;
 use App\Http\Controllers\Realcount\TPSController;
 use App\Http\Controllers\Realcount\VotingController;
-use App\Http\Controllers\Realcount\VotingUmumController;
+// use App\Http\Controllers\Realcount\VotingUmumController;
 use App\Http\Controllers\Realcount\D1Controller;
 use App\Http\Controllers\Realcount\C1Controller;
 use App\Http\Controllers\HomeController;
@@ -74,7 +74,6 @@ Route::middleware(['verified', 'auth', 'role:Koordinator'])->name('koordinator.'
     Route::resources([]);
 });
 // END: KOORDINATOR
-
 Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->group(function () {
     Route::get('/dashboard/perorangan', [HomeController::class, 'indexPerorangan'])->name('dashboard.perorangan');
     Route::get('/dashboard/partai', [HomeController::class, 'indexPartai'])->name('dashboard.partai');
@@ -89,7 +88,7 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
         '/articles' => ArticleController::class,
         '/category_articles' => CategoryArticleController::class,
         '/agenda' => AgendaController::class,
-        '/voting-umum' => VotingUmumController::class
+        // '/voting-umum' => VotingUmumController::class
     ]);
 
     // Route untuk mengambil kelurahan berdasarkan kecamatan
@@ -143,8 +142,27 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('/berita/all', [ArticleController::class, 'showLandingPageAll'])->name('berita.all');
     Route::get('/berita/{id}', [ArticleController::class, 'showDetail'])->name('berita.detail');
 
+    Route::get('map',[MapController::class,'index'])->name('map');
+    Route::get('color-partai',[MapController::class,'getcolor'])->name('color');
+    Route::get('filter-partai',[MapController::class,'filter'])->name('filter');
+
+    //OCR & TERRACOTR
     Route::get('/pdf', [PDFController::class, 'index'])->name('pdf');
     Route::post('/upload-pdf', [PDFController::class, 'upload'])->name('pdf.upload');
+
 });
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
+
+//Funsi Delete Selection
+Route::post('/users/massdelete', [UserController::class, 'massDelete'])->name('users.massDelete');
+Route::post('/permissions/massdelete', [PermissionController::class, 'massDelete'])->name('permissions.massDelete');
+Route::post('/partai/massdelete', [PartaiController::class, 'massDelete'])->name('partai.massDelete');
+Route::post('/tps/massDelete', [PollingPlaceController::class, 'massDelete'])->name('tps.massDelete');
+Route::post('/votes/massDelete', [VoteController::class, 'massDelete'])->name('vote.massDelete');
+
+Route::delete('roles/massdelete', [RoleController::class, 'massDelete'])->name('role.massDelete');
+Route::delete('/article/massDelete', [ArticleController::class, 'massDelete'])->name('article.massDelete');
+Route::delete('/category_article/massDelete', [CategoryArticleController::class, 'massDelete'])->name('category_article.massDelete');
+Route::delete('/elections/massdelete', [ElectionController::class, 'massDelete'])->name('election.massDelete');
+Route::delete('/candidates/massDelete', [CandidateController::class, 'massDelete'])->name('candidates.massDelete');
 

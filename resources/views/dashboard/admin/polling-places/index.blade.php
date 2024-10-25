@@ -61,43 +61,252 @@
                         </a> --}}
                     </div>
                     <div class="card-body">
+                        <form id="massDeleteForm" action="{{ route('vote.massDelete') }}" method="POST">
+                            @csrf
+                            <div class="table-responsive">
+                                @can('Delete TPS')
+                                <button type="button" class="btn btn-danger btn-sm mb-4" style="margin-left:10px"
+                                    id="massDelete" disabled>
+                                    Delete Selected &nbsp;&nbsp;<i class="fas fa-trash-alt"></i>
+                                </button>
+                                @endcan
 
-                        <div class="table-responsive">
-                            <table id="tableTps" class="display table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama TPS</th>
-                                        <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>DPT</th>
-                                        <th>RW</th>
-                                        <th>Latitude</th>
-                                        <th>Longitude</th>
-                                        <th>Periode</th>
-                                        <th>Status</th>
-                                        <th style="width: 10%">Action</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama TPS</th>
-                                        <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>DPT</th>
-                                        <th>RW</th>
-                                        <th>Latitude</th>
-                                        <th>Longitude</th>
-                                        <th>Periode</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-
+                                <table id="tableVote" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" id="selectAll"> <!-- Checkbox untuk select all -->
+                                            </th>
+                                            <th>No</th>
+                                            <th>ID TPS</th>
+                                            <th>Nama Candidat</th>
+                                            <th>Nama TPS</th>
+                                            <th>Nama Partai</th>
+                                            <th>Nama Pemilu</th>
+                                            <th>Kecamatan</th>
+                                            <th>Kelurahan</th>
+                                            <th>Vote</th>
+                                            <th style="width: 10%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- Data di-load melalui DataTables --}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
                     </div>
+
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        $(document).ready(function() {
+                            var table = $('#tableVote').DataTable({
+                                processing: true,
+                                serverSide: true,
+                                ajax: "{{ route('vote.index') }}", // URL untuk memuat data dari server
+                                columns: [{
+                                        data: null,
+                                        render: function(data, type, row) {
+                                            return `  @can('Delete TPS') <input type="checkbox" class="vote-checkbox" value="${row.id}" name="ids[]"> @endcan`;
+                                        }
+                                    },
+                                    {
+                                        data: null,
+                                        render: function(data, type, row, meta) {
+                                            var start = table.page.info().start;
+                                            return start + meta.row + 1;
+                                        }
+                                    },
+                                    {
+                                        data: 'polling_place_id'
+                                    },
+                                    {
+                                        data: 'candidate.name'
+                                    },
+                                    {
+                                        data: 'polling_place.name'
+                                    },
+                                    {
+                                        data: 'candidate.partai.name'
+                                    },
+                                    {
+                                        data: 'candidate.election.name'
+                                    },
+                                    {
+                                        data: 'polling_place.kecamatan.name'
+                                    },
+                                    {
+                                        data: 'polling_place.kelurahan.name'
+                                    },
+                                    {
+                                        data: 'vote_count'
+                                    },
+                                    {
+                                        data: null,
+                                        render: function(data, type, row) {
+                                            return `
+                                                <div class="form-button-action">
+                                                    @can('Edit Vote')
+                                                    <a href="/vote/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    @endcan
+                                                    @can('Delete TPS')
+                                                    <form action="/tps/${row.id}" method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this TPS?')">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                    @endcan
+                                                </div>`;
+                                        }
+                                    }
+                                ]
+                            });
+
+                            // Event listener untuk select all checkbox
+                            $('#selectAll').on('click', function() {
+                                var rows = table.rows({
+                                    'search': 'applied'
+                                }).nodes();
+                                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                                toggleBulkDeleteButton();
+                            });
+
+                            // Event listener untuk checkbox per baris
+                            $('#tableVote tbody').on('change', 'input[type="checkbox"]', function() {
+                                if (!this.checked) {
+                                    var el = $('#selectAll').get(0);
+                                    if (el && el.checked && ('indeterminate' in el)) {
+                                        el.indeterminate = true;
+                                    }
+                                }
+                                toggleBulkDeleteButton();
+                            });
+
+                            // Aktifkan atau nonaktifkan tombol bulk delete berdasarkan checkbox yang dipilih
+                            function toggleBulkDeleteButton() {
+                                var selected = [];
+                                $('#tableVote tbody input[type="checkbox"]:checked').each(function() {
+                                    selected.push($(this).val());
+                                });
+
+                                if (selected.length > 0) {
+                                    $('#massDelete').prop('disabled', false);
+                                } else {
+                                    $('#massDelete').prop('disabled', true);
+                                }
+                            }
+
+                            // Konfirmasi penghapusan massal
+                            $('#massDelete').on('click', function() {
+                                var selectedIds = [];
+                                $('#tableVote tbody input[type="checkbox"]:checked').each(function() {
+                                    selectedIds.push($(this).val());
+                                });
+
+                                if (selectedIds.length === 0) {
+                                    // Tampilkan SweetAlert jika tidak ada yang dipilih
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'No Votes Selected',
+                                        text: 'Please select at least one vote to delete.',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    return;
+                                }
+
+                                // Konfirmasi dengan SweetAlert2
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: "You won't be able to revert this!",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#d33',
+                                    cancelButtonColor: '#3085d6',
+                                    confirmButtonText: 'Yes, delete it!'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Kirim ID yang dipilih ke server untuk dihapus
+                                        $.ajax({
+                                            url: "{{ route('vote.massDelete') }}",
+                                            type: 'POST',
+                                            data: {
+                                                _token: '{{ csrf_token() }}',
+                                                selected_ids: selectedIds
+                                            },
+                                            success: function(response) {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Deleted!',
+                                                    text: response.message,
+                                                    confirmButtonText: 'OK'
+                                                }).then(() => {
+                                                    location
+                                                .reload(); // Refresh halaman untuk mencerminkan perubahan
+                                                });
+                                            },
+                                            error: function(xhr) {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error!',
+                                                    text: xhr.responseJSON.message,
+                                                    confirmButtonText: 'OK'
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+
+                            // Fungsi untuk konfirmasi penghapusan individu
+                            function confirmDelete(voteId) {
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: "You won't be able to revert this!",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#d33',
+                                    cancelButtonColor: '#3085d6',
+                                    confirmButtonText: 'Yes, delete it!'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Kirim permintaan DELETE
+                                        $.ajax({
+                                            url: `/vote/${voteId}`,
+                                            type: 'POST',
+                                            data: {
+                                                _token: '{{ csrf_token() }}',
+                                                _method: 'DELETE'
+                                            },
+                                            success: function(response) {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Deleted!',
+                                                    text: response.message,
+                                                    confirmButtonText: 'OK'
+                                                }).then(() => {
+                                                    location.reload(); // Refresh halaman
+                                                });
+                                            },
+                                            error: function(xhr) {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error!',
+                                                    text: xhr.responseJSON.message,
+                                                    confirmButtonText: 'OK'
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+
 
                     <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
@@ -136,8 +345,8 @@
                                 <!--begin::Modal body-->
                                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                     <!--begin::Form-->
-                                    <form class="row g-3 needs-validation" method="POST" action="{{ route('tps.import') }}"
-                                        enctype="multipart/form-data" novalidate>
+                                    <form class="row g-3 needs-validation" method="POST"
+                                        action="{{ route('tps.import') }}" enctype="multipart/form-data" novalidate>
                                         @csrf
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
@@ -172,118 +381,4 @@
             </div>
         </div>
     </div>
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Ambil nilai lengthMenu dan halaman terakhir dari localStorage
-            var selectedLength = localStorage.getItem('selectedLength') ||
-                10; // Default ke 10 jika tidak ada nilai di localStorage
-            var lastPage = localStorage.getItem('lastPage') ||
-                0; // Default ke 0 jika tidak ada nilai di localStorage (halaman pertama)
-
-            // Inisialisasi DataTable dengan server-side processing
-            var table = $('#tableTps').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('tps.index') }}", // URL untuk request data
-                    type: 'GET',
-                    data: function(d) {
-                        d.start = d.start; // Baris awal (untuk paginasi)
-                        d.length = parseInt(
-                            selectedLength); // Panjang (jumlah baris per halaman dari localStorage)
-                        d.draw = d.draw; // Nomor draw
-                    },
-                    dataSrc: function(json) {
-                        return json.data; // Data yang dikembalikan dari server
-                    }
-                },
-                columns: [{
-                        data: null,
-                        render: function(data, type, row, meta) {
-                            // Nomor berurutan yang memperhitungkan halaman
-                            var start = table.page.info().start;
-                            return start + meta.row + 1;
-                        }
-                    },
-                    {
-                        data: 'name'
-                    },
-                    {
-                        data: 'kecamatan.name'
-                    },
-                    {
-                        data: 'kelurahan.name'
-                    },
-                    {
-                        data: 'dpt'
-                    },
-                    {
-                        data: 'rw'
-                    },
-                    {
-                        data: 'latitude'
-                    },
-                    {
-                        data: 'longitude'
-                    },
-                    {
-                        data: 'periode'
-                    },
-                    {
-                        data: 'status'
-                    },
-                    {
-                        data: null,
-                        render: function(data, type, row) {
-                            return `
-                            <div class="form-button-action">
-                            @can('Edit TPS')
-                                <a href="/tps/${row.id}/edit" class="btn btn-warning btn-sm" style="margin-right:10px">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            @endcan
-                            @can('Delete TPS')
-                            <form action="/tps/${row.id}" method="POST" style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this TPS?')">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                            @endcan
-                           </div>`;
-                        }
-                    }
-                ],
-                paging: true,
-                pageLength: parseInt(selectedLength), // Panjang halaman dari localStorage
-                lengthMenu: [5, 10, 25, 50, 100], // Pilihan jumlah data yang ditampilkan
-                displayStart: parseInt(lastPage) *
-                    selectedLength, // Memulai dari halaman terakhir yang tersimpan
-                order: [
-                    [1, 'asc']
-                ]
-            });
-
-            // Ketika panjang data diubah, simpan ke localStorage dan refresh tabel
-            $('#tableTps').on('length.dt', function(e, settings, len) {
-                localStorage.setItem('selectedLength', len);
-                table.page.len(len).draw(false); // Reload tabel dengan jumlah baris yang baru
-            });
-
-            // Simpan halaman terakhir yang diakses ke localStorage setiap kali pagination berubah
-            $('#tableTps').on('page.dt', function() {
-                var info = table.page.info();
-                localStorage.setItem('lastPage', info.page);
-            });
-
-            // Custom search input
-            $('#tableSearch').on('keyup', function() {
-                table.search(this.value).draw(); // Pencarian otomatis saat mengetik
-            });
-        });
-    </script>
 @endsection

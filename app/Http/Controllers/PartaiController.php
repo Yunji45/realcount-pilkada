@@ -165,6 +165,12 @@ class PartaiController extends Controller
     {
         DB::beginTransaction();
         try {
+            // Hapus file logo jika ada
+            if ($partai->logo && Storage::exists($partai->logo)) {
+                Storage::delete($partai->logo);
+            }
+
+            // Hapus partai dari database
             $partai->delete();
 
             DB::commit();
@@ -178,4 +184,26 @@ class PartaiController extends Controller
             return back()->with('error', 'An unexpected error occurred.');
         }
     }
+
+    public function massDelete(Request $request)
+    {
+        $ids = $request->input('selected_ids'); // Fetch selected IDs
+
+        if ($ids) {
+            try {
+                // Delete Partai by selected IDs
+                Partai::whereIn('id', $ids)->delete();
+                return redirect()->back()->with('success', 'Selected partai deleted successfully.');
+            } catch (\Illuminate\Database\QueryException $e) {
+                if ($e->getCode() == 23000) { // Integrity constraint violation
+                    return redirect()->back()->with('error', 'Some partai cannot be deleted because they are associated with other records.');
+                }
+                // Handle other exceptions if necessary
+                return redirect()->back()->with('error', 'An unexpected error occurred while deleting partai.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'No partai selected for deletion.');
+    }
+
 }
