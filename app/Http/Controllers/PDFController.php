@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Spatie\PdfToImage\Pdf;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use Intervention\Image\Facades\Image;
 
@@ -13,48 +11,27 @@ class PDFController extends Controller
 {
     public function index()
     {
-        $title = "PDF OCR";
+        $title = "Image OCR";
         return view('dashboard.admin.realcount.ocr.index', compact('title'));
     }
 
     public function upload(Request $request)
     {
-        $title = "PDF OCR AFTER GENERATE";
+        $title = "Image OCR AFTER GENERATE";
 
+        // Validasi gambar yang diupload
         $request->validate([
-            'pdf_file' => 'required|mimes:pdf|max:10000'
+            'image_file' => 'required|mimes:jpeg,jpg,png|max:5000'
         ]);
 
-        $pdfPath = $request->file('pdf_file')->store('pdfs');
-        $fullPdfPath = storage_path('app/' . $pdfPath);
+        // Simpan gambar yang diupload
+        $imagePath = $request->file('image_file')->store('images');
+        $fullImagePath = storage_path('app/' . $imagePath);
 
-        $pdf = new Pdf($fullPdfPath);
-        $imagePath = storage_path('app/images');
-        if (!file_exists($imagePath)) {
-            mkdir($imagePath, 0755, true);
-        }
-
-        // $data = [];
-        // for ($page = 1; $page <= $pdf->getNumberOfPages(); $page++) {
-        //     $imageName = 'pdf_image_page_' . $page . '.jpg';
-        //     $imageFullPath = $imagePath . '/' . $imageName;
-        //     $pdf->setPage($page)->saveImage($imageFullPath);
-
-        //     // Ekstrak informasi yang dibutuhkan
-        //     $data['lokasi'] = $this->extractLocation($imageFullPath);
-        //     $data['data_pemilih'] = $this->extractPemilihData($imageFullPath);
-        // }
+        // Ekstrak informasi dari gambar menggunakan TesseractOCR
         $data = [];
-
-        // Hanya memproses halaman pertama
-        $page = 1;
-        $imageName = 'pdf_image_page_' . $page . '.jpg';
-        $imageFullPath = $imagePath . '/' . $imageName;
-        $pdf->setPage($page)->saveImage($imageFullPath);
-
-        // Ekstrak informasi yang dibutuhkan dari halaman pertama
-        $data['lokasi'] = $this->extractLocation($imageFullPath);
-        $data['data_pemilih'] = $this->extractPemilihData($imageFullPath);
+        $data['lokasi'] = $this->extractLocation($fullImagePath);
+        $data['data_pemilih'] = $this->extractPemilihData($fullImagePath);
 
         return view('dashboard.admin.realcount.ocr.index', [
             'location_data' => $data['lokasi'],
@@ -95,28 +72,22 @@ class PDFController extends Controller
     {
         $ocr = new TesseractOCR($imagePath);
         $ocr->lang('ind');
-        $ocr->allowlist(range(0, 9)); // Hanya mengizinkan angka
+        $ocr->allowlist(range(0, 9));
 
-        // Jalankan OCR untuk mengekstrak semua teks dari gambar
         $pemilihText = $ocr->run();
-        $pemilihText = str_replace(['l', 'I'], '1', $pemilihText); // Mengganti "l" atau "I" dengan "1"
+        $pemilihText = str_replace(['l', 'I'], '1', $pemilihText);
 
-
-        // Debug untuk melihat hasil dari OCR
         Log::info('OCR Pemilih Text: ' . $pemilihText);
 
-        // Ekstrak digit dari masing-masing kolom (Laki-laki, Perempuan, L+P) dan gabungkan
         $pemilihData = [
             'dpt_laki' => $this->getCombinedDigits($pemilihText, '/1. Jumlah pengguna hak pilih dalam Daftar Pemilih Tetap (DPT).*L\s(\d)\s(\d)\s(\d)/'),
             'dpt_perempuan' => $this->getCombinedDigits($pemilihText, '/1. Jumlah pengguna hak pilih dalam Daftar Pemilih Tetap (DPT).*P\s(\d)\s(\d)\s(\d)/'),
             'dpt_jumlah' => $this->getCombinedDigits($pemilihText, '/1. Jumlah pengguna hak pilih dalam Daftar Pemilih Tetap (DPT).*L\+P\s(\d)\s(\d)\s(\d)/'),
 
-            // Pengguna Hak Pilih
             'dptb_laki' => $this->getCombinedDigits($pemilihText, '/Jumlah pengguna hak pilih.*L\s(\d)\s(\d)\s(\d)/'),
             'dptb_perempuan' => $this->getCombinedDigits($pemilihText, '/Jumlah pengguna hak pilih.*P\s(\d)\s(\d)\s(\d)/'),
             'dptb_jumlah' => $this->getCombinedDigits($pemilihText, '/Jumlah pengguna hak pilih.*L\+P\s(\d)\s(\d)\s(\d)/'),
 
-            // Pengguna Hak Pilih Khusus
             'dpk_laki' => $this->getCombinedDigits($pemilihText, '/Jumlah pengguna hak pilih khusus.*L\s(\d)\s(\d)\s(\d)/'),
             'dpk_perempuan' => $this->getCombinedDigits($pemilihText, '/Jumlah pengguna hak pilih khusus.*P\s(\d)\s(\d)\s(\d)/'),
             'dpk_jumlah' => $this->getCombinedDigits($pemilihText, '/Jumlah pengguna hak pilih khusus.*L\+P\s(\d)\s(\d)\s(\d)/'),
@@ -125,7 +96,6 @@ class PDFController extends Controller
         return $pemilihData;
     }
 
-    // Fungsi untuk menggabungkan angka dari regex match
     private function getCombinedDigits($text, $pattern)
     {
         if (preg_match($pattern, $text, $matches)) {
@@ -135,5 +105,4 @@ class PDFController extends Controller
         Log::info('No Match Found for Pattern: ' . $pattern);
         return '';
     }
-
 }
