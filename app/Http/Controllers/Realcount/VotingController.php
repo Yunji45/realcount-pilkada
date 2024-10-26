@@ -9,6 +9,7 @@ use Illuminate\Database\QueryException;
 use App\Models\Candidate;
 use App\Models\TpsRealcount;
 use App\Models\filec1;
+use App\Models\Vote;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -45,8 +46,8 @@ class VotingController extends Controller
 
     public function create()
     {
-        $candidates = Candidate::with('partai', 'election')
-            ->get();
+        $candidateIds = Vote::pluck('candidate_id');
+        $candidates = Candidate::whereNotIn('id', $candidateIds)->get();
         $pollingPlaces = TpsRealcount::all();
         $provinsis = Provinsi::all();
         $title = "Suara Realcount";
@@ -91,17 +92,13 @@ class VotingController extends Controller
             // if ($tps && $tps->fileC1()->exists()) {
             //     return back()->with('error', 'Voting Untuk TPS Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File C1.')->withInput();
             // }
-            $hasFileC1 = filec1::where('election_id', $request->election_id)
-                                ->where('tps_realcount_id', $request->tps_realcount_id)
-                                ->whereHas('tpsrealcount', function ($query) use ($request) {
-                                    $query->where('id', $request->tps_realcount_id);
-                                })
-                                ->whereHas('candidate', function ($query) use ($request) {
-                                    $query->where('id', $request->candidate_id);
-                                })
-                                ->exists();
+            $candidate = Candidate::find(id:  $request->candidate_id);
+            $hasFileC1 = filec1::where('election_id', $candidate->election_id)
+                ->where('tps_realcount_id', $request->tps_realcount_id)
+                ->exists();
+    
             if ($hasFileC1) {
-                return back()->with('error', 'Voting Kandidat ini sudah memiliki file C1 untuk pemilihan dan TPS tersebut.')->withInput();
+                return back()->with('error', 'Voting tidak dapat dilakukan karena file C1 untuk TPS terkait dan pemilihan sudah ada.')->withInput();
             }
             $vote_realcount = Votec1::create([
                 'candidate_id' => $request->candidate_id,

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Realcount;
 use App\Http\Controllers\Controller;
 use App\Models\Filec1;
 use App\Models\Filed1;
+use App\Models\Election;
 use App\Models\Provinsi;
 use App\Models\TpsRealcount;
 use Illuminate\Http\Request;
@@ -44,8 +45,9 @@ class C1Controller extends Controller
         $title = 'File C1';
         $type = 'Tambah';
         $pollingPlaces = TpsRealcount::all();
+        $pemilihan = Election::all();
         $provinsis = Provinsi::all();
-        return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis'));
+        return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis','pemilihan'));
     }
 
     //PR validasi compare PDF antara file 1 dengan file upload
@@ -55,6 +57,7 @@ class C1Controller extends Controller
         try {
             $request->validate([
                 'tps_realcount_id' => 'required|exists:tps_realcounts,id',
+                'election_id' => 'required|exists:elections,id',
                 'file' => 'required|file|mimes:jpeg,png,pdf|max:5120',
             ]);
             Log::info('Validasi berhasil.', ['tps_realcount_id' => $request->tps_realcount_id]);
@@ -75,6 +78,7 @@ class C1Controller extends Controller
 
                 Filec1::create([
                     'tps_realcount_id' => $request->tps_realcount_id,
+                    'election_id' => $request->election_id,
                     'file' => $path
                 ]);
                 DB::commit();
