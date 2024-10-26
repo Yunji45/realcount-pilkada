@@ -135,6 +135,18 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-6 col-lg-2">
+                                    <div class="form-group">
+                                        <label for="polling_place_id">Nama Pemilihan</label>
+                                        <select name="election_id" class="form-control" id="election_id" required>
+                                            <option value="" selected disabled>Pilih Pemilihan</option>
+                                            @foreach ($pemilihan as $item)
+                                                <option value="{{ $item->id }}" >{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
 
 
                                 <!-- Input File -->
