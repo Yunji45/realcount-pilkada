@@ -40,7 +40,7 @@ class RealcountController extends Controller
                             ->get();
         $groupedByElection = [];
         foreach ($candidateId as $item) {
-            $electionId = $item->candidate->election_id; 
+            $electionId = $item->candidate->election_id;
             $electionName = $item->candidate->election->name ?? 'Unknown';
             if (!isset($groupedByElection[$electionId])) {
                 $groupedByElection[$electionId] = [
@@ -80,7 +80,7 @@ class RealcountController extends Controller
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 $path = $file->store('C1');
-                
+
                 filec1::create([
                     'polling_place_id' => $request->polling_place_id,
                     'file' => $path
