@@ -69,6 +69,7 @@ class CreateNewUser implements CreatesNewUsers
                 'name' => $user->name,
                 'email' => $user->email,
                 'nik' => $user->nik,
+                'password' => $input['password'],
                 'address' => $user->address
             ];
             Mail::to($user->email)->send(new RegistrasiEmail($emailData));

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use App\Models\Filec1;
 use App\Models\Election;
+use App\Models\Vote;
 use App\Models\Provinsi;
 use App\Models\TpsRealcount;
 use App\Models\Votec1;
@@ -52,7 +53,15 @@ class C1Controller extends Controller
         $title = 'File C1';
         $type = 'Tambah';
         $pollingPlaces = TpsRealcount::all();
-        $pemilihan = Election::all();
+        $usedElectionIds = Vote::pluck('candidate_id')
+                            ->unique()
+                            ->map(function ($candidateId) {
+                                return Candidate::where('id', $candidateId)->value('election_id');
+                            })
+                            ->filter()
+                            ->unique();
+        // $pemilihan = Election::all();
+        $pemilihan = Election::whereNotIn('id', $usedElectionIds)->get();
         $provinsis = Provinsi::all();
         return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis', 'pemilihan'));
     }

@@ -39,6 +39,7 @@
             <li><strong>Nama:</strong> {{ $data['name'] }}</li>
             <li><strong>Email:</strong> {{ $data['email'] }}</li>
             <li><strong>Nik:</strong> {{ $data['nik'] }}</li>
+            <li><strong>Password:</strong> {{ $data['password'] }}</li>
             <li><strong>Alamat:</strong> {{ $data['address'] }}</li>
         </ul>
         <p>Jika Anda memiliki pertanyaan atau butuh bantuan, jangan ragu untuk menghubungi kami.</p>
