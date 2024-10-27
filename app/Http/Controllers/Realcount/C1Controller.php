@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Realcount;
 
 use App\Http\Controllers\Controller;
+use App\Models\Candidate;
 use App\Models\Filec1;
 use App\Models\Filed1;
 use App\Models\Election;
@@ -16,6 +17,12 @@ use Illuminate\Support\Facades\Validator;
 
 class C1Controller extends Controller
 {
+    public function getCandidatesByElection($election_id)
+    {
+        $candidates = Candidate::where('election_id', $election_id)->get();
+        return response()->json($candidates);
+    }
+
     //revisi pada pembagian role berdasarkan role dan dibuat 1 page
     public function index(Request $request)
     {
@@ -47,7 +54,7 @@ class C1Controller extends Controller
         $pollingPlaces = TpsRealcount::all();
         $pemilihan = Election::all();
         $provinsis = Provinsi::all();
-        return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis','pemilihan'));
+        return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis', 'pemilihan'));
     }
 
     //PR validasi compare PDF antara file 1 dengan file upload
@@ -91,6 +98,8 @@ class C1Controller extends Controller
             return redirect()->back()->with('error', 'Gagal mengupload file.');
         }
     }
+
+
 
     public function show($id) {}
 

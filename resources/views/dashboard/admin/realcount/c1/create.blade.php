@@ -201,22 +201,16 @@
                                         <div class="form-group mb-2">
                                             <label for="jenis_pemilihan">Jenis Pemilihan:</label>
                                             <select class="form-select" name="election_id" id="election">
-                                                <option value="">Pilih Pemilu</option>
+                                                <option value="" selected disabled>Pilih Pemilu</option>
                                                 @foreach ($pemilihan as $election)
-                                                    <option value="{{ $election->id }}"
-                                                        {{ request('election_id') == $election->id ? 'selected' : '' }}>
+                                                    <option value="{{ $election->id }}">
                                                         {{ $election->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
 
-                                        <!-- Candidate vote fields -->
-                                        <div class="form-group mb-2">
-                                            <label for="">Suara Kandidat :</label>
-                                            <input type="text" name="vote" id="vote" class="form-control"
-                                                placeholder="vote Kandidat">
-                                        </div>
+                                        <div id="candidate-votes-container"></div>
 
                                         <!-- File Upload and Preview Section -->
                                         <div class="form-group mb-2">
@@ -423,6 +417,38 @@
         });
     </script>
 
+    {{-- Pemilihan Pemilu --}}
+    <script>
+        $('#election').on('change', function() {
+            let electionId = $(this).val();
+            if (electionId) {
+                $.ajax({
+                    url: `/get-candidates-by-election/${electionId}`,
+                    type: 'GET',
+                    success: function(candidates) {
+                        $('#candidate-votes-container').empty(); // Clear previous fields
+
+                        if (candidates.length > 0) {
+                            candidates.forEach(candidate => {
+                                $('#candidate-votes-container').append(`
+                                    <div class="form-group mb-2">
+                                        <label for="vote_${candidate.id}">Suara Kandidat (${candidate.name}):</label>
+                                        <input type="text" name="votes[${candidate.id}]" id="vote_${candidate.id}" class="form-control" placeholder="Vote Kandidat">
+                                    </div>
+                                `);
+                            });
+                        } else {
+                            $('#candidate-votes-container').append(
+                                '<p>Tidak ada kandidat untuk pemilihan ini.</p>');
+                        }
+                    }
+                });
+            } else {
+                $('#candidate-votes-container').empty();
+            }
+        });
+    </script>
+
     {{-- Upload PDF --}}
     <script>
         document.getElementById('file_or_photo_input').addEventListener('change', function(e) {
@@ -559,4 +585,5 @@
             }
         });
     </script>
+
 @endsection
