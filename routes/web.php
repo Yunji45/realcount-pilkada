@@ -98,6 +98,8 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
     Route::get('/get-rw/{kelurahanId}', [HomeController::class, 'getRw'])->name('get-rw');
     Route::get('/get-polling-places/{kelurahanId}', [VoteController::class, 'getPollingPlaces']);
     Route::get('/get-realcount-tps/{kelurahanId}', [VotingController::class, 'getTpsRealCount']);
+    Route::get('/get-candidates-by-election/{election_id}', [C1Controller::class, 'getCandidatesByElection']);
+
 
     Route::get('/category/{category}', [ArticleController::class, 'showByCategory'])->name('category.show');
     Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
