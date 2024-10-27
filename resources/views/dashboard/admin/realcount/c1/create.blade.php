@@ -218,14 +218,13 @@
                                                 placeholder="vote Kandidat">
                                         </div>
 
-                                        <!-- File/Foto Input -->
+                                        <!-- File Upload and Preview Section -->
                                         <div class="form-group mb-2">
                                             <label for="file">File or Photo :</label>
                                             <input type="file" name="file" class="form-control"
                                                 id="file_or_photo_input" accept="application/pdf,image/*" required />
-                                            <small class="form-text text-muted">Max: 5MB. Only PDF or image files
-                                                (JPEG, PNG)
-                                                allowed.</small>
+                                            <small class="form-text text-muted">Max: 5MB. Only PDF or image files (JPEG,
+                                                PNG) allowed.</small>
                                         </div>
                                     </div>
 
@@ -240,10 +239,30 @@
                                                 <img id="image-preview" class="w-100"
                                                     style="height: 500px; border: 1px solid #ccc; display: none;" />
                                                 <p id="file-name" class="mt-2 text-center"></p>
-                                                <button type="button" class="btn btn-info btn-sm" id="open-modal">View
-                                                    Full</button>
+
+                                                <!-- Loading Spinner for Scan -->
+                                                <div class="text-center mt-3" id="loading-spinner"
+                                                    style="display: none;">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                    <p>Memproses, harap tunggu...</p>
+                                                </div>
+
+                                                <!-- Verification Status -->
+                                                <div id="verification-status" class="mt-4 text-center"
+                                                    style="display: none;">
+                                                    <i id="status-icon" class="fas fa-check-circle"></i>
+                                                    <span id="status-text"></span>
+                                                </div>
+
+                                                <button type="button" class="btn btn-info btn-sm" id="open-modal">
+                                                    View Full
+                                                </button>
                                                 <button type="button" class="btn btn-success btn-sm"
-                                                    id="open-modal">Scan File/Photo</button>
+                                                    id="scan-file-photo">
+                                                    Scan File/Photo
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -269,7 +288,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -285,196 +303,260 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            let currentStep = 0;
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@v2.1.0/dist/tesseract.min.js"></script>
+
+    {{-- WIZARD STEP --}}
+    <script>
+        let currentStep = 0;
+        showStep(currentStep);
+
+        function showStep(step) {
+            const steps = document.getElementsByClassName("step");
+            const indicators = document.getElementsByClassName("indicator");
+
+            // Hide all steps
+            Array.from(steps).forEach(s => s.classList.remove("active"));
+            steps[step].classList.add("active");
+
+            // Update indicators
+            Array.from(indicators).forEach(i => i.classList.remove("active"));
+            indicators[step].classList.add("active");
+
+            // Toggle button visibility
+            document.getElementById("prevBtn").style.display = step > 0 ? "inline" : "none";
+            document.getElementById("nextBtn").style.display = step < steps.length - 1 ? "inline" : "none";
+            document.getElementById("submitBtn").style.display = step === steps.length - 1 ? "inline" : "none";
+        }
+
+        function nextPrev(n) {
+            currentStep += n;
             showStep(currentStep);
+        }
+    </script>
 
-            function showStep(step) {
-                const steps = document.getElementsByClassName("step");
-                const indicators = document.getElementsByClassName("indicator");
-
-                // Hide all steps
-                Array.from(steps).forEach(s => s.classList.remove("active"));
-                steps[step].classList.add("active");
-
-                // Update indicators
-                Array.from(indicators).forEach(i => i.classList.remove("active"));
-                indicators[step].classList.add("active");
-
-                // Toggle button visibility
-                document.getElementById("prevBtn").style.display = step > 0 ? "inline" : "none";
-                document.getElementById("nextBtn").style.display = step < steps.length - 1 ? "inline" : "none";
-                document.getElementById("submitBtn").style.display = step === steps.length - 1 ? "inline" : "none";
-            }
-
-            function nextPrev(n) {
-                currentStep += n;
-                showStep(currentStep);
-            }
-        </script>
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('#provinsi').change(function() {
-                    var provinsiId = $(this).val();
-                    $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
-                    $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
-                    $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
-                    if (provinsiId) {
-                        $.ajax({
-                            url: '/get-kabupaten/' + provinsiId,
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function(data) {
-                                $.each(data, function(key, value) {
-                                    $('#kabupaten').append('<option value="' + value.id +
-                                        '">' + value.name + '</option>');
-                                });
-                            }
-                        });
-                    }
-                });
-
-                $('#kabupaten').change(function() {
-                    var kabupatenId = $(this).val();
-                    $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
-                    $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
-                    if (kabupatenId) {
-                        $.ajax({
-                            url: '/get-kecamatan/' + kabupatenId,
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function(data) {
-                                $.each(data, function(key, value) {
-                                    $('#kecamatan').append('<option value="' + value.id +
-                                        '">' + value.name + '</option>');
-                                });
-                            }
-                        });
-                    }
-                });
-
-                $('#kecamatan').change(function() {
-                    var kecamatanId = $(this).val();
-                    $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
-                    if (kecamatanId) {
-                        $.ajax({
-                            url: '/get-kelurahan/' + kecamatanId,
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function(data) {
-                                $.each(data, function(key, value) {
-                                    $('#kelurahan').append('<option value="' + value.id +
-                                        '">' + value.name + '</option>');
-                                });
-                            }
-                        });
-                    }
-                });
-
-                $('#kelurahan').change(function() {
-                    var kelurahanId = $(this).val();
-                    $('#polling_place').empty().append('<option value="">Pilih TPS</option>');
-                    if (kelurahanId) {
-                        $.ajax({
-                            url: '/get-realcount-tps/' + kelurahanId,
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function(data) {
-                                $.each(data, function(key, value) {
-                                    $('#polling_place').append('<option value="' + value
-                                        .id +
-                                        '">' + value.name + '</option>');
-                                });
-                            }
-                        });
-                    }
-                });
-            });
-        </script>
-
-        {{-- Upload PDF --}}
-        <script>
-            document.getElementById('file_or_photo_input').addEventListener('change', function(e) {
-                const fileInput = e.target;
-                const file = fileInput.files[0];
-                const previewContainer = document.getElementById('file-photo-preview');
-                const pdfPreview = document.getElementById('pdf-preview');
-                const imagePreview = document.getElementById('image-preview');
-                const fileNameDisplay = document.getElementById('file-name');
-                const fileSizeLimit = 5 * 1024 * 1024; // 5MB
-
-                // Reset preview and error messages
-                previewContainer.style.display = 'none';
-                pdfPreview.style.display = 'none';
-                imagePreview.style.display = 'none';
-                pdfPreview.src = '';
-                imagePreview.src = '';
-                fileNameDisplay.textContent = '';
-
-                if (file) {
-                    // Check file size first
-                    if (file.size > fileSizeLimit) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'File Too Large',
-                            text: 'File size exceeds 5MB. Please select a smaller file.',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'OK'
-                        });
-                        fileInput.value = ''; // Clear file input if invalid
-                        return;
-                    }
-
-                    const fileURL = URL.createObjectURL(file);
-
-                    if (file.type === 'application/pdf') {
-                        pdfPreview.src = fileURL;
-                        pdfPreview.style.display = 'block';
-                        imagePreview.style.display = 'none';
-                    } else if (file.type.startsWith('image/')) {
-                        imagePreview.src = fileURL;
-                        imagePreview.style.display = 'block';
-                        pdfPreview.style.display = 'none';
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid File Type',
-                            text: 'Please select a valid PDF or image file (JPEG, PNG).',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'OK'
-                        });
-                        fileInput.value = ''; // Clear file input if not PDF or image
-                        return;
-                    }
-
-                    fileNameDisplay.textContent = `File name: ${file.name}`;
-                    previewContainer.style.display = 'block';
-
-                    // Modal preview
-                    document.getElementById('open-modal').onclick = function() {
-                        if (file.type === 'application/pdf') {
-                            document.getElementById('pdf-modal-preview').src = fileURL;
-                            document.getElementById('pdf-modal-preview').style.display = 'block';
-                            document.getElementById('image-modal-preview').style.display = 'none';
-                        } else {
-                            document.getElementById('image-modal-preview').src = fileURL;
-                            document.getElementById('image-modal-preview').style.display = 'block';
-                            document.getElementById('pdf-modal-preview').style.display = 'none';
+    {{-- Lokasi --}}
+    <script>
+        $(document).ready(function() {
+            $('#provinsi').change(function() {
+                var provinsiId = $(this).val();
+                $('#kabupaten').empty().append('<option value="">Pilih Kabupaten</option>');
+                $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (provinsiId) {
+                    $.ajax({
+                        url: '/get-kabupaten/' + provinsiId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kabupaten').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
                         }
-                        $('#fileModal').modal('show');
-                    };
-
-                    $('.close').click(function() {
-                        $('#fileModal').modal('hide');
                     });
                 }
             });
-        </script>
 
-    </div>
+            $('#kabupaten').change(function() {
+                var kabupatenId = $(this).val();
+                $('#kecamatan').empty().append('<option value="">Pilih Kecamatan</option>');
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (kabupatenId) {
+                    $.ajax({
+                        url: '/get-kecamatan/' + kabupatenId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kecamatan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#kecamatan').change(function() {
+                var kecamatanId = $(this).val();
+                $('#kelurahan').empty().append('<option value="">Pilih Kelurahan</option>');
+                if (kecamatanId) {
+                    $.ajax({
+                        url: '/get-kelurahan/' + kecamatanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kelurahan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#kelurahan').change(function() {
+                var kelurahanId = $(this).val();
+                $('#polling_place').empty().append('<option value="">Pilih TPS</option>');
+                if (kelurahanId) {
+                    $.ajax({
+                        url: '/get-realcount-tps/' + kelurahanId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#polling_place').append('<option value="' + value
+                                    .id +
+                                    '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    {{-- Upload PDF --}}
+    <script>
+        document.getElementById('file_or_photo_input').addEventListener('change', function(e) {
+            const fileInput = e.target;
+            const file = fileInput.files[0];
+            const previewContainer = document.getElementById('file-photo-preview');
+            const pdfPreview = document.getElementById('pdf-preview');
+            const imagePreview = document.getElementById('image-preview');
+            const fileNameDisplay = document.getElementById('file-name');
+            const fileSizeLimit = 5 * 1024 * 1024; // 5MB
+
+            // Reset preview and error messages
+            previewContainer.style.display = 'none';
+            pdfPreview.style.display = 'none';
+            imagePreview.style.display = 'none';
+            pdfPreview.src = '';
+            imagePreview.src = '';
+            fileNameDisplay.textContent = '';
+
+            if (file) {
+                // Check file size
+                if (file.size > fileSizeLimit) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'File Too Large',
+                        text: 'File size exceeds 5MB. Please select a smaller file.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    fileInput.value = '';
+                    return;
+                }
+
+                const fileURL = URL.createObjectURL(file);
+
+                if (file.type === 'application/pdf') {
+                    pdfPreview.src = fileURL;
+                    pdfPreview.style.display = 'block';
+                    imagePreview.style.display = 'none';
+                } else if (file.type.startsWith('image/')) {
+                    imagePreview.src = fileURL;
+                    imagePreview.style.display = 'block';
+                    pdfPreview.style.display = 'none';
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid File Type',
+                        text: 'Please select a valid PDF or image file (JPEG, PNG).',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    fileInput.value = '';
+                    return;
+                }
+
+                fileNameDisplay.textContent = `File name: ${file.name}`;
+                previewContainer.style.display = 'block';
+
+                // Modal preview
+                document.getElementById('open-modal').onclick = function() {
+                    if (file.type === 'application/pdf') {
+                        document.getElementById('pdf-modal-preview').src = fileURL;
+                        document.getElementById('pdf-modal-preview').style.display = 'block';
+                        document.getElementById('image-modal-preview').style.display = 'none';
+                    } else {
+                        document.getElementById('image-modal-preview').src = fileURL;
+                        document.getElementById('image-modal-preview').style.display = 'block';
+                        document.getElementById('pdf-modal-preview').style.display = 'none';
+                    }
+                    $('#fileModal').modal('show');
+                };
+
+                $('.close').click(function() {
+                    $('#fileModal').modal('hide');
+                });
+            }
+        });
+
+        document.getElementById('scan-file-photo').addEventListener('click', async () => {
+            const fileInput = document.getElementById('file_or_photo_input');
+            const imageFile = fileInput.files[0];
+
+            if (!imageFile) {
+                alert('Silakan pilih gambar atau file terlebih dahulu.');
+                return;
+            }
+
+            // Sembunyikan status verifikasi saat mulai memproses
+            document.getElementById('verification-status').style.display = 'none';
+
+            // Tampilkan loading spinner
+            document.getElementById('loading-spinner').style.display = 'block';
+
+            try {
+                Tesseract.recognize(
+                    imageFile,
+                    'ind', {
+                        logger: info => console.log(info),
+                        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+                        preserve_interword_spaces: '1',
+                        psm: 12,
+                        oem: 1,
+                    }
+                ).then(({
+                    data: {
+                        text
+                    }
+                }) => {
+                    const statusIconElement = document.getElementById('status-icon');
+                    const statusTextElement = document.getElementById('status-text');
+                    const verificationStatusElement = document.getElementById('verification-status');
+
+                    // Verifikasi sederhana berdasarkan teks tertentu
+                    if (text.includes("JAWA BARAT")) {
+                        statusIconElement.className = 'fas fa-check-circle text-success';
+                        statusTextElement.textContent = 'Verifikasi Berhasil';
+                    } else {
+                        statusIconElement.className = 'fas fa-times-circle text-danger';
+                        statusTextElement.textContent = 'Verifikasi Gagal';
+                    }
+
+                    verificationStatusElement.style.display = 'block';
+                }).catch(error => {
+                    console.error(error);
+                    alert('Gagal melakukan verifikasi gambar.');
+                }).finally(() => {
+                    document.getElementById('loading-spinner').style.display = 'none';
+                });
+
+            } catch (error) {
+                console.error(error);
+                alert('Terjadi kesalahan dalam memproses gambar.');
+                document.getElementById('loading-spinner').style.display = 'none';
+            }
+        });
+    </script>
 @endsection
