@@ -68,7 +68,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>id tps</th>
+                                        <th>ID TPS</th>
                                         <th>Nama Candidat</th>
                                         <th>Nama TPS</th>
                                         <th>Nama Partai</th>
@@ -82,7 +82,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>id tps</th>
+                                        <th>ID TPS</th>
                                         <th>Nama Candidat</th>
                                         <th>Nama TPS</th>
                                         <th>Nama Partai</th>

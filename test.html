@@ -3,75 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Text with OCR</title>
-    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist/build/pdf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    <title>OCR Photo to Text (Camera & File Upload)</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script>
 </head>
 <body>
-    <h1>Convert PDF (with JPG) to Text using OCR</h1>
-    <input type="file" id="upload" accept="application/pdf" />
-    <div id="output"></div>
+
+    <h2>Scan OCR Photo to Text</h2>
+
+    <input type="file" id="imageInput" accept="image/*" onchange="displayImage(event)">
+    <button onclick="captureFromCamera()">Take Photo with Camera</button>
+    <video id="cameraStream" width="300" autoplay style="display:none;"></video>
+    <button onclick="capturePhoto()" style="display:none;" id="captureButton">Capture Photo</button>
+
+    <h3>Preview:</h3>
+    <img id="previewImage" src="" alt="Image Preview" width="300">
+
+    <h3>Result:</h3>
+    <button onclick="performOCR()">Scan Text</button>
+    <p id="ocrResult"></p>
 
     <script>
-        // PDF.js global worker options
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist/build/pdf.worker.min.js';
+        function displayImage(event) {
+            const image = document.getElementById('previewImage');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            document.getElementById('ocrResult').textContent = '';
+        }
+        function captureFromCamera() {
+            const video = document.getElementById('cameraStream');
+            const captureButton = document.getElementById('captureButton');
 
-        // Ketika file PDF di-upload
-        document.getElementById('upload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file && file.type === 'application/pdf') {
-                const fileReader = new FileReader();
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    captureButton.style.display = 'inline-block';
+                })
+                .catch(err => console.error("Error accessing camera: ", err));
+        }
+        function capturePhoto() {
+            const video = document.getElementById('cameraStream');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const image = document.getElementById('previewImage');
+            image.src = canvas.toDataURL('image/png');
+            video.srcObject.getTracks().forEach(track => track.stop());  // Stop video stream
+            video.style.display = 'none';
+            document.getElementById('captureButton').style.display = 'none';
+            document.getElementById('ocrResult').textContent = '';
+        }
 
-                fileReader.onload = function() {
-                    const typedArray = new Uint8Array(this.result);
+        function filterText(text) {
+            return text.split('\n')
+                .map(line => line.trim())
+                .filter(line => line && line.length > 2 && !/[^a-zA-Z0-9\s]/.test(line))
+                .join('\n');
+        }
 
-                    // Menggunakan pdf.js untuk membuka file PDF
-                    pdfjsLib.getDocument(typedArray).promise.then(async function(pdf) {
-                        const page = await pdf.getPage(1);  // Hanya mengambil halaman pertama untuk contoh
-                        const scale = 1.5;  // Menyesuaikan skala gambar
-                        const viewport = page.getViewport({ scale });
-
-                        // Membuat canvas untuk render gambar
-                        const canvas = document.createElement('canvas');
-                        const context = canvas.getContext('2d');
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-
-                        const renderContext = {
-                            canvasContext: context,
-                            viewport: viewport
-                        };
-
-                        // Render halaman PDF ke dalam canvas
-                        const renderTask = page.render(renderContext);
-                        renderTask.promise.then(function () {
-                            // Setelah rendering selesai, ambil gambar dari canvas
-                            const imageData = canvas.toDataURL('image/jpeg');
-
-                            // Jalankan OCR menggunakan Tesseract.js pada gambar yang diambil
-                            Tesseract.recognize(
-                                imageData,
-                                'eng',
-                                {
-                                    logger: function(m) {
-                                        console.log(m);  // Untuk melihat progres OCR
-                                    }
-                                }
-                            ).then(function(result) {
-                                // Tampilkan hasil OCR di halaman
-                                document.getElementById('output').innerText = result.data.text;
-                            }).catch(function(err) {
-                                console.error(err);
-                            });
-                        });
-                    });
-                };
-
-                fileReader.readAsArrayBuffer(file);
+        function performOCR() {
+            const image = document.getElementById('previewImage');
+            if (image.src) {
+                Tesseract.recognize(
+                    image.src,
+                    'eng',
+                    {
+                        logger: m => console.log(m)  // Optional: log progress
+                    }
+                ).then(({ data: { text } }) => {
+                    document.getElementById('ocrResult').textContent = filterText(text);
+                }).catch(err => {
+                    console.error(err);
+                    document.getElementById('ocrResult').textContent = 'Failed to scan text';
+                });
             } else {
-                alert('Please upload a valid PDF file.');
+                alert('Please upload or capture an image first');
             }
-        });
+        }
     </script>
+
 </body>
 </html>

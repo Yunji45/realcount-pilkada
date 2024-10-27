@@ -38,6 +38,9 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'role' => ['required', 'string', 'exists:roles,name'], // Validasi role dari Spatie
             'ktp' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validasi file KTP
+        ],
+        [
+            'ktp.required' => ['ukuran file maksimal 2 mb']
         ])->validate();
 
         DB::beginTransaction();
@@ -58,14 +61,16 @@ class CreateNewUser implements CreatesNewUsers
                 'password' => Hash::make($input['password']),
                 'status' => "Pending",
                 'gender' => $input['gender'],
-                'ktp' => $ktpPath, // Store the path of the uploaded KTP
+                'ktp' => $ktpPath,
             ]);
 
-            // Assign role to the user
             $user->assignRole($input['role']);
             $emailData = [
                 'name' => $user->name,
                 'email' => $user->email,
+                'nik' => $user->nik,
+                'password' => $input['password'],
+                'address' => $user->address
             ];
             Mail::to($user->email)->send(new RegistrasiEmail($emailData));
 

@@ -19,7 +19,7 @@ use App\Http\Controllers\Simpatisan\HomeSimpatisanController;
 use App\Http\Controllers\SuperAdmin\HomeSuperAdminController;
 use App\Http\Controllers\Realcount\TPSController;
 use App\Http\Controllers\Realcount\VotingController;
-use App\Http\Controllers\Realcount\VotingUmumController;
+// use App\Http\Controllers\Realcount\VotingUmumController;
 use App\Http\Controllers\Realcount\D1Controller;
 use App\Http\Controllers\Realcount\C1Controller;
 use App\Http\Controllers\HomeController;
@@ -29,6 +29,7 @@ use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\RealcountController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Mail\PostMail;
@@ -87,7 +88,7 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
         '/articles' => ArticleController::class,
         '/category_articles' => CategoryArticleController::class,
         '/agenda' => AgendaController::class,
-        '/voting-umum' => VotingUmumController::class
+        // '/voting-umum' => VotingUmumController::class
     ]);
 
     // Route untuk mengambil kelurahan berdasarkan kecamatan
@@ -97,6 +98,8 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
     Route::get('/get-rw/{kelurahanId}', [HomeController::class, 'getRw'])->name('get-rw');
     Route::get('/get-polling-places/{kelurahanId}', [VoteController::class, 'getPollingPlaces']);
     Route::get('/get-realcount-tps/{kelurahanId}', [VotingController::class, 'getTpsRealCount']);
+    Route::get('/get-candidates-by-election/{election_id}', [C1Controller::class, 'getCandidatesByElection']);
+
 
     Route::get('/category/{category}', [ArticleController::class, 'showByCategory'])->name('category.show');
     Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
@@ -144,6 +147,10 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('map',[MapController::class,'index'])->name('map');
     Route::get('color-partai',[MapController::class,'getcolor'])->name('color');
     Route::get('filter-partai',[MapController::class,'filter'])->name('filter');
+
+    //OCR & TERRACOTR
+    Route::get('/pdf', [PDFController::class, 'index'])->name('pdf');
+    Route::post('/upload-pdf', [PDFController::class, 'upload'])->name('pdf.upload');
 
 });
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');

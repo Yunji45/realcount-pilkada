@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('filec1s', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tps_realcount_id')->constrained()->restrictOnDelete();
+            $table->foreignId('election_id')->constrained()->restrictOnDelete();
             $table->string('file')->nulllable();
             $table->timestamps();
         });

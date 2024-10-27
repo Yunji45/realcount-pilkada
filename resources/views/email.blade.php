@@ -1,4 +1,3 @@
-@ -1,12 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,11 +38,14 @@
         <ul>
             <li><strong>Nama:</strong> {{ $data['name'] }}</li>
             <li><strong>Email:</strong> {{ $data['email'] }}</li>
+            <li><strong>Nik:</strong> {{ $data['nik'] }}</li>
+            <li><strong>Password:</strong> {{ $data['password'] }}</li>
+            <li><strong>Alamat:</strong> {{ $data['address'] }}</li>
         </ul>
         <p>Jika Anda memiliki pertanyaan atau butuh bantuan, jangan ragu untuk menghubungi kami.</p>
         
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Aplikasi Kami. Semua hak dilindungi.</p>
+            <p>&copy; {{ date('Y') }} DPC Gerindra Kota Bandung. Semua hak dilindungi.</p>
         </div>
     </div>
 </body>
