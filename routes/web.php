@@ -29,6 +29,7 @@ use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\RealcountController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Mail\PostMail;
@@ -144,6 +145,10 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('map',[MapController::class,'index'])->name('map');
     Route::get('color-partai',[MapController::class,'getcolor'])->name('color');
     Route::get('filter-partai',[MapController::class,'filter'])->name('filter');
+
+    //OCR & TERRACOTR
+    Route::get('/pdf', [PDFController::class, 'index'])->name('pdf');
+    Route::post('/upload-pdf', [PDFController::class, 'upload'])->name('pdf.upload');
 
 });
 Route::get('/', [ArticleController::class, 'showLandingPage'])->name(name: 'landingpage');
