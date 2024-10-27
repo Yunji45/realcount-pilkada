@@ -130,7 +130,6 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
-
                             <!-- Step Indicators -->
                             <div class="step-indicator">
                                 <div class="indicator" id="indicator-0">
@@ -299,7 +298,6 @@
         </div>
     </div>
 
-
     <!-- Scripts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -426,21 +424,27 @@
                     url: `/get-candidates-by-election/${electionId}`,
                     type: 'GET',
                     success: function(candidates) {
-                        $('#candidate-votes-container').empty(); // Clear previous fields
+                        $('#candidate-votes-container').empty(); // Kosongkan input sebelumnya
 
                         if (candidates.length > 0) {
+                            // Looping untuk setiap kandidat
                             candidates.forEach(candidate => {
                                 $('#candidate-votes-container').append(`
-                                    <div class="form-group mb-2">
-                                        <label for="vote_${candidate.id}">Suara Kandidat (${candidate.name}):</label>
-                                        <input type="text" name="votes[${candidate.id}]" id="vote_${candidate.id}" class="form-control" placeholder="Vote Kandidat">
-                                    </div>
-                                `);
+                            <div class="form-group mb-2">
+                                <label for="vote_${candidate.id}">Suara Kandidat (${candidate.name}):</label>
+                                <input type="number" name="votes[${candidate.id}]" id="vote_${candidate.id}" class="form-control" placeholder="Masukkan suara untuk ${candidate.name}" required>
+                            </div>
+                        `);
                             });
                         } else {
                             $('#candidate-votes-container').append(
-                                '<p>Tidak ada kandidat untuk pemilihan ini.</p>');
+                                '<p>Tidak ada kandidat untuk pemilihan ini.</p>'
+                            );
                         }
+                    },
+                    error: function() {
+                        $('#candidate-votes-container').append(
+                            '<p>Gagal memuat kandidat, coba lagi.</p>');
                     }
                 });
             } else {
@@ -585,5 +589,4 @@
             }
         });
     </script>
-
 @endsection

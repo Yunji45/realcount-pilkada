@@ -13,6 +13,7 @@ class Filec1 extends Model
         'tps_realcount_id',
         'election_id'
     ];
+
     public function tpsrealcount()
     {
         return $this->belongsTo(TpsRealcount::class,'tps_realcount_id');
