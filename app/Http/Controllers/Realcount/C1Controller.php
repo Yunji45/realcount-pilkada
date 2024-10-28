@@ -66,7 +66,6 @@ class C1Controller extends Controller
         return view('dashboard.admin.realcount.c1.create', compact('title', 'type', 'pollingPlaces', 'provinsis', 'pemilihan'));
     }
 
-    //PR validasi compare PDF antara file 1 dengan file upload
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -74,19 +73,8 @@ class C1Controller extends Controller
             $request->validate([
                 'tps_realcount_id' => 'required|exists:tps_realcounts,id',
                 'file' => 'required|file|mimes:jpeg,png,pdf|max:5120',
+                'election_id' => 'required|exists:elections,id'
             ]);
-            Log::info('Validasi berhasil.', ['tps_realcount_id' => $request->tps_realcount_id]);
-
-            $fileExists = Filec1::where('tps_realcount_id', $request->tps_realcount_id)->exists();
-            if ($fileExists) {
-                Log::info('File C1 untuk polling place ini sudah diupload.', ['tps_realcount_id' => $request->tps_realcount_id]);
-                return redirect()->back()->with('info', 'File C1 untuk polling place ini sudah diupload.');
-            }
-
-            $tps = Filec1::find($request->kecamatan_id);
-            if ($tps && $tps->fileC1()->exists()) {
-                return back()->with('error', 'C1 Tersebut Sudah Tidak Bisa Dilakukan Karna Sudah Upload File C1.')->withInput();
-            }
 
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
@@ -94,6 +82,19 @@ class C1Controller extends Controller
                 Log::info('File berhasil disimpan.', ['path' => $path]);
 
                 foreach ($request->votes as $candidateId => $voteCount) {
+                    $existingVote = Votec1::where('candidate_id', $candidateId)->first();
+                    if ($existingVote) {
+                        return back()->with('error', 'Salah satu kandidat ini sudah memiliki suara dan tidak dapat memberikan suara lagi.')->withInput();
+                    }
+                    $candidate = Candidate::find(id:  $candidateId);
+                    $hasFileC1 = filec1::where('election_id', $candidate->election_id)
+                        ->where('tps_realcount_id', $request->tps_realcount_id)
+                        ->exists();
+            
+                    if ($hasFileC1) {
+                        return back()->with('error', 'Voting tidak dapat dilakukan karena file C1 untuk TPS terkait dan pemilihan sudah ada.')->withInput();
+                    }
+    
                     Votec1::create([
                         'candidate_id' => $candidateId,
                         'tps_realcount_id' => $request->tps_realcount_id,
@@ -101,18 +102,16 @@ class C1Controller extends Controller
                         'status' => "Open",
                         'created_at' => now()
                     ]);
-                }
-
+                }    
                 Filec1::create([
                     'tps_realcount_id' => $request->tps_realcount_id,
                     'file' => $path,
+                    'election_id' => $request->election_id,
                     'created_at' => now()
                 ]);
-
                 DB::commit();
-
                 Log::info('File C1 berhasil diupload.', ['tps_realcount_id' => $request->tps_realcount_id]);
-                return redirect()->route('file-c1.index')->with('success', 'File C1 berhasil diupload.');
+                return redirect()->route('file-c1.index')->with('success', 'File C1 dan Vote suara berhasil diupload.');
             }
         } catch (\Throwable $th) {
             DB::rollBack();
