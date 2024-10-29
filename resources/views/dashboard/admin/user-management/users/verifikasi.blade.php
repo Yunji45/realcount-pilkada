@@ -123,7 +123,7 @@
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Batal</button>
-                                                                    <button type="button" class="btn btn-primary"
+                                                                    <button type="submit" class="btn btn-primary"
                                                                         id="confirmButton_{{ $user->id }}">Ya, Ubah
                                                                         Status</button>
                                                                 </div>
