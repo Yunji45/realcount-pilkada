@@ -57,7 +57,7 @@
                                 <h6 class="mb-0"><b>Pemilih</b></h6>
                             </div>
                             @php
-                                $totalPemilih = $pemilihAktif + $pemilihNonaktif;
+                                $totalPemilih = $pemilihAktif + $pemilihNonaktif + $pemilihPending;
                                 $pemilihAktifPercentage =
                                     $totalPemilih > 0 ? round(($pemilihAktif / $totalPemilih) * 100) : 0;
                             @endphp
@@ -86,7 +86,7 @@
                                 <h6 class="mb-0"><b>Saksi</b></h6>
                             </div>
                             @php
-                                $totalSaksi = $saksiAktif + $saksiNonaktif;
+                                $totalSaksi = $saksiAktif + $saksiNonaktif + $saksiPending;
                                 $saksiAktifPercentage = $totalSaksi > 0 ? round(($saksiAktif / $totalSaksi) * 100) : 0;
                             @endphp
                             <h4 class="text-warning fw-bold mb-0">{{ $totalSaksi }}</h4>
@@ -114,7 +114,7 @@
                                 <h6><b>Relawan RDW</b></h6>
                             </div>
                             @php
-                                $totalRelawanRdw = $relawanRdwAktif + $relawanRdwNonaktif;
+                                $totalRelawanRdw = $relawanRdwAktif + $relawanRdwNonaktif + $relawanRdwPending;
                                 $relawanRdwAktifPercentage =
                                     $totalRelawanRdw > 0 ? round(($relawanRdwAktif / $totalRelawanRdw) * 100) : 0;
                             @endphp
@@ -143,7 +143,7 @@
                                 <h6><b>Simpatisan</b></h6>
                             </div>
                             @php
-                                $totalSimpatisan = $simpatisanAktif + $simpatisanNonaktif;
+                                $totalSimpatisan = $simpatisanAktif + $simpatisanNonaktif + $simpatisanPending;
                                 $simpatisanAktifPercentage =
                                     $totalSimpatisan > 0 ? round(($simpatisanAktif / $totalSimpatisan) * 100) : 0;
                             @endphp
@@ -172,7 +172,7 @@
                                 <h6><b>Lain-lain</b></h6>
                             </div>
                             @php
-                                $totalLainLain = $lainLainAktif + $lainLainNonaktif;
+                                $totalLainLain = $lainLainAktif + $lainLainNonaktif + $lainLainPending;
                                 $lainLainAktifPercentage =
                                     $totalLainLain > 0 ? round(($lainLainAktif / $totalLainLain) * 100) : 0;
                             @endphp
@@ -351,7 +351,8 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kabupaten').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                $('#kabupaten').append('<option value="' + value.id + '">' +
+                                    value.name + '</option>');
                             });
                         },
                         error: function(xhr, status, error) {
@@ -394,7 +395,8 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kecamatan').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                $('#kecamatan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
                             });
                         }
                     });
@@ -414,7 +416,8 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kelurahan').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                $('#kelurahan').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
                             });
                         }
                     });
@@ -434,7 +437,8 @@
                         dataType: 'json',
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#rw').append('<option value="' + value.rw + '">' + value.rw + '</option>');
+                                $('#rw').append('<option value="' + value.rw + '">' +
+                                    value.rw + '</option>');
                             });
                         },
                         error: function(error) {
