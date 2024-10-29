@@ -31,7 +31,10 @@ class RealcountController extends Controller
     public function realcount()
     {
         $vote = Votec1::sum('real_count');
-        $dpt = TpsRealcount::sum('DPT');
+        $uniqueTpsIds = Votec1::distinct('tps_realcount_id')
+        ->pluck('tps_realcount_id');
+        $dpt = TpsRealcount::whereIn('id', $uniqueTpsIds)->sum('DPT');
+        // $dpt = TpsRealcount::sum(column: 'DPT');
         $tps = Votec1::distinct('tps_realcount_id')->count('tps_realcount_id');
         $candidate = Votec1::distinct('candidate_id')->count('candidate_id');
         $candidateId = Votec1::select('candidate_id', DB::raw('SUM(real_count) as total_votes'))
@@ -55,6 +58,15 @@ class RealcountController extends Controller
                 'candidate' => $item->candidate
             ];
         }
+
+        // return response()->json([
+        //     'total_votes' => $vote,
+        //     'total_tps' => $tps,
+        //     'total_candidates' => $candidate,
+        //     'total_dpt' => $dpt,
+        //     'candidates_by_election' => $groupedByElection,
+        // ]);
+    
 
         return view('realcount.page', [
             'total_votes' => $vote,

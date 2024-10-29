@@ -105,6 +105,7 @@ Route::middleware(['verified', 'auth', 'role:Admin|Super Admin|Pimpinan'])->grou
     Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
 
     Route::post('/tps-import', [PollingPlaceController::class, 'import'])->name('tps.import');
+    Route::post('/tps-realcount-import', [TPSController::class, 'import'])->name('tps.realcount.import');
     Route::post('/vote-import', [VoteController::class, 'import'])->name('vote.import');
 
     // Route untuk mengembalikan data event dalam bentuk JSON

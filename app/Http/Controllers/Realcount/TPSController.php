@@ -12,6 +12,9 @@ use App\Models\Provinsi;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\TpsRealcountImport;
+
 
 class TPSController extends Controller
 {
@@ -179,4 +182,16 @@ class TPSController extends Controller
             return redirect()->back()->with('error', 'Failed to delete party. Please try again.');
         }
     }
+
+    public function import()
+    {
+        try {
+            Excel::import(new TpsRealcountImport, request()->file('your_file'));
+
+            return redirect()->route("tps.index")->with('success', 'TPS Berhasil Di Import!');
+        } catch (\Throwable $th) {
+            return back()->with("error", $th->getMessage());
+        }
+    }
+
 }

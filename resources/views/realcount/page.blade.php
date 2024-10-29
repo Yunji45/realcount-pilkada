@@ -5,7 +5,7 @@
             <div class="col-md-2 offset-md-1">
                 <div class="card" style="background-color: #eee8aa;">
                     <div class="card-body">
-                        <h3 class="card-title" style="color: black;font-size:20px;font-we">{{ $total_dpt }}</h3>
+                        <h3 class="card-title" style="color: black;font-size:20px;font-we">{{ $total_votes }}</h3>
                         <p style="color: black;font-size:15px">Suara Masuk</p>
                     </div>
                 </div>

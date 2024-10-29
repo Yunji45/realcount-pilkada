@@ -82,18 +82,18 @@ class C1Controller extends Controller
                 Log::info('File berhasil disimpan.', ['path' => $path]);
 
                 foreach ($request->votes as $candidateId => $voteCount) {
-                    $existingVote = Votec1::where('candidate_id', $candidateId)->first();
-                    if ($existingVote) {
-                        return back()->with('error', 'Salah satu kandidat ini sudah memiliki suara dan tidak dapat memberikan suara lagi.')->withInput();
-                    }
                     $candidate = Candidate::find(id:  $candidateId);
                     $hasFileC1 = filec1::where('election_id', $candidate->election_id)
                         ->where('tps_realcount_id', $request->tps_realcount_id)
                         ->exists();
-            
                     if ($hasFileC1) {
                         return back()->with('error', 'Voting tidak dapat dilakukan karena file C1 untuk TPS terkait dan pemilihan sudah ada.')->withInput();
                     }
+                    $existingVote = Votec1::where('candidate_id', $candidate)->first();
+                    if ($existingVote) {
+                        return back()->with('error', 'Salah satu kandidat ini sudah memiliki suara dan tidak dapat memberikan suara lagi.')->withInput();
+                    }
+
     
                     Votec1::create([
                         'candidate_id' => $candidateId,
