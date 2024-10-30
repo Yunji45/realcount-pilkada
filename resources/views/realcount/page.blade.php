@@ -65,7 +65,7 @@
                                             <div class="card-body p-0">
                                                 <!-- Candidate Image -->
                                                 @if (!empty($candidate['candidate']['photo']))
-                                                    <img src="{{ asset($candidate['candidate']['photo']) }}"
+                                                    <img src="{{ Storage::url($candidate['candidate']['photo']) }}"
                                                         alt="{{ $candidate['candidate']['name'] }}" class="img-fluid"
                                                             style="height: 5%; object-fit: cover; width: 100%;">
                                                 @else
