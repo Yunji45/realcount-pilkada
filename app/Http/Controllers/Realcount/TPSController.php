@@ -12,8 +12,8 @@ use App\Models\Provinsi;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\TpsRealcountImport;
+// use Maatwebsite\Excel\Facades\Excel;
+// use App\Imports\TpsRealcountImport;
 
 
 class TPSController extends Controller
@@ -183,15 +183,15 @@ class TPSController extends Controller
         }
     }
 
-    public function import()
-    {
-        try {
-            Excel::import(new TpsRealcountImport, request()->file('your_file'));
+    // public function import()
+    // {
+    //     try {
+    //         Excel::import(new TpsRealcountImport, request()->file('your_file'));
 
-            return redirect()->route("tps.index")->with('success', 'TPS Berhasil Di Import!');
-        } catch (\Throwable $th) {
-            return back()->with("error", $th->getMessage());
-        }
-    }
+    //         return redirect()->route("tps.index")->with('success', 'TPS Berhasil Di Import!');
+    //     } catch (\Throwable $th) {
+    //         return back()->with("error", $th->getMessage());
+    //     }
+    // }
 
 }
