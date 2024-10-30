@@ -133,7 +133,7 @@
                                 <h6 class="mb-0"><b>Pemilih</b></h6>
                             </div>
                             @php
-                                $totalPemilih = $pemilihAktif + $pemilihNonaktif;
+                                $totalPemilih = $pemilihAktif + $pemilihNonaktif + $pemilihPending;
                                 $pemilihAktifPercentage =
                                     $totalPemilih > 0 ? round(($pemilihAktif / $totalPemilih) * 100) : 0;
                             @endphp
@@ -162,7 +162,7 @@
                                 <h6 class="mb-0"><b>Saksi</b></h6>
                             </div>
                             @php
-                                $totalSaksi = $saksiAktif + $saksiNonaktif;
+                                $totalSaksi = $saksiAktif + $saksiNonaktif + $saksiPending;
                                 $saksiAktifPercentage = $totalSaksi > 0 ? round(($saksiAktif / $totalSaksi) * 100) : 0;
                             @endphp
                             <h4 class="text-warning fw-bold mb-0">{{ $totalSaksi }}</h4>
@@ -190,7 +190,7 @@
                                 <h6><b>Relawan RDW</b></h6>
                             </div>
                             @php
-                                $totalRelawanRdw = $relawanRdwAktif + $relawanRdwNonaktif;
+                                $totalRelawanRdw = $relawanRdwAktif + $relawanRdwNonaktif + $relawanRdwPending;
                                 $relawanRdwAktifPercentage =
                                     $totalRelawanRdw > 0 ? round(($relawanRdwAktif / $totalRelawanRdw) * 100) : 0;
                             @endphp
@@ -219,7 +219,7 @@
                                 <h6><b>Simpatisan</b></h6>
                             </div>
                             @php
-                                $totalSimpatisan = $simpatisanAktif + $simpatisanNonaktif;
+                                $totalSimpatisan = $simpatisanAktif + $simpatisanNonaktif + $simpatisanPending;
                                 $simpatisanAktifPercentage =
                                     $totalSimpatisan > 0 ? round(($simpatisanAktif / $totalSimpatisan) * 100) : 0;
                             @endphp
@@ -248,7 +248,7 @@
                                 <h6><b>Lain-lain</b></h6>
                             </div>
                             @php
-                                $totalLainLain = $lainLainAktif + $lainLainNonaktif;
+                                $totalLainLain = $lainLainAktif + $lainLainNonaktif + $lainLainPending;
                                 $lainLainAktifPercentage =
                                     $totalLainLain > 0 ? round(($lainLainAktif / $totalLainLain) * 100) : 0;
                             @endphp
@@ -316,7 +316,7 @@
                             <!-- Add options dynamically here -->
                         </select>
                     </div>
-                
+
                     <div class="form-group">
                         <label for="kecamatan">Kecamatan:</label>
                         <select class="form-select" name="kecamatan_id" id="kecamatan">
@@ -324,7 +324,7 @@
                             <!-- Add options dynamically here -->
                         </select>
                     </div>
-                
+
                     <div class="form-group">
                         <label for="kelurahan">Kelurahan:</label>
                         <select class="form-select" name="kelurahan_id" id="kelurahan">
@@ -332,7 +332,7 @@
                             <!-- Add options dynamically here -->
                         </select>
                     </div>
-                
+
                     <div class="form-group" id="rw-group">
                         <label for="rw">RW:</label>
                         <select class="form-select" name="rw_id" id="rw">
@@ -340,7 +340,7 @@
                             <!-- Add options dynamically here -->
                         </select>
                     </div>
-                
+
                     <div class="form-group">
                         <label for="election">Pemilu:</label>
                         <select class="form-select" name="election_id" id="election">
@@ -353,10 +353,10 @@
                             @endforeach
                         </select>
                     </div>
-                
+
                     <button type="submit" class="btn btn-primary mt-4">Filter</button>
                 </form>
-                
+
             </div>
         </div>
 

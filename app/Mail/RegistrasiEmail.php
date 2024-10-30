@@ -25,7 +25,7 @@ class RegistrasiEmail extends Mailable
 
     public function build()
     {
-        return $this->subject('Regisrasi Berhasil')
+        return $this->subject('Registrasi Berhasil')
                     ->view('email');
     }
 }

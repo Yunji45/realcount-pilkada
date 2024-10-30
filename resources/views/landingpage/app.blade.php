@@ -189,9 +189,6 @@
             }
         }
     </style>
-
-
-
 </head>
 
 <body>
@@ -201,7 +198,6 @@
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
     </div>
     <!-- Spinner End -->
-
 
     <!-- Navbar Start -->
     <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
@@ -240,7 +236,7 @@
                                 style="color: white;font-weight: bold;">
                                 Dashboard
                             </a>
-                        @elseif(Auth::user()->hasRole('Koordinator'))
+                        @elseif(Auth::user()->hasRole('Koordinator Kelurahan', 'Koordinator Kecamatan', 'Koordinator RW'))
                             <a href="/partai" class="nav-item nav-link btn-custom" style="color: white;font-weight: bold;">
                                 Dashboard
                             </a>

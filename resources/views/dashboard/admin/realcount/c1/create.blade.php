@@ -96,6 +96,90 @@
         }
     </style>
 
+    {{--  Dropzone Styling --}}
+    <style>
+        .custom-dropzone {
+            border: 2px dashed #007bff;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .custom-dropzone .dz-message {
+            pointer-events: none;
+        }
+
+        /* Image Preview Styling */
+        .preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .preview .image-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .preview img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Preview and Controls */
+        #image-preview,
+        #pdf-preview {
+            border: 1px solid #ccc;
+        }
+
+        .slide-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .slide-controls button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .slide-controls button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-group {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .button-group button {
+            margin-left: 14px;
+        }
+    </style>
+
     <div class="page-inner">
         <div class="page-header">
             <h3 class="fw-bold mb-3">{{ $type }} {{ $title }}</h3>
@@ -126,176 +210,254 @@
                     <div class="card-header text-center">
                         <h3 class="card-title">Form Input Suara</h3>
                     </div>
-                    <form id="multiStepForm" action="{{ route('file-c1.store') }}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="card-body">
-                            <!-- Step Indicators -->
-                            <div class="step-indicator">
-                                <div class="indicator" id="indicator-0">
-                                    <div class="indicator-circle">1</div>
-                                    <span class="indicator-text">Location</span>
+                        <form id="multiStepForm" action="{{ route('file-c1.store') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="card-body">
+                                <!-- Step Indicators -->
+                                <div class="step-indicator">
+                                    <div class="indicator" id="indicator-0">
+                                        <div class="indicator-circle">1</div>
+                                        <span class="indicator-text">Location</span>
+                                    </div>
+                                    <div class="indicator" id="indicator-1">
+                                        <div class="indicator-circle">2</div>
+                                        <span class="indicator-text">Vote</span>
+                                    </div>
                                 </div>
-                                <div class="indicator" id="indicator-1">
-                                    <div class="indicator-circle">2</div>
-                                    <span class="indicator-text">Vote</span>
+                                <!-- Step 1: Location Selection -->
+                                <div class="step active" id="step-1">
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-3">
+                                            <div class="form-group">
+                                                <label for="provinsi_id">Provinsi :</label>
+                                                <select name="provinsi_id" class="form-select" id="provinsi" required>
+                                                    <option value="" selected disabled>Pilih Provinsi</option>
+                                                    @foreach ($provinsis as $provinsi)
+                                                        <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <div class="form-group">
+                                                <label for="kabupaten_id">Kabupaten :</label>
+                                                <select name="kabupaten_id" class="form-select" id="kabupaten" required>
+                                                    <option value="" selected disabled>Pilih Kabupaten</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <div class="form-group">
+                                                <label for="kecamatan_id">Kecamatan :</label>
+                                                <select name="kecamatan_id" class="form-select" id="kecamatan" required>
+                                                    <option value="" selected disabled>Pilih Kecamatan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <div class="form-group">
+                                                <label for="kelurahan_id">Kelurahan :</label>
+                                                <select name="kelurahan_id" class="form-select" id="kelurahan" required>
+                                                    <option value="" selected disabled>Pilih Kelurahan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <div class="form-group">
+                                                <label for="kelurahan_id">TPS :</label>
+                                                <select name="tps_realcount_id" class="form-select" id="polling_place" required>
+                                                    <option value="" selected disabled>Pilih TPS</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- Step 1: Location Selection -->
-                            <div class="step active" id="step-1">
-                                <div class="row">
-                                    <div class="col-md-6 col-lg-3">
-                                        <div class="form-group">
-                                            <label for="provinsi_id">Provinsi :</label>
-                                            <select name="provinsi_id" class="form-select" id="provinsi" required>
-                                                <option value="" selected disabled>Pilih Provinsi</option>
-                                                @foreach ($provinsis as $provinsi)
-                                                    <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-3">
-                                        <div class="form-group">
-                                            <label for="kabupaten_id">Kabupaten :</label>
-                                            <select name="kabupaten_id" class="form-select" id="kabupaten" required>
-                                                <option value="" selected disabled>Pilih Kabupaten</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-3">
-                                        <div class="form-group">
-                                            <label for="kecamatan_id">Kecamatan :</label>
-                                            <select name="kecamatan_id" class="form-select" id="kecamatan" required>
-                                                <option value="" selected disabled>Pilih Kecamatan</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-3">
-                                        <div class="form-group">
-                                            <label for="kelurahan_id">Kelurahan :</label>
-                                            <select name="kelurahan_id" class="form-select" id="kelurahan" required>
-                                                <option value="" selected disabled>Pilih Kelurahan</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-3">
-                                        <div class="form-group">
-                                            <label for="kelurahan_id">TPS :</label>
-                                            <select name="tps_realcount_id" class="form-select" id="polling_place" required>
-                                                <option value="" selected disabled>Pilih TPS</option>
-                                            </select>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
+                                <!-- Step 2: TPS Selection -->
+                                <div class="step" id="step-2">
+                                    <div class="row">
+                                        <!-- Left Side: Form Inputs -->
+                                        <div class="col-md-6">
 
-                            <!-- Step 2: TPS Selection -->
-                            <div class="step" id="step-2">
-                                <div class="row">
-                                    <!-- Left Side: Form Inputs -->
-                                    <div class="col-md-6">
+                                            <div class="form-group mb-2">
+                                                <label for="jenis_pemilihan">Jenis Pemilihan:</label>
+                                                <select class="form-select" name="election_id" id="election">
+                                                    <option value="" selected disabled>Pilih Pemilu</option>
+                                                    @foreach ($pemilihan as $election)
+                                                        <option value="{{ $election->id }}">
+                                                            {{ $election->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                                        <div class="form-group mb-2">
-                                            <label for="jenis_pemilihan">Jenis Pemilihan:</label>
-                                            <select class="form-select" name="election_id" id="election">
-                                                <option value="" selected disabled>Pilih Pemilu</option>
-                                                @foreach ($pemilihan as $election)
-                                                    <option value="{{ $election->id }}">
-                                                        {{ $election->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                            <div id="candidate-votes-container"></div>
 
-                                        <div id="candidate-votes-container"></div>
-
-                                        <!-- File Upload and Preview Section -->
-                                        <div class="form-group mb-2">
-                                            <label for="file">File or Photo :</label>
-                                            <input type="file" name="file" class="form-control"
-                                                id="file_or_photo_input" accept="application/pdf,image/*" required />
-                                            <small class="form-text text-muted">Max: 5MB. Only PDF or image files (JPEG,
-                                                PNG) allowed.</small>
-                                        </div>
-                                    </div>
-
-                                    <!-- Right Side: Large File Preview -->
-                                    <div class="col-md-6 d-flex align-items-start justify-content-center"
-                                        style="margin-top: 30px">
-                                        <div class="card border p-3 w-100">
-                                            <h4>File / Photo Preview</h4>
-                                            <div id="file-photo-preview" class="mt-3" style="display: none;">
-                                                <iframe id="pdf-preview" class="w-100"
-                                                    style="height: 500px; border: 1px solid #ccc; display: none;"></iframe>
-                                                <img id="image-preview" class="w-100"
-                                                    style="height: 500px; border: 1px solid #ccc; display: none;" />
-                                                <p id="file-name" class="mt-2 text-center"></p>
-
-                                                <!-- Loading Spinner for Scan -->
-                                                <div class="text-center mt-3" id="loading-spinner"
-                                                    style="display: none;">
-                                                    <div class="spinner-border text-primary" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
+                                            <div class="form-group">
+                                                <label class="d-block fw-bold fs-6 mb-2">Lampiran</label>
+                                                <div class="custom-dropzone" onclick="document.getElementById('file_or_photo_input').click()">
+                                                    <i class="bi bi-file-earmark-arrow-up text-primary fs-3x"></i>
+                                                    <div class="dz-message">
+                                                        <h3 class="fs-5 fw-bolder text-gray-900 mb-1 mt-5">Letakkan file di sini atau klik untuk mengunggah.</h3>
+                                                        <span class="fs-7 fw-bold text-gray-400">Unggah hingga 5 file</span>
                                                     </div>
-                                                    <p>Memproses, harap tunggu...</p>
+                                                    <div class="preview" id="image-preview-container"></div> <!-- Container for image previews -->
                                                 </div>
+                                                <input type="file" id="file_or_photo_input" name="file[]"
+                                                    class="form-control d-none" multiple accept="application/pdf,image/*">
+                                                <div class="error-message" id="error-message"></div>
+                                            </div>
 
-                                                <!-- Verification Status -->
-                                                <div id="verification-status" class="mt-4 text-center"
-                                                    style="display: none;">
-                                                    <i id="status-icon" class="fas fa-check-circle"></i>
-                                                    <span id="status-text"></span>
+                                            <script>
+                                                const previewContainer = document.getElementById('image-preview-container');
+                                                const fileInput = document.getElementById('file_or_photo_input');
+                                                let selectedFiles = [];
+
+                                                // Listen for file input changes
+                                                fileInput.addEventListener('change', function(e) {
+                                                    const newFiles = Array.from(e.target.files);
+                                                    selectedFiles.push(...newFiles);  // Add new files to the selectedFiles array
+
+                                                    updatePreviews(); // Update the preview container
+                                                    updateFileInput(); // Sync file input with selected files
+                                                });
+
+                                                // Update the preview container with thumbnails for each file
+                                                function updatePreviews() {
+                                                    previewContainer.innerHTML = ''; // Clear existing previews
+
+                                                    selectedFiles.forEach((file, index) => {
+                                                        const fileURL = URL.createObjectURL(file);
+                                                        const filePreviewDiv = document.createElement('div');
+                                                        filePreviewDiv.className = 'file-preview';
+                                                        filePreviewDiv.style.position = 'relative';
+                                                        filePreviewDiv.style.display = 'inline-block';
+                                                        filePreviewDiv.style.margin = '10px';
+
+                                                        // Add image or PDF icon based on file type
+                                                        if (file.type.startsWith('image/')) {
+                                                            const img = document.createElement('img');
+                                                            img.src = fileURL;
+                                                            img.className = 'img-thumbnail';
+                                                            img.style.width = '100px';
+                                                            img.style.height = '100px';
+                                                            filePreviewDiv.appendChild(img);
+                                                        } else if (file.type === 'application/pdf') {
+                                                            const pdfIcon = document.createElement('i');
+                                                            pdfIcon.className = 'bi bi-file-earmark-pdf fs-3 text-danger';
+                                                            pdfIcon.style.fontSize = '3rem';
+                                                            filePreviewDiv.appendChild(pdfIcon);
+                                                        }
+
+                                                        // Add remove button
+                                                        const removeBtn = document.createElement('button');
+                                                        removeBtn.className = 'btn btn-sm btn-danger';
+                                                        removeBtn.textContent = 'Remove';
+                                                        removeBtn.style.position = 'absolute';
+                                                        removeBtn.style.top = '0';
+                                                        removeBtn.style.right = '0';
+                                                        removeBtn.style.fontSize = '0.8rem';
+
+                                                        // Remove button click event for removing specific file
+                                                        removeBtn.addEventListener('click', (event) => {
+                                                            event.stopPropagation(); // Prevent triggering the file input
+                                                            selectedFiles.splice(index, 1); // Remove the file from selectedFiles
+                                                            updatePreviews(); // Refresh the previews
+                                                            updateFileInput(); // Sync the input files
+                                                        });
+
+                                                        filePreviewDiv.appendChild(removeBtn);
+                                                        previewContainer.appendChild(filePreviewDiv);
+                                                    });
+                                                }
+
+                                                // Sync the file input with the selected files
+                                                function updateFileInput() {
+                                                    const dataTransfer = new DataTransfer();
+                                                    selectedFiles.forEach(file => dataTransfer.items.add(file));
+                                                    fileInput.files = dataTransfer.files; // Update the input with filtered files
+                                                }
+                                            </script>
+
+                                        </div>
+
+                                        <div class="col-md-6 d-flex align-items-start justify-content-center"
+                                            style="margin-top: 30px">
+                                            <div class="card border p-3 w-100">
+                                                <h4>File / Photo Preview</h4>
+                                                <div id="file-photo-preview" class="mt-3">
+                                                    <iframe id="pdf-preview" class="w-100"
+                                                        style="height: 500px; display: none;"></iframe>
+                                                    <img id="image-preview" class="w-100" style="display: none;" />
+                                                    <p id="file-name" class="mt-2 text-center"></p>
+
+                                                    <!-- Slide Controls -->
+                                                    <div class="slide-controls mb-4" id="slide-controls"
+                                                        style="display: none;">
+                                                        <button type="button" id="prev-slide">❮ Previous</button>
+                                                        <button type="button" id="next-slide">Next ❯</button>
+                                                    </div>
+
+                                                    <!-- Loading Spinner -->
+                                                    <div class="text-center mt-3" id="loading-spinner"
+                                                        style="display: none;">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <p>Memproses, harap tunggu...</p>
+                                                    </div>
+
+                                                    <!-- Dynamic Verification Status per File -->
+                                                    <div id="verification-status-container" class="mt-4 text-center"></div>
+
+                                                    <button type="button" class="btn btn-info btn-sm mt-3"
+                                                        id="open-modal">View
+                                                        Full</button>
+                                                    <button type="button" class="btn btn-success btn-sm mt-3"
+                                                        id="scan-file-photo">Scan File/Photo</button>
                                                 </div>
-
-                                                <button type="button" class="btn btn-info btn-sm" id="open-modal">
-                                                    View Full
-                                                </button>
-                                                <button type="button" class="btn btn-success btn-sm"
-                                                    id="scan-file-photo">
-                                                    Scan File/Photo
-                                                </button>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Modal for Full View -->
-                                    <div id="fileModal" class="modal fade" tabindex="-1" role="dialog"
-                                        aria-labelledby="fileModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="fileModalLabel">Full View</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <iframe id="pdf-modal-preview" width="100%" height="500"
-                                                        style="border: 1px solid #ccc; display: none;"></iframe>
-                                                    <img id="image-modal-preview" width="100%"
-                                                        style="height: 500px; border: 1px solid #ccc; display: none;" />
+                                        <div id="fileModal" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="fileModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="fileModalLabel">Full View</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <iframe id="pdf-modal-preview" width="100%" height="500"
+                                                            style="border: 1px solid #ccc; display: none;"></iframe>
+                                                        <img id="image-modal-preview" width="100%"
+                                                            style="height: 500px; border: 1px solid #ccc; display: none;" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="button-group" style="margin-top: 15px;">
+                                    <button type="button" id="prevBtn" onclick="nextPrev(-1)"
+                                        style="display:none; margin-left: 14px;">Previous</button>
+                                    <button type="button" id="nextBtn" onclick="nextPrev(1)"
+                                        style="margin-left: 14px;">Next</button>
+                                    <button type="submit" id="submitBtn"
+                                        style="margin-left: 14px; display:none;">Submit</button>
+                                </div>
 
-                        <!-- Navigation Buttons -->
-                        <div class="card-action">
-                            <button type="button" id="prevBtn" onclick="nextPrev(-1)"
-                                style="display:none;">Previous</button>
-                            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                            <button type="submit" id="submitBtn" style="display:none;">Submit</button>
-                        </div>
-                    </form>
+                        </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Scripts -->
@@ -325,7 +487,7 @@
             // Toggle button visibility
             document.getElementById("prevBtn").style.display = step > 0 ? "inline" : "none";
             document.getElementById("nextBtn").style.display = step < steps.length - 1 ? "inline" : "none";
-            document.getElementById("submitBtn").style.display = step === steps.length - 1 ? "inline" : "none";
+            document.getElementById("submitBtn").style.display === step < steps.length - 1 ? "inline" : "none";
         }
 
         function nextPrev(n) {
@@ -456,38 +618,27 @@
     {{-- Upload PDF --}}
     <script>
         document.getElementById('file_or_photo_input').addEventListener('change', function(e) {
-            const fileInput = e.target;
-            const file = fileInput.files[0];
-            const previewContainer = document.getElementById('file-photo-preview');
-            const pdfPreview = document.getElementById('pdf-preview');
-            const imagePreview = document.getElementById('image-preview');
-            const fileNameDisplay = document.getElementById('file-name');
-            const fileSizeLimit = 5 * 1024 * 1024; // 5MB
+            const files = Array.from(e.target.files);
+            let currentFileIndex = 0;
+            const scanResults = Array(files.length).fill(null); // Array to store scan results for each file
 
-            // Reset preview and error messages
-            previewContainer.style.display = 'none';
-            pdfPreview.style.display = 'none';
-            imagePreview.style.display = 'none';
-            pdfPreview.src = '';
-            imagePreview.src = '';
-            fileNameDisplay.textContent = '';
+            // Function to update the visibility of the submit button based on scan results
+            function updateSubmitButtonVisibility() {
+                const allSuccess = scanResults.every(result => result && result.success === true);
+                document.getElementById('submitBtn').style.display = allSuccess ? 'block' : 'none';
+            }
 
-            if (file) {
-                // Check file size
-                if (file.size > fileSizeLimit) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'File Too Large',
-                        text: 'File size exceeds 5MB. Please select a smaller file.',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'OK'
-                    });
-                    fileInput.value = '';
-                    return;
-                }
-
+            // Function to show the preview and load the correct scan result for the current file
+            function showPreview(index) {
+                const file = files[index];
                 const fileURL = URL.createObjectURL(file);
+                const pdfPreview = document.getElementById('pdf-preview');
+                const imagePreview = document.getElementById('image-preview');
+                const fileNameDisplay = document.getElementById('file-name');
+                const slideControls = document.getElementById('slide-controls');
+                const verificationStatusContainer = document.getElementById('verification-status-container');
 
+                // Show the appropriate preview based on file type
                 if (file.type === 'application/pdf') {
                     pdfPreview.src = fileURL;
                     pdfPreview.style.display = 'block';
@@ -496,97 +647,91 @@
                     imagePreview.src = fileURL;
                     imagePreview.style.display = 'block';
                     pdfPreview.style.display = 'none';
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Invalid File Type',
-                        text: 'Please select a valid PDF or image file (JPEG, PNG).',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'OK'
-                    });
-                    fileInput.value = '';
-                    return;
                 }
-
                 fileNameDisplay.textContent = `File name: ${file.name}`;
-                previewContainer.style.display = 'block';
+                slideControls.style.display = files.length > 1 ? 'flex' : 'none';
 
-                // Modal preview
-                document.getElementById('open-modal').onclick = function() {
-                    if (file.type === 'application/pdf') {
-                        document.getElementById('pdf-modal-preview').src = fileURL;
-                        document.getElementById('pdf-modal-preview').style.display = 'block';
-                        document.getElementById('image-modal-preview').style.display = 'none';
-                    } else {
-                        document.getElementById('image-modal-preview').src = fileURL;
-                        document.getElementById('image-modal-preview').style.display = 'block';
-                        document.getElementById('pdf-modal-preview').style.display = 'none';
-                    }
-                    $('#fileModal').modal('show');
-                };
-
-                $('.close').click(function() {
-                    $('#fileModal').modal('hide');
-                });
-            }
-        });
-
-        document.getElementById('scan-file-photo').addEventListener('click', async () => {
-            const fileInput = document.getElementById('file_or_photo_input');
-            const imageFile = fileInput.files[0];
-
-            if (!imageFile) {
-                alert('Silakan pilih gambar atau file terlebih dahulu.');
-                return;
+                // Display the correct scan result for the current file, if available
+                const scanResult = scanResults[index];
+                verificationStatusContainer.innerHTML = scanResult ?
+                    `<i class="${scanResult.iconClass}"></i><span>${scanResult.text}</span>` :
+                    '<span>Belum diverifikasi</span>'; // Display default message if not yet scanned
             }
 
-            // Sembunyikan status verifikasi saat mulai memproses
-            document.getElementById('verification-status').style.display = 'none';
+            // Initialize first preview
+            showPreview(currentFileIndex);
 
-            // Tampilkan loading spinner
-            document.getElementById('loading-spinner').style.display = 'block';
+            // Next and Previous buttons for navigation
+            document.getElementById('prev-slide').addEventListener('click', function() {
+                currentFileIndex = (currentFileIndex > 0) ? currentFileIndex - 1 : files.length - 1;
+                showPreview(currentFileIndex);
+            });
 
-            try {
-                Tesseract.recognize(
-                    imageFile,
-                    'ind', {
-                        logger: info => console.log(info),
-                        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-                        preserve_interword_spaces: '1',
-                        psm: 12,
-                        oem: 1,
-                    }
-                ).then(({
-                    data: {
-                        text
-                    }
-                }) => {
-                    const statusIconElement = document.getElementById('status-icon');
-                    const statusTextElement = document.getElementById('status-text');
-                    const verificationStatusElement = document.getElementById('verification-status');
+            document.getElementById('next-slide').addEventListener('click', function() {
+                currentFileIndex = (currentFileIndex < files.length - 1) ? currentFileIndex + 1 : 0;
+                showPreview(currentFileIndex);
+            });
 
-                    // Verifikasi sederhana berdasarkan teks tertentu
-                    if (text.includes("JAWA BARAT")) {
-                        statusIconElement.className = 'fas fa-check-circle text-success';
-                        statusTextElement.textContent = 'Verifikasi Berhasil';
+            // Scan button functionality
+            document.getElementById('scan-file-photo').addEventListener('click', async () => {
+                const imageFile = files[currentFileIndex];
+                document.getElementById('loading-spinner').style.display = 'block';
+
+                try {
+                    if (imageFile.type.startsWith('image/')) {
+                        const { data: { text } } = await Tesseract.recognize(imageFile, 'ind', {
+                            logger: m => console.log(m)
+                        });
+
+                        // Determine success or failure based on keyword presence
+                        const success = text.includes("JAWA BARAT");
+                        const scanResult = {
+                            iconClass: success ? 'fas fa-check-circle text-success' :
+                                'fas fa-times-circle text-danger',
+                            text: success ? "&nbsp;Berhasil 'Verifikasi'" :
+                                "&nbsp;Gagal 'Verifikasi'.",
+                            success: success
+                        };
+
+                        // Store scan result for the current file index
+                        scanResults[currentFileIndex] = scanResult;
+
+                        // Display result in verification status container
+                        document.getElementById('verification-status-container').innerHTML =
+                            `<i class="${scanResult.iconClass}"></i><span>${scanResult.text}</span>`;
+
+                        // Update submit button visibility based on all files' statuses
+                        updateSubmitButtonVisibility();
+
                     } else {
-                        statusIconElement.className = 'fas fa-times-circle text-danger';
-                        statusTextElement.textContent = 'Verifikasi Gagal';
+                        console.warn('Invalid File Type: Only images can be scanned.');
                     }
-
-                    verificationStatusElement.style.display = 'block';
-                }).catch(error => {
-                    console.error(error);
-                    alert('Gagal melakukan verifikasi gambar.');
-                }).finally(() => {
+                } catch (error) {
+                    console.error('Error during scan:', error);
+                } finally {
                     document.getElementById('loading-spinner').style.display = 'none';
-                });
+                }
+            });
 
-            } catch (error) {
-                console.error(error);
-                alert('Terjadi kesalahan dalam memproses gambar.');
-                document.getElementById('loading-spinner').style.display = 'none';
-            }
+            // Modal functionality for viewing full file
+            document.getElementById('open-modal').addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('fileModal'));
+                const currentFile = files[currentFileIndex];
+                const modalPdfPreview = document.getElementById('pdf-modal-preview');
+                const modalImagePreview = document.getElementById('image-modal-preview');
+
+                if (currentFile.type === 'application/pdf') {
+                    modalPdfPreview.src = URL.createObjectURL(currentFile);
+                    modalPdfPreview.style.display = 'block';
+                    modalImagePreview.style.display = 'none';
+                } else if (currentFile.type.startsWith('image/')) {
+                    modalImagePreview.src = URL.createObjectURL(currentFile);
+                    modalImagePreview.style.display = 'block';
+                    modalPdfPreview.style.display = 'none';
+                }
+                modal.show();
+            });
         });
     </script>
+
 @endsection

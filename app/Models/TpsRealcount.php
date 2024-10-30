@@ -10,8 +10,6 @@ class TpsRealcount extends Model
 {
     use HasFactory, HasRoles;
 
-    protected $table = 'tps_realcounts';
-    protected $primaryKey = 'id';
     protected $fillable = [
         'name',
         'provinsi_id',

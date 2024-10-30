@@ -7,7 +7,7 @@
 @section('content')
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">DataTables.{{ $title }}</h3>
+            <h3 class="fw-bold mb-3">{{ $title }}</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                     <a href="#">
@@ -123,7 +123,7 @@
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Batal</button>
-                                                                    <button type="button" class="btn btn-primary"
+                                                                    <button type="submit" class="btn btn-primary"
                                                                         id="confirmButton_{{ $user->id }}">Ya, Ubah
                                                                         Status</button>
                                                                 </div>

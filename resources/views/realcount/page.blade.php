@@ -5,7 +5,7 @@
             <div class="col-md-2 offset-md-1">
                 <div class="card" style="background-color: #eee8aa;">
                     <div class="card-body">
-                        <h3 class="card-title" style="color: black;font-size:20px;font-we">{{ $total_dpt }}</h3>
+                        <h3 class="card-title" style="color: black;font-size:20px;font-we">{{ $total_votes }}</h3>
                         <p style="color: black;font-size:15px">Suara Masuk</p>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                                             <div class="card-body p-0">
                                                 <!-- Candidate Image -->
                                                 @if (!empty($candidate['candidate']['photo']))
-                                                    <img src="{{ asset($candidate['candidate']['photo']) }}"
+                                                    <img src="{{ Storage::url($candidate['candidate']['photo']) }}"
                                                         alt="{{ $candidate['candidate']['name'] }}" class="img-fluid"
                                                             style="height: 5%; object-fit: cover; width: 100%;">
                                                 @else
