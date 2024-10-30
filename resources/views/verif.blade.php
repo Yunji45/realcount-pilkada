@@ -1,4 +1,3 @@
-@ -0,0 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,7 +44,7 @@
         <p>Jika Anda memiliki pertanyaan atau butuh bantuan, jangan ragu untuk menghubungi kami.</p>
         
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Aplikasi Kami. Semua hak dilindungi.</p>
+            <p>&copy; {{ date('Y') }} DPC Gerindra Kota Bandung. Semua hak dilindungi.</p>
         </div>
     </div>
 </body>

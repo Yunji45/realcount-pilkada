@@ -688,8 +688,8 @@
                         const scanResult = {
                             iconClass: success ? 'fas fa-check-circle text-success' :
                                 'fas fa-times-circle text-danger',
-                            text: success ? "&nbsp;Terdapat kata kunci 'JAWA BARAT'" :
-                                "&nbsp;Kata kunci tidak ditemukan.",
+                            text: success ? "&nbsp;Berhasil 'Verifikasi'" :
+                                "&nbsp;Gagal 'Verifikasi'.",
                             success: success
                         };
 
