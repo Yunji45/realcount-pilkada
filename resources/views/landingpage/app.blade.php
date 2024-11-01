@@ -231,20 +231,19 @@
                     <a href="{{ route('berita.all') }}" class="nav-item nav-link">Berita</a>
                     <a href="#footer" class="nav-item nav-link">Kontak</a>
                     @auth
-                        @if (Auth::user()->hasAnyRole('Admin', 'Super Admin', 'Pimpinan'))
-                            <a href="/dashboard/perorangan" class="nav-item nav-link btn-custom"
-                                style="color: white;font-weight: bold;">
+                        @if (Auth::user()->hasAnyRole(['Admin', 'Super Admin', 'Pimpinan']))
+                            <a href="/dashboard/perorangan" class="nav-item nav-link btn-custom" style="color: white; font-weight: bold;">
                                 Dashboard
                             </a>
-                        @elseif(Auth::user()->hasRole('Koordinator Kelurahan', 'Koordinator Kecamatan', 'Koordinator RW'))
-                            <a href="/partai" class="nav-item nav-link btn-custom" style="color: white;font-weight: bold;">
+                        @elseif (Auth::user()->hasAnyRole(['Koordinator Kelurahan', 'Koordinator Kecamatan', 'Koordinator RW']))
+                            <a href="/realcount" class="nav-item nav-link btn-custom" style="color: white; font-weight: bold;">
                                 Dashboard
                             </a>
-                        @else
                         @endif
                     @else
-                        <a href="/login" class="nav-item nav-link btn-custom"
-                            style="color: white;font-weight: bold;">Login</a>
+                        <a href="/login" class="nav-item nav-link btn-custom" style="color: white; font-weight: bold;">
+                            Login
+                        </a>
                     @endauth
 
                 </div>
